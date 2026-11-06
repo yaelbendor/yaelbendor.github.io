@@ -134,7 +134,7 @@ section.cat{padding-block:72px;border-top:1px solid var(--line)}
   transform-style:preserve-3d;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;will-change:transform;display:flex;flex-direction:column}
 .card:hover{border-color:rgba(0,255,205,.45);box-shadow:0 18px 40px -18px rgba(0,0,0,.6),0 0 0 1px rgba(0,255,205,.15)}
 .thumb{position:relative;aspect-ratio:16/9;max-width:100%;overflow:hidden}
-.three-d .thumb{aspect-ratio:4/5}
+.three-d .thumb{aspect-ratio:1}
 .grid.vertical{grid-template-columns:repeat(auto-fill,minmax(min(210px,calc(50% - 8px)),1fr))}
 .sub-head{margin:0 0 16px}
 .grid + .sub-head{margin-top:48px}
@@ -205,6 +205,15 @@ footer{position:relative;z-index:1;margin-top:40px;background:var(--sky-deep);bo
 .p-media{padding:max(24px,env(safe-area-inset-top,0px)) 24px 24px max(24px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;background:var(--sky-deep);min-height:0}
 .p-media > *{width:100%}
 .p-screen{position:relative;aspect-ratio:16/9;width:min(100%,calc((100dvh - 48px) * 16 / 9))!important;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#000;flex:none}
+.p-screen.stage{aspect-ratio:16/9;width:min(100%,calc((100dvh - 170px) * 16 / 9))!important;background:#06161e}
+.stage-media{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.vstrip{display:flex;gap:10px;justify-content:safe center;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:thin}
+.vthumb{flex:none;width:72px;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:0;cursor:pointer;color:var(--mint-mute);font:500 11px/1.2 var(--body)}
+.vthumb i{display:block;width:72px;height:72px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--surface-2);opacity:.65;transition:opacity .2s,border-color .2s,box-shadow .2s}
+.vthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.vthumb:hover i{opacity:1}
+.vthumb[aria-pressed="true"]{color:var(--mint)}
+.vthumb[aria-pressed="true"] i{opacity:1;border-color:var(--mint);box-shadow:0 0 0 1px var(--mint)}
 .p-screen.tall{aspect-ratio:4/5;width:min(100%,calc((100dvh - 230px) * 4 / 5))!important}
 .p-screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .yt-shield{position:absolute;inset:0;z-index:1;cursor:pointer;display:grid;place-items:center;background:transparent;border:0;padding:0}
@@ -397,21 +406,68 @@ const SECTIONS = [
       { title:"Character ad", client:"Sample", year:2025, sample:true, video:"#", tags:["AI-generated"] },
       { title:"Seasonal promo", client:"Sample", year:2025, sample:true, video:"#", tags:["Mixed"] }
     ]},
-  { id:"three-d", title:"3D Art", text:"Modelling and texturing. Open a piece to see wireframe, clay render, texture maps and polycount.", kind:"3d",
+  { id:"three-d", title:"3D Art", text:"Game-ready props, characters and renders. Open a piece for renders, wireframes, turntables and polycounts.", kind:"3d",
+    /* from artstation.com/yaelbendor. views = the pictures/videos you can flip through in the pop-up:
+       {label, img} picture · {label, mp4, poster} turntable video · {label, embed, thumb} interactive 3D viewer · {label, yt} YouTube · {label, vimeo, thumb} Vimeo */
     projects:[
-      { title:"Spaceship", year:2024, sample:true, video:"#", tags:["Hard surface"],
-        details:{ about:"Placeholder. Describe the piece, the reference and what you focused on.", tools:["Maya","ZBrush","Substance Painter"],
-          specs:[["Polygons","24,380"],["Triangles","47,912"],["Vertices","24,106"],["Texture sets","2 × 4K"],["Renderer","Marmoset Toolbag"]],
-          maps:["Base color","Normal","Roughness","Metallic","AO"] } },
-      { title:"Stylized character", year:2024, sample:true, video:"#", tags:["Sculpt"] ,
-        details:{ about:"Placeholder.", tools:["ZBrush","Blender","Substance Painter"],
-          specs:[["Polygons","18,240"],["Triangles","36,102"],["Texture sets","1 × 4K"]], maps:["Base color","Normal","Roughness","AO"] } },
-      { title:"Product render", client:"Particle", year:2025, sample:true, video:"#", tags:["Product"] },
-      { title:"Well", year:2023, sample:true, video:"#", tags:["Prop"] },
-      { title:"Environment kit", year:2023, sample:true, video:"#", tags:["Environment"] },
-      { title:"Guitar", year:2023, sample:true, video:"#", tags:["Prop"] },
-      { title:"Creature bust", year:2022, sample:true, video:"#", tags:["Sculpt"] },
-      { title:"Vehicle", year:2022, sample:true, video:"#", tags:["Hard surface"] }
+      { title:"Stylized Pirate Book - Low-Poly & Diffuse Only", year:2026, tags:["Game-ready"], thumb:"https://cdna.artstation.com/p/assets/images/images/103/506/940/small_square/yael-ben-dor-pirate-book-render-final.jpg?1792869467",
+        details:{ about:"A low-poly stylized pirate book, focused on hand-painted texturing and optimized game-ready topology. Based on a reference by Olena Shyianova.",
+          tools:["Blender","Substance 3D Painter"], specs:[["Faces","3,390"],["Triangles","6,744"],["Textures","Diffuse only"],["Renderer","Blender"]],
+          views:[ {label:"Render", img:"https://cdna.artstation.com/p/assets/images/images/103/506/940/large/yael-ben-dor-pirate-book-render-final.jpg?1792869467"},
+                  {label:"Wireframe", img:"https://cdnb.artstation.com/p/assets/images/images/103/506/939/large/yael-ben-dor-pirate-book-wireframe.jpg?1792869462"},
+                  {label:"Reference", img:"https://cdnb.artstation.com/p/assets/images/images/103/506/055/large/yael-ben-dor-elena-shyianova-pirate-book-5.jpg?1792866563"} ] } },
+      { title:"Stylized Astronomy Tower - Diffuse Only", year:2025, tags:["Stylized"], thumb:"https://cdna.artstation.com/p/assets/video_clips/images/092/412/836/small_square/yael-ben-dor-thumb.jpg?1759571463",
+        details:{ about:"A low-poly stylized astronomy tower, textured with base color only. Based on a reference by Olena Shyianova.",
+          tools:["Maya","Substance 3D Painter","Marmoset Toolbag"], specs:[["Faces","5,444"],["Triangles","10,599"],["Textures","Diffuse only"],["Renderer","Marmoset Toolbag"]],
+          views:[ {label:"Render", img:"https://cdnb.artstation.com/p/assets/images/images/092/412/883/large/yael-ben-dor-render-static-1-render-cam-001.webp?1759571607"},
+                  {label:"Turntable", mp4:"https://cdn.artstation.com/p/video_sources/002/867/039/turntable-wireframe.mp4", poster:"https://cdna.artstation.com/p/assets/video_clips/images/092/412/836/large/yael-ben-dor-thumb.jpg?1759571463"},
+                  {label:"3D viewer", embed:"https://www.artstation.com/embed/92413772", thumb:"https://cdna.artstation.com/p/assets/marmosets/images/092/413/772/large/yael-ben-dor-mview-image20251004-22-ax6wh9.jpg?1759574709"},
+                  {label:"Reference", img:"https://cdna.artstation.com/p/assets/images/images/095/172/388/large/yael-ben-dor-reference-elena-shyianova.webp?1767817099"} ] } },
+      { title:"Low-Poly Green Blob", year:2025, tags:["Character"], thumb:"https://cdna.artstation.com/p/assets/video_clips/images/083/707/846/small_square/yael-ben-dor-thumb.jpg?1736595592",
+        details:{ about:"A game-ready, low-poly, cute-creepy green blob. Based on a reference by Mitch Leeuwe.",
+          tools:["Maya","Substance 3D Painter","Arnold"], specs:[["Polygons","1,727"],["Triangles","3,452"],["Renderer","Arnold"]],
+          views:[ {label:"Render", img:"https://cdna.artstation.com/p/assets/images/images/083/707/820/large/yael-ben-dor-green-goo-textures-2-1-001.jpg?1736595539"},
+                  {label:"Turntable", mp4:"https://cdn.artstation.com/p/video_sources/002/373/491/green-goo.mp4", poster:"https://cdna.artstation.com/p/assets/video_clips/images/083/707/846/large/yael-ben-dor-thumb.jpg?1736595592"},
+                  {label:"Reference", img:"https://cdnb.artstation.com/p/assets/images/images/083/707/965/large/yael-ben-dor-green-goo-ref.jpg?1736595866"} ] } },
+      { title:"Low-Poly Gloom Chest", year:2025, tags:["Game-ready"], thumb:"https://cdnb.artstation.com/p/assets/covers/images/097/387/255/20260320092943/small_square/yael-ben-dor-yael-ben-dor-1-004.jpg?1774016984",
+        details:{ about:"A low-poly stylized Gloom Chest inspired by the game Wayfinder. Concept art by Philip Karlov.",
+          tools:["Maya","Substance 3D Painter","Marmoset Toolbag"], specs:[["Polygons","2,960"],["Triangles","5,819"],["Renderer","Marmoset Toolbag"]],
+          views:[ {label:"Render", img:"https://cdnb.artstation.com/p/assets/covers/images/097/387/255/large/yael-ben-dor-yael-ben-dor-1-004.webp?1774016984"},
+                  {label:"Render 2", img:"https://cdnb.artstation.com/p/assets/images/images/086/840/885/large/yael-ben-dor-1-003.jpg?1744207528"},
+                  {label:"Turntable", mp4:"https://cdn.artstation.com/p/video_sources/002/547/752/chest-turntable-001.mp4", poster:"https://cdnb.artstation.com/p/assets/video_clips/images/086/841/155/large/yael-ben-dor-thumb.jpg?1744207751"},
+                  {label:"3D viewer", embed:"https://www.artstation.com/embed/89244492", thumb:"https://cdna.artstation.com/p/assets/marmosets/images/089/244/492/large/yael-ben-dor-mview-image20250620-10-whaqa4.jpg?1750422483"},
+                  {label:"Concept", img:"https://cdnb.artstation.com/p/assets/images/images/095/611/991/large/yael-ben-dor-philip-karlov-wayfinder-gloom6.webp?1769020227"} ] } },
+      { title:"My Guitar", year:2022, tags:["Hard surface"], thumb:"https://cdna.artstation.com/p/assets/images/images/056/781/546/small_square/yael-ben-dor-24.jpg?1670076571",
+        details:{ about:"My first project in Maya, from the 3D animation course at the Israeli Animation College.", tools:["Maya","Photoshop"],
+          views:[ {label:"Render", img:"https://cdna.artstation.com/p/assets/images/images/056/781/546/large/yael-ben-dor-24.jpg?1670076571"}, {label:"Video", yt:"KaSFIKElaYc"} ] } },
+      { title:"Red Eyed Tree Frog", year:2024, tags:["Creature"], thumb:"https://cdnb.artstation.com/p/assets/video_clips/images/081/317/445/small_square/yael-ben-dor-thumb.jpg?1729931646",
+        details:{ about:"A red-eyed tree frog, modeled in Maya, sculpted in ZBrush, textured in Substance Painter and rendered in Arnold.",
+          tools:["Maya","ZBrush","Substance 3D Painter","Arnold"], specs:[["Renderer","Arnold"]],
+          views:[ {label:"Render", img:"https://cdna.artstation.com/p/assets/images/images/077/101/016/large/yael-ben-dor-frog-after-after1.jpg?1718614350"},
+                  {label:"Turntable", mp4:"https://cdn.artstation.com/p/video_sources/002/246/804/red-eyed-tree-frog-26-10-2024.mp4", poster:"https://cdnb.artstation.com/p/assets/video_clips/images/081/317/445/large/yael-ben-dor-thumb.jpg?1729931646"},
+                  {label:"Reference", img:"https://cdna.artstation.com/p/assets/images/images/081/317/458/large/yael-ben-dor-red-eyed-tree-frog-on-leaves-3-2.jpg?1729931742"} ] } },
+      { title:"Avatar Korra (The Legend of Korra) WIP", year:2024, tags:["Character"], thumb:"https://cdna.artstation.com/p/assets/covers/images/081/098/410/20241020040610/small_square/yael-ben-dor-yael-ben-dor-korra4.jpg?1729415171",
+        details:{ about:"My final project at the Israeli Animation College, and Korra is one of my favorite characters ever. Modeled and rendered in Maya, textured in Substance Painter.",
+          tools:["Maya","Substance 3D Painter","Arnold"], specs:[["Renderer","Arnold"]],
+          views:[ {label:"Render", img:"https://cdna.artstation.com/p/assets/covers/images/081/098/410/large/yael-ben-dor-yael-ben-dor-korra4.jpg?1729415171"},
+                  {label:"Render 2", img:"https://cdnb.artstation.com/p/assets/images/images/081/373/035/large/yael-ben-dor-34.jpg?1730108381"},
+                  {label:"Render 3", img:"https://cdnb.artstation.com/p/assets/images/images/081/373/039/large/yael-ben-dor-33.jpg?1730108389"},
+                  {label:"Render 4", img:"https://cdna.artstation.com/p/assets/images/images/081/373/044/large/yael-ben-dor-32.jpg?1730108397"},
+                  {label:"Turntable", yt:"ALZ07XawTeA"},
+                  {label:"Front", img:"https://cdna.artstation.com/p/assets/images/images/081/095/566/large/yael-ben-dor-korra-front.jpg?1729359945"},
+                  {label:"Side", img:"https://cdna.artstation.com/p/assets/images/images/081/095/890/large/yael-ben-dor-korra-side2.jpg?1729360846"},
+                  {label:"Side 2", img:"https://cdna.artstation.com/p/assets/images/images/081/095/894/large/yael-ben-dor-korra-side1.jpg?1729360851"},
+                  {label:"Back", img:"https://cdnb.artstation.com/p/assets/images/images/081/096/155/large/yael-ben-dor-korra-back.jpg?1729361441"},
+                  {label:"Wireframe", img:"https://cdna.artstation.com/p/assets/images/images/095/702/352/large/yael-ben-dor-korra-textures2-1-008.webp?1769277740"},
+                  {label:"Reference", img:"https://cdnb.artstation.com/p/assets/images/images/081/096/293/large/yael-ben-dor-good-ref.jpg?1729361866"} ] } },
+      { title:"Mini Printer Ad", client:"Immobile", year:2024, tags:["Product ad"], thumb:"https://cdnb.artstation.com/p/assets/covers/images/081/377/587/small_square/yael-ben-dor-yael-ben-dor-capture.jpg?1730117476",
+        details:{ about:"A mini printer ad for the shop Immobile. Modeled in Maya, rendered in V-Ray, motion graphics in After Effects and edited in Premiere Pro.",
+          tools:["Maya","V-Ray","After Effects","Premiere Pro"], specs:[["Renderer","V-Ray"]],
+          views:[ {label:"Ad", vimeo:"1023933858", thumb:"https://cdnb.artstation.com/p/assets/covers/images/081/377/587/large/yael-ben-dor-yael-ben-dor-capture.jpg?1730117476"} ] } },
+      { title:"Texturing and Shading Interior", year:2024, tags:["Interior"], thumb:"https://cdna.artstation.com/p/assets/images/images/081/423/066/small_square/yael-ben-dor-final-vray-day-yael-ben-dor.jpg?1730223327",
+        details:{ about:"Texturing and shading of an interior in Maya, rendered with V-Ray. Includes an Easter egg from another project of mine.",
+          tools:["Maya","V-Ray"], specs:[["Renderer","V-Ray"]],
+          views:[ {label:"Render", img:"https://cdna.artstation.com/p/assets/images/images/081/423/066/large/yael-ben-dor-final-vray-day-yael-ben-dor.jpg?1730223327"} ] } }
     ]},
   { id:"editing", format:"vertical", title:"Video Editing", text:"Editing, pacing and storytelling for social ads and music videos, mostly with live footage and real people.",
     mainHeading:"Social media ads", otherHeading:"Music videos & covers",
@@ -567,18 +623,13 @@ function openProject(sec, idx){
   const o = orderOf(sec), pos = o.indexOf(idx)+1;
   const d=p.details, is3d=sec.kind==="3d";
   const id = ytId(p.video), vert = (p.format||sec.format)==="vertical";
-  const screen = is3d
-    ? `<div class="p-screen tall" id="pScreen">${ph(p.title+"render","Render")}</div>`
-    : `<div class="p-screen ${vert?"vert":""}" id="pScreen">${id
-        ? `<iframe id="ytFrame" src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&loop=1&playlist=${id}&enablejsapi=1" title="${esc(p.title)}" allow="autoplay; encrypted-media; picture-in-picture" ></iframe>
-           <button class="yt-shield" id="ytShield" type="button" aria-label="Pause"></button>
-           <button class="yt-sound" id="ytSound" type="button" aria-label="Mute">${SOUND_ON}</button>`
+  const views = d && d.views;
+  const screen = views
+    ? `<div class="p-screen stage" id="pScreen">${viewHtml(views[0], p.title)}</div>`
+    : `<div class="p-screen ${vert?"vert":""}" id="pScreen">${id ? ytPlayer(id, p.title)
         : `${ph(p.title+"render","")}<div class="ph-label">Video starts here automatically<br>once a YouTube link is added</div>`}</div>`;
   let media = `<div class="p-media">${screen}`;
-  if(is3d && d){
-    media += `<div class="views" role="group" aria-label="View">${["Render","Wireframe","Clay","UVs"].map((v,i)=>`<button type="button" aria-pressed="${i===0}" data-v="${v}">${v}</button>`).join("")}</div>`;
-    if(d.maps) media += `<div class="label" style="margin-top:6px">Texture maps</div><div class="maps">${d.maps.map((m,i)=>`<div class="map"><i style="background:${["linear-gradient(135deg,#2e6b6a,#123445)","linear-gradient(135deg,#7f7fff,#8080ff 50%,#a0a0ff)","linear-gradient(135deg,#777,#333)","linear-gradient(135deg,#222,#aaa)","linear-gradient(135deg,#eee,#666)"][i%5]}"></i>${esc(m)}</div>`).join("")}</div>`;
-  }
+  if(views && views.length>1) media += `<div class="vstrip" role="group" aria-label="Views">${views.map((v,k)=>`<button type="button" class="vthumb" aria-pressed="${k===0}" data-k="${k}"><i>${viewThumb(v)}</i><span>${esc(v.label)}</span></button>`).join("")}</div>`;
   media += `</div>`;
 
   let info = `<div class="p-info"><div><div class="label">${esc(sec.title)}${o.length>1?` · ${pos} / ${o.length}`:""}</div><h2 id="pTitle" style="margin-top:8px">${esc(p.title)}</h2>
@@ -596,10 +647,9 @@ function openProject(sec, idx){
   panel.className = "panel" + (d ? "" : " simple") + (vert ? " vert" : "");
   panel.innerHTML = `<button class="close" type="button" aria-label="Close">×</button>${o.length>1?`<button class="pnav prev" type="button" aria-label="Previous work">${CHEV("m15 18-6-6 6-6")}</button><button class="pnav next" type="button" aria-label="Next work">${CHEV("m9 18 6-6-6-6")}</button>`:""}${media}${info}`;
   panel.querySelectorAll(".pnav").forEach(b=>b.addEventListener("click",()=>step(b.classList.contains("next")?1:-1)));
-  panel.querySelectorAll(".views button").forEach(b=>b.addEventListener("click",()=>{
-    panel.querySelectorAll(".views button").forEach(x=>x.setAttribute("aria-pressed",x===b));
-    panel.querySelector("#pScreen .ph-label").textContent=b.dataset.v;
-    panel.querySelector("#pScreen .ph").style.filter = {Render:"none",Wireframe:"grayscale(1) contrast(1.6) brightness(.7)",Clay:"grayscale(1) brightness(1.3)",UVs:"hue-rotate(120deg) saturate(1.6)"}[b.dataset.v];
+  panel.querySelectorAll(".vthumb").forEach(b=>b.addEventListener("click",()=>{
+    panel.querySelectorAll(".vthumb").forEach(x=>x.setAttribute("aria-pressed",x===b));
+    const v=views[+b.dataset.k]; $("#pScreen").innerHTML=viewHtml(v, p.title); if(v.yt) setupPlayer();
   }));
   panel.querySelector(".close").addEventListener("click",closePanel);
   setupPlayer();
@@ -607,6 +657,27 @@ function openProject(sec, idx){
   lastFocus=document.activeElement; overlay.hidden=false;
   requestAnimationFrame(()=>overlay.classList.add("open"));
   document.body.style.overflow="hidden"; panel.querySelector(".close").focus();
+}
+/* what the big screen in the pop-up shows */
+function ytPlayer(id, title){
+  return `<iframe id="ytFrame" src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&loop=1&playlist=${id}&enablejsapi=1" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+    <button class="yt-shield" id="ytShield" type="button" aria-label="Pause"></button>
+    <button class="yt-sound" id="ytSound" type="button" aria-label="Mute">${SOUND_ON}</button>`;
+}
+function viewHtml(v, title){
+  const alt = esc(title+" - "+v.label);
+  if(v.img) return `<img class="stage-media" src="${esc(v.img)}" alt="${alt}">`;
+  if(v.mp4) return `<video class="stage-media" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" autoplay muted loop playsinline></video>`;
+  if(v.embed) return `<iframe src="${esc(v.embed)}" title="${alt}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`;
+  if(v.yt) return ytPlayer(v.yt, title);
+  if(v.vimeo) return `<iframe src="https://player.vimeo.com/video/${esc(v.vimeo)}?autoplay=1&dnt=1&title=0&byline=0&portrait=0" title="${alt}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+  return "";
+}
+function viewThumb(v){
+  const full = v.thumb || v.poster || v.img || (v.yt ? `https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg` : "");
+  if(!full) return "";
+  const small = full.replace("/large/","/smaller_square/"); /* ArtStation keeps a small square copy of every picture */
+  return `<img src="${esc(small)}" data-full="${esc(full)}" alt="" loading="lazy" onerror="if(this.dataset.full&&this.src!==this.dataset.full){this.src=this.dataset.full}else{this.remove()}">`;
 }
 /* talk to the YouTube player: click the video to pause/play, button to mute */
 const SOUND_ON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>`;
