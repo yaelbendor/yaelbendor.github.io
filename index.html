@@ -763,10 +763,12 @@ function setupMedia(){
   } else if(vm){
     const send=(method,value)=>vm.contentWindow && vm.contentWindow.postMessage(JSON.stringify(value===undefined?{method}:{method,value}),"*");
     vm._onmsg=d=>{
-      if(d.event==="ready") ["timeupdate","play","pause"].forEach(ev=>send("addEventListener",ev));
-      if(d.event==="timeupdate" && d.data){ S.t=d.data.seconds; S.dur=d.data.duration; S.at=performance.now(); }
+      if(d.event==="ready") listen();
+      if((d.event==="timeupdate" || d.event==="playProgress") && d.data){ S.t=d.data.seconds; S.dur=d.data.duration; S.at=performance.now(); }
       if(d.event==="play"){ S.playing=true; S.at=performance.now(); }
       if(d.event==="pause"){ S.playing=false; } };
+    const listen=()=>["timeupdate","play","pause"].forEach(ev=>send("addEventListener",ev));
+    vm.addEventListener("load",()=>setTimeout(listen,400));
     ctl={ time:est, dur:()=>S.dur, paused:()=>!S.playing,
       play:()=>{ send("play"); S.playing=true; S.at=performance.now(); },
       pause:()=>{ S.t=est(); S.playing=false; send("pause"); },
