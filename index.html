@@ -827,7 +827,7 @@ function viewThumb(v){
   const full = v.thumb || v.poster || v.img || (v.yt ? `https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg` : "");
   if(!full) return "";
   const small = full.replace("/large/","/smaller_square/"); /* ArtStation keeps a small square copy of every picture */
-  return `<img src="${esc(small)}" data-full="${esc(full)}" alt="" loading="lazy" onerror="if(this.dataset.full&&this.src!==this.dataset.full){this.src=this.dataset.full}else{this.remove()}">`;
+  return `<img src="${esc(small)}" data-full="${esc(full)}" alt="" onerror="if(this.dataset.full&&this.src!==this.dataset.full){this.src=this.dataset.full}else{this.remove()}">`;
 }
 function closePanel(){
   overlay.classList.remove("open"); document.body.style.overflow="";
