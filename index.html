@@ -226,7 +226,15 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 .yt-shield.paused::after{opacity:1}
 .yt-sound{position:absolute;z-index:2;right:12px;bottom:12px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.75);color:var(--mint);cursor:pointer;display:grid;place-items:center}
 .yt-sound:hover{border-color:var(--mint)}
-.v-sound{bottom:18px}
+.pl-sound{bottom:26px}
+.yt-shield.paused{background:rgba(6,20,28,.62)}
+.pl-bar{position:absolute;left:0;right:0;bottom:0;height:24px;z-index:2;cursor:pointer;touch-action:none;outline:none}
+.pl-bar::before{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.22);transition:height .15s}
+.pl-bar i{position:absolute;left:0;bottom:0;display:block;height:3px;width:0;background:var(--mint);box-shadow:0 0 8px var(--glow);transition:height .15s}
+.pl-bar b{position:absolute;right:-7px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--glow);transform:scale(0);transition:transform .15s}
+.pl-bar:hover::before,.pl-bar:hover i,.pl-bar.drag::before,.pl-bar.drag i,.pl-bar:focus-visible::before,.pl-bar:focus-visible i{height:5px}
+.pl-bar:hover b,.pl-bar.drag b,.pl-bar:focus-visible b{transform:scale(1)}
+@media (hover:none){ .pl-bar{height:34px} .pl-bar b{transform:scale(.75)} .pl-bar.drag b{transform:scale(1.15)} }
 .vbar{position:absolute;left:0;right:0;bottom:0;height:14px;z-index:2;cursor:pointer;display:flex;align-items:flex-end}
 .vbar::before{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.18)}
 .vbar i{position:relative;display:block;height:3px;width:0;background:var(--mint);box-shadow:0 0 8px var(--glow)}
@@ -682,75 +690,124 @@ function openProject(sec, idx){
   panel.querySelectorAll(".pnav").forEach(b=>b.addEventListener("click",()=>step(b.classList.contains("next")?1:-1)));
   panel.querySelectorAll(".vthumb").forEach(b=>b.addEventListener("click",()=>{
     panel.querySelectorAll(".vthumb").forEach(x=>x.setAttribute("aria-pressed",x===b));
-    const v=views[+b.dataset.k]; if(!v.img && !v.mp4) fitStage(v.ar||16/9); $("#pScreen").innerHTML=viewHtml(v, p.title); if(v.yt) setupPlayer(); setupVideo();
+    const v=views[+b.dataset.k]; if(!v.img && !v.mp4) fitStage(v.ar||16/9); $("#pScreen").innerHTML=viewHtml(v, p.title); setupMedia();
     b.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
   }));
   panel.querySelector(".close").addEventListener("click",closePanel);
   if(views && views[0].ar) fitStage(views[0].ar);
-  setupVideo();
-  setupPlayer();
+  setupMedia();
   if(wasOpen){ panel.scrollTop=0; if(!reduce) panel.animate([{opacity:.35},{opacity:1}],{duration:240,easing:"ease-out"}); return; }
   lastFocus=document.activeElement; overlay.hidden=false;
   requestAnimationFrame(()=>overlay.classList.add("open"));
   document.body.style.overflow="hidden"; panel.querySelector(".close").focus();
 }
 /* what the big screen in the pop-up shows */
-function ytPlayer(id, title){
-  return `<iframe id="ytFrame" src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&loop=1&playlist=${id}&enablejsapi=1" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture"></iframe>
-    <button class="yt-shield" id="ytShield" type="button" aria-label="Pause"></button>
-    <button class="yt-sound" id="ytSound" type="button" aria-label="Mute">${SOUND_ON}</button>`;
-}
 function viewHtml(v, title){
   const alt = esc(title+" - "+v.label);
   if(v.img) return `<img class="stage-media" src="${esc(v.img)}" alt="${alt}" onload="fitStage(this.naturalWidth/this.naturalHeight)">`;
-  if(v.mp4 && v.sound) return `<video class="stage-media sound" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" crossorigin="anonymous" data-end="${v.end||""}" autoplay loop playsinline disablepictureinpicture onloadedmetadata="fitStage(this.videoWidth/this.videoHeight)"></video>
-    <button class="yt-shield" id="vShield" type="button" aria-label="Pause"></button>
-    <button class="yt-sound v-sound" id="vSound" type="button" aria-label="Mute">${SOUND_ON}</button>
-    <div class="vbar" id="vBar"><i></i></div>`;
+  if(v.mp4 && v.sound) return `<video class="stage-media pl-mp4" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" crossorigin="anonymous" data-end="${v.end||""}" autoplay loop playsinline disablepictureinpicture onloadedmetadata="fitStage(this.videoWidth/this.videoHeight)"></video>${controlsHtml()}`;
   if(v.mp4) return `<video class="stage-media" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" autoplay muted loop playsinline onloadedmetadata="fitStage(this.videoWidth/this.videoHeight)"></video>`;
   if(v.embed) return `<iframe src="${esc(v.embed)}" title="${alt}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`;
   if(v.yt) return ytPlayer(v.yt, title);
-  if(v.vimeo) return `<iframe class="vimeo" src="https://player.vimeo.com/video/${esc(v.vimeo)}?autoplay=1&loop=1&api=1&dnt=1&title=0&byline=0&portrait=0" title="${alt}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+  if(v.vimeo) return `<iframe class="pl-vimeo" src="https://player.vimeo.com/video/${esc(v.vimeo)}?autoplay=1&loop=1&controls=0&api=1&dnt=1&title=0&byline=0&portrait=0&keyboard=0&pip=0" title="${alt}" allow="autoplay; fullscreen"></iframe>${controlsHtml()}`;
   return "";
 }
-/* our own player for MP4s with sound: click = pause/play, sound button, thin progress line.
-   It stops at data-end (just before the ad's call-to-action) and loops, fading the sound out over the last second */
+function ytPlayer(id, title){
+  return `<iframe class="pl-yt" src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&loop=1&playlist=${id}&enablejsapi=1" title="${esc(title)}" allow="autoplay; encrypted-media"></iframe>${controlsHtml()}`;
+}
+
+/* ===== one player for every video (YouTube, Vimeo, MP4) =====
+   Our own controls sit on top: click the video = pause/play, sound button, mint timeline you can drag.
+   end:X (MP4s) stops the video at X seconds, before the ad's call-to-action, and loops.
+   The sound fades out over the last second and back in after looping. */
+const SOUND_ON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>`;
+const SOUND_OFF = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 6 6M22 9l-6 6"/></svg>`;
+const FADE = 1.1;
+function controlsHtml(){
+  return `<button class="yt-shield pl-shield" type="button" aria-label="Pause"></button>
+    <button class="yt-sound pl-sound" type="button" aria-label="Mute">${SOUND_ON}</button>
+    <div class="pl-bar" role="slider" tabindex="0" aria-label="Video position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i><b></b></i></div>`;
+}
 let AC = null;
 function audioCtx(){ try{ AC = AC || new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==="suspended") AC.resume(); }catch(_){ AC=null; } return AC; }
-const FADE = 1.1;
-function setupVideo(){
-  const v = $("#pScreen video.sound"); if(!v) return;
-  const shield=$("#vShield"), sound=$("#vSound"), bar=$("#vBar"), fill=bar.querySelector("i");
-  let gain=null; const ac=audioCtx();
-  if(ac){ try{ const src=ac.createMediaElementSource(v); gain=ac.createGain(); src.connect(gain); gain.connect(ac.destination); }catch(_){ gain=null; } }
-  const setVol = x => { x=Math.max(0,Math.min(1,x)); if(gain) gain.gain.value=x; else { try{ v.volume=x; }catch(_){} } };
-  setVol(0);
-  const play = () => v.play().catch(()=>{ v.muted=true; sound.innerHTML=SOUND_OFF; v.play().catch(()=>{}); });
-  play();
+
+function setupMedia(){
+  const st=$("#pScreen"); if(!st) return;
+  const shield=st.querySelector(".pl-shield"); if(!shield) return;
+  const sound=st.querySelector(".pl-sound"), bar=st.querySelector(".pl-bar"), fill=bar.querySelector("i");
+  const v=st.querySelector("video.pl-mp4"), yt=st.querySelector("iframe.pl-yt"), vm=st.querySelector("iframe.pl-vimeo");
+  const S={ t:0, at:performance.now(), dur:0, playing:true, muted:false, vol:-1 };   /* what we know about an iframe player */
+  const est=()=> S.playing ? S.t + (performance.now()-S.at)/1000 : S.t;
+  let ctl;
+  if(v){
+    let gain=null; const ac=audioCtx();
+    if(ac){ try{ const src=ac.createMediaElementSource(v); gain=ac.createGain(); src.connect(gain); gain.connect(ac.destination); }catch(_){ gain=null; } }
+    ctl={ time:()=>v.currentTime, dur:()=> +v.dataset.end || v.duration || 0, paused:()=>v.paused,
+      play:()=>v.play().catch(()=>{ v.muted=true; showMute(); v.play().catch(()=>{}); }),
+      pause:()=>v.pause(), seek:(t)=>{ v.currentTime=t; }, setMuted:m=>{ v.muted=m; }, muted:()=>v.muted,
+      vol:x=>{ if(gain) gain.gain.value=x; else { try{ v.volume=x; }catch(_){} } } };
+    ctl.vol(0); ctl.play();
+  } else if(yt){
+    const cmd=(func,args=[])=>yt.contentWindow && yt.contentWindow.postMessage(JSON.stringify({event:"command",func,args}),"*");
+    yt.addEventListener("load",()=>yt.contentWindow.postMessage(JSON.stringify({event:"listening",id:"pl",channel:"widget"}),"*"));
+    yt._onmsg=d=>{ const i=d.info; if(!i) return;
+      if(typeof i.currentTime==="number"){ S.t=i.currentTime; S.at=performance.now(); }
+      if(i.duration) S.dur=i.duration;
+      if(typeof i.playerState==="number"){ S.playing = i.playerState===1 || i.playerState===3; } };
+    ctl={ time:est, dur:()=>S.dur, paused:()=>!S.playing,
+      play:()=>{ cmd("playVideo"); S.playing=true; S.at=performance.now(); },
+      pause:()=>{ S.t=est(); S.playing=false; cmd("pauseVideo"); },
+      seek:(t,final)=>{ cmd("seekTo",[t,!!final]); S.t=t; S.at=performance.now(); },
+      setMuted:m=>{ S.muted=m; cmd(m?"mute":"unMute"); }, muted:()=>S.muted,
+      vol:x=>{ const q=Math.round(x*100); if(q!==S.vol){ S.vol=q; cmd("setVolume",[q]); } } };
+  } else if(vm){
+    const send=(method,value)=>vm.contentWindow && vm.contentWindow.postMessage(JSON.stringify(value===undefined?{method}:{method,value}),"*");
+    vm._onmsg=d=>{
+      if(d.event==="ready") ["timeupdate","play","pause"].forEach(ev=>send("addEventListener",ev));
+      if(d.event==="timeupdate" && d.data){ S.t=d.data.seconds; S.dur=d.data.duration; S.at=performance.now(); }
+      if(d.event==="play"){ S.playing=true; S.at=performance.now(); }
+      if(d.event==="pause"){ S.playing=false; } };
+    ctl={ time:est, dur:()=>S.dur, paused:()=>!S.playing,
+      play:()=>{ send("play"); S.playing=true; S.at=performance.now(); },
+      pause:()=>{ S.t=est(); S.playing=false; send("pause"); },
+      seek:(t)=>{ send("setCurrentTime",t); S.t=t; S.at=performance.now(); },
+      setMuted:m=>{ S.muted=m; S.vol=-1; }, muted:()=>S.muted,
+      vol:x=>{ const q=S.muted?0:Math.round(x*50)/50; if(q!==S.vol){ S.vol=q; send("setVolume",q); } } };
+  } else return;
+
+  function showMute(){ const m=ctl.muted(); sound.innerHTML=m?SOUND_OFF:SOUND_ON; sound.setAttribute("aria-label",m?"Unmute":"Mute"); }
+  let drag=false, lastSeek=0;
   (function tick(){
-    if(!v.isConnected) return;
-    const end = +v.dataset.end || v.duration || 0, t = v.currentTime;
-    if(end){
-      if(+v.dataset.end && t >= end-0.02){ v.currentTime = 0; }
-      setVol(Math.min((end-t)/FADE, t/0.35, 1));            /* fade out at the end, quick fade in after looping */
-      fill.style.width = Math.min(100, t/end*100) + "%";
+    if(!shield.isConnected) return;
+    const D=ctl.dur(), t=Math.min(ctl.time(), D||Infinity);
+    if(D){
+      if(v && +v.dataset.end && t>=D-0.02 && !drag) ctl.seek(0);
+      ctl.vol(Math.max(0, Math.min(1, (D-t)/FADE, t/0.35)));
+      if(!drag) fill.style.width = Math.min(100, t/D*100) + "%";
+      bar.setAttribute("aria-valuenow", Math.round(t/D*100));
     }
+    shield.classList.toggle("paused", ctl.paused() && !drag);
     requestAnimationFrame(tick);
   })();
-  shield.addEventListener("click",()=>{ if(v.paused){ play(); } else v.pause(); });
-  v.addEventListener("play",()=>{ shield.classList.remove("paused"); shield.setAttribute("aria-label","Pause"); });
-  v.addEventListener("pause",()=>{ shield.classList.add("paused"); shield.setAttribute("aria-label","Play"); });
-  sound.addEventListener("click",()=>{ v.muted=!v.muted; sound.innerHTML=v.muted?SOUND_OFF:SOUND_ON; sound.setAttribute("aria-label",v.muted?"Unmute":"Mute"); });
-  bar.addEventListener("click",e=>{ const end=+v.dataset.end||v.duration; const r=bar.getBoundingClientRect(); v.currentTime=Math.max(0,Math.min(end-0.1,(e.clientX-r.left)/r.width*end)); });
+  shield.addEventListener("click",()=>{ ctl.paused() ? ctl.play() : ctl.pause(); });
+  sound.addEventListener("click",()=>{ ctl.setMuted(!ctl.muted()); showMute(); });
+  /* drag the timeline */
+  const seekAt=(e,final)=>{ const D=ctl.dur(); if(!D) return; const r=bar.getBoundingClientRect();
+    const f=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)); fill.style.width=f*100+"%";
+    const now=performance.now(); if(final || v || now-lastSeek>120){ lastSeek=now; ctl.seek(Math.min(f*D, D-0.15), final); } };
+  bar.addEventListener("pointerdown",e=>{ drag=true; bar.classList.add("drag"); bar.setPointerCapture(e.pointerId); seekAt(e); e.preventDefault(); });
+  bar.addEventListener("pointermove",e=>{ if(drag) seekAt(e); });
+  bar.addEventListener("pointerup",e=>{ if(!drag) return; seekAt(e,true); drag=false; bar.classList.remove("drag"); });
+  bar.addEventListener("pointercancel",()=>{ drag=false; bar.classList.remove("drag"); });
+  bar.addEventListener("keydown",e=>{ if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return; e.preventDefault(); e.stopPropagation();
+    const D=ctl.dur(); if(D) ctl.seek(Math.max(0,Math.min(D-0.15, ctl.time()+(e.key==="ArrowRight"?5:-5))), true); });
 }
-/* Vimeo: fade the sound out over the last second */
+/* messages from the YouTube / Vimeo players go to the player that sent them */
 addEventListener("message",e=>{
-  if(!/vimeo\.com$/.test(new URL(e.origin).hostname)) return;
+  const st=$("#pScreen"); if(!st) return;
+  const f=[...st.querySelectorAll("iframe")].find(f=>f.contentWindow===e.source); if(!f || !f._onmsg) return;
   let d; try{ d=typeof e.data==="string"?JSON.parse(e.data):e.data; }catch(_){ return; }
-  const f=$("#pScreen iframe.vimeo"); if(!f || e.source!==f.contentWindow) return;
-  const send=(method,value)=>f.contentWindow.postMessage(JSON.stringify(value===undefined?{method}:{method,value}),"*");
-  if(d.event==="ready") send("addEventListener","timeupdate");
-  if(d.event==="timeupdate" && d.data){ const left=d.data.duration-d.data.seconds; send("setVolume", Math.max(0,Math.min(1,left/FADE, d.data.seconds/0.35))); }
+  if(d && typeof d==="object") f._onmsg(d);
 });
 /* make the frame match the picture's shape (portrait renders are not squeezed into a wide box) */
 function fitStage(r){ const st=$("#pScreen"); if(st && r>0 && isFinite(r)) st.style.setProperty("--ar", Math.min(2.4, Math.max(.5, r)).toFixed(4)); }
@@ -760,24 +817,6 @@ function viewThumb(v){
   const small = full.replace("/large/","/smaller_square/"); /* ArtStation keeps a small square copy of every picture */
   return `<img src="${esc(small)}" data-full="${esc(full)}" alt="" loading="lazy" onerror="if(this.dataset.full&&this.src!==this.dataset.full){this.src=this.dataset.full}else{this.remove()}">`;
 }
-/* talk to the YouTube player: click the video to pause/play, button to mute */
-const SOUND_ON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>`;
-const SOUND_OFF = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 6 6M22 9l-6 6"/></svg>`;
-let ytState = -1;
-function ytCmd(func){ const f=$("#ytFrame"); f && f.contentWindow && f.contentWindow.postMessage(JSON.stringify({event:"command",func,args:[]}),"*"); }
-function setupPlayer(){
-  const f=$("#ytFrame"); if(!f) return; ytState=-1;
-  const shield=$("#ytShield"), sound=$("#ytSound"); let muted=false;
-  f.addEventListener("load",()=>f.contentWindow.postMessage(JSON.stringify({event:"listening",id:"yt",channel:"widget"}),"*"));
-  shield.addEventListener("click",()=>{ const playing = ytState===1 || ytState===3;
-    ytCmd(playing?"pauseVideo":"playVideo"); shield.classList.toggle("paused",playing); shield.setAttribute("aria-label",playing?"Play":"Pause"); });
-  sound.addEventListener("click",()=>{ muted=!muted; ytCmd(muted?"mute":"unMute"); sound.innerHTML=muted?SOUND_OFF:SOUND_ON; sound.setAttribute("aria-label",muted?"Unmute":"Mute"); });
-}
-addEventListener("message",e=>{
-  if(!/youtube/.test(e.origin)) return;
-  try{ const d=JSON.parse(e.data); if(d.info && typeof d.info.playerState==="number"){ ytState=d.info.playerState;
-    const sh=$("#ytShield"); if(sh) sh.classList.toggle("paused", ytState===2); } }catch(_){}
-});
 function closePanel(){
   overlay.classList.remove("open"); document.body.style.overflow="";
   const f=panel.querySelector("iframe"); if(f) f.src="about:blank"; /* stop the video */
@@ -788,7 +827,7 @@ addEventListener("keydown",e=>{ if(overlay.hidden) return;
   if(e.key==="Escape") closePanel(); else if(e.key==="ArrowRight") step(1); else if(e.key==="ArrowLeft") step(-1); });
 /* swipe left/right on phones */
 let touchX=null, touchY=null;
-overlay.addEventListener("touchstart",e=>{ touchX=e.touches[0].clientX; touchY=e.touches[0].clientY; },{passive:true});
+overlay.addEventListener("touchstart",e=>{ if(e.target.closest(".pl-bar")){ touchX=null; return; } touchX=e.touches[0].clientX; touchY=e.touches[0].clientY; },{passive:true});
 overlay.addEventListener("touchend",e=>{ if(touchX===null) return; const dx=e.changedTouches[0].clientX-touchX, dy=e.changedTouches[0].clientY-touchY;
   if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)*1.5) step(dx<0?1:-1); touchX=null; },{passive:true});
 document.querySelectorAll(".card").forEach(c=>c.addEventListener("click",()=>{
