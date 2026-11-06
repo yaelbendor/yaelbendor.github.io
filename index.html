@@ -504,22 +504,22 @@ const SECTIONS = [
   { id:"editing", format:"vertical", title:"Video Editing", text:"Editing, pacing and storytelling for social ads and music videos, mostly with live footage and real people.",
     mainHeading:"Social media ads", otherHeading:"Music videos & covers",
     projects:[
-      /* tags: only add one when the video is "AI-generated" or "Mixed" (AI + real people). Live action is the default, no tag. */
-      { title:"Nona Roza Ice Cream", client:"Nona Roza", year:2022, video:"https://youtube.com/shorts/5wzy-GZA2NY",
-        details:{ tools:["Premiere Pro"] } },
-      { title:"Alex Daniel Business Class Social Media Video", client:"Alex Daniel", year:2021, video:"https://youtube.com/shorts/xN-BLlkWFzk",
-        details:{ tools:["Premiere Pro","After Effects"] } },
-      { title:"Podcast Services Ad for HaMisrad", client:"Hodaya Benebo", year:2021, video:"https://youtube.com/shorts/QbA0v7zu5c0",
-        details:{ tools:["Premiere Pro","After Effects"] } },
-      { title:"Bareket Shai Social Media Video", client:"Bareket Shai", year:2024, video:"https://youtube.com/shorts/3CArzngzhpg",
-        details:{ tools:["Premiere Pro"] } },
-      { title:"Lior Assaf Social Media Video", client:"Lior Assaf", year:2024, video:"https://youtube.com/shorts/h9byEfQf9Qg",
-        details:{ tools:["Premiere Pro"] } },
-      /* blocked on YouTube, so this one plays straight from her Wix site */
+      /* tags: only add one when the video is "AI-generated" or "Mixed" (AI + real people). Live action is the default, no tag.
+         the social ads play from her Wix site (YouTube Shorts embeds always show YouTube's own overlay) */
+      { title:"Nona Roza Ice Cream", client:"Nona Roza", year:2022, thumb:"https://static.wixstatic.com/media/40dccc_3b47014661114409bb3ad8105df0c6e7f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ tools:["Premiere Pro"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_3b47014661114409bb3ad8105df0c6e7/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_3b47014661114409bb3ad8105df0c6e7f003.jpg", sound:true}] } },
+      { title:"Alex Daniel Business Class Social Media Video", client:"Alex Daniel", year:2021, thumb:"https://static.wixstatic.com/media/40dccc_e8bfeeca9951442da26fad3f7b1e4857f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ tools:["Premiere Pro","After Effects"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_e8bfeeca9951442da26fad3f7b1e4857/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_e8bfeeca9951442da26fad3f7b1e4857f003.jpg", sound:true}] } },
+      { title:"Podcast Services Ad for HaMisrad", client:"Hodaya Benebo", year:2021, thumb:"https://static.wixstatic.com/media/40dccc_4368dbcd26dc413ca1e84751c18e8033f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ tools:["Premiere Pro","After Effects"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_4368dbcd26dc413ca1e84751c18e8033/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_4368dbcd26dc413ca1e84751c18e8033f003.jpg", sound:true}] } },
+      { title:"Bareket Shai Social Media Video", client:"Bareket Shai", year:2024, thumb:"https://static.wixstatic.com/media/40dccc_ee9627242caa4a96bbd99c6d0a681e16f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ tools:["Premiere Pro"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_ee9627242caa4a96bbd99c6d0a681e16/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_ee9627242caa4a96bbd99c6d0a681e16f003.jpg", sound:true}] } },
+      { title:"Lior Assaf Social Media Video", client:"Lior Assaf", year:2024, thumb:"https://static.wixstatic.com/media/40dccc_ab3160400b884221ac5cfc6b34aa1236f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ tools:["Premiere Pro"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_ab3160400b884221ac5cfc6b34aa1236/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_ab3160400b884221ac5cfc6b34aa1236f003.jpg", sound:true}] } },
       { title:"Ofir Segal Deadline Social Media Video", client:"Ofir Segal", year:2025, thumb:"https://static.wixstatic.com/media/40dccc_bdb3c23bb96c44408317d7243c8afe84f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ tools:["Premiere Pro"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_bdb3c23bb96c44408317d7243c8afe84/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_bdb3c23bb96c44408317d7243c8afe84f003.jpg", sound:true}] } },
-      { title:"Moses Shop Ad", client:"Moses Shop", year:2025, video:"https://youtube.com/shorts/zjWdtL4ZPIA",
-        details:{ tools:["Premiere Pro"] } },
+      { title:"Moses Shop Ad", client:"Moses Shop", year:2025, thumb:"https://static.wixstatic.com/media/40dccc_b7299543da7f4c94b4479b80fad8654ff003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ tools:["Premiere Pro"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_b7299543da7f4c94b4479b80fad8654f/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_b7299543da7f4c94b4479b80fad8654ff003.jpg", sound:true}] } },
       /* horizontal videos: format:"horizontal" puts them in the second row */
       { title:"Moon Safari - Between the Devil and Me (Official Lyric Video)", client:"Moon Safari", year:2023, format:"horizontal", video:"https://www.youtube.com/watch?v=ryzIHFOjnG4",
         details:{ about:"Official lyric video I created for the Swedish band Moon Safari.", tools:["Premiere Pro","After Effects"] } },
