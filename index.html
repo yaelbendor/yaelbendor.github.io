@@ -136,7 +136,8 @@ section.cat{padding-block:72px;border-top:1px solid var(--line)}
   transform-style:preserve-3d;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;will-change:transform;display:flex;flex-direction:column}
 .card:hover{border-color:rgba(0,255,205,.45);box-shadow:0 18px 40px -18px rgba(0,0,0,.6),0 0 0 1px rgba(0,255,205,.15)}
 .thumb{position:relative;aspect-ratio:16/9;max-width:100%;overflow:hidden}
-.three-d .thumb{aspect-ratio:1}
+.three-d .thumb,.square .thumb{aspect-ratio:1}
+.grid.square{grid-template-columns:repeat(auto-fill,minmax(min(260px,calc(50% - 8px)),1fr))}
 .grid.vertical{grid-template-columns:repeat(auto-fill,minmax(min(210px,calc(50% - 8px)),1fr))}
 .sub-head{margin:0 0 16px}
 .grid + .sub-head{margin-top:48px}
@@ -507,15 +508,21 @@ const SECTIONS = [
       { title:"Horizons - Guitar Cover", year:2020, format:"horizontal", video:"https://www.youtube.com/watch?v=esWob1xs3xA",
         details:{ about:"A guitar cover I played and edited.", tools:["Premiere Pro"] } }
     ]},
-  { id:"motion", title:"Motion Design", text:"Motion graphics, kinetic type and animated ad elements, made in After Effects.",
+  { id:"motion", format:"square", title:"Motion Design", text:"Motion graphics, logo animation and animated ads, made in After Effects.",
+    /* from her old Wix site. Videos play straight from Wix (mp4); square cards like on Wix */
     projects:[
-      { title:"Logo animation", client:"Sample", year:2025, sample:true, video:"#", tags:["After Effects"] },
-      { title:"Kinetic type ad", client:"Sample", year:2024, sample:true, video:"#", tags:["After Effects"],
-        details:{ about:"Placeholder. A motion piece can have a short breakdown too.", tools:["After Effects","Illustrator"] } },
-      { title:"Explainer", client:"Sample", year:2023, sample:true, video:"#", tags:["2D animation"] },
-      { title:"Lower thirds pack", client:"Sample", year:2023, sample:true, video:"#", tags:["After Effects"] },
-      { title:"Data animation", client:"Sample", year:2022, sample:true, video:"#", tags:["After Effects"] },
-      { title:"Title sequence", client:"Sample", year:2022, sample:true, video:"#", tags:["After Effects"] }
+      { title:"Ad for Particle", client:"Particle", year:2026, thumb:"https://static.wixstatic.com/media/40dccc_716b9625821542f69bd337de6db94036f003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_716b9625821542f69bd337de6db94036/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_716b9625821542f69bd337de6db94036f003.jpg", sound:true}] } },
+      { title:"\"The Red Rug\" ad", client:"The Red Rug", thumb:"https://static.wixstatic.com/media/40dccc_0f9b211c5c8d4b6f834818df35f8aa4ef003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_0f9b211c5c8d4b6f834818df35f8aa4e/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_0f9b211c5c8d4b6f834818df35f8aa4ef003.jpg", sound:true}] } },
+      { title:"Ad for Alex Daniel - Dream Team", client:"Alex Daniel", thumb:"https://static.wixstatic.com/media/40dccc_b8b8343d5c5a4c77b12f459345ddf313f003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_b8b8343d5c5a4c77b12f459345ddf313/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_b8b8343d5c5a4c77b12f459345ddf313f003.jpg", sound:true}], tools:["After Effects"] } },
+      { title:"Social media video for Fine Branding", client:"Fine Branding", thumb:"https://static.wixstatic.com/media/40dccc_ae547ad7ac784a2991f353be35f582c5f003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_ae547ad7ac784a2991f353be35f582c5/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_ae547ad7ac784a2991f353be35f582c5f003.jpg", sound:true}] } },
+      { title:"Logo animation for Fine Branding", client:"Fine Branding", thumb:"https://static.wixstatic.com/media/40dccc_d6219958649945cb8709679e920e14eff003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_d6219958649945cb8709679e920e14ef/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_d6219958649945cb8709679e920e14eff003.jpg", sound:true}] } },
+      { title:"Ad for Alex Daniel - Business Class Seminar", client:"Alex Daniel", thumb:"https://static.wixstatic.com/media/40dccc_86e01528037641ba82572b4899c8d6def003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_86e01528037641ba82572b4899c8d6de/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_86e01528037641ba82572b4899c8d6def003.jpg", sound:true}], tools:["After Effects"] } }
     ]}
 
 ];
@@ -601,7 +608,7 @@ $("#sections").innerHTML = SECTIONS.map(sec => `
     </div>
     ${groupsOf(sec).map(g=>`
     ${g.heading?`<div class="sub-head label">${esc(g.heading)}</div>`:""}
-    <div class="grid ${sec.kind==="3d"?"three-d":""} ${g.format==="vertical"?"vertical":"wide"}">
+    <div class="grid ${sec.kind==="3d"?"three-d":""} ${g.format==="vertical"?"vertical":g.format==="square"?"square":"wide"}">
       ${g.items.map(([p,i])=>`
         <button class="card" type="button" data-s="${sec.id}" data-i="${i}">
           <div class="thumb">${ph(p.title, sec.kind==="3d"?"Render":"Thumbnail")}${thumbImg(p, g.format==="vertical")}
@@ -680,6 +687,7 @@ function ytPlayer(id, title){
 function viewHtml(v, title){
   const alt = esc(title+" - "+v.label);
   if(v.img) return `<img class="stage-media" src="${esc(v.img)}" alt="${alt}" onload="fitStage(this.naturalWidth/this.naturalHeight)">`;
+  if(v.mp4 && v.sound) return `<video class="stage-media" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" autoplay loop playsinline controls controlslist="nodownload noplaybackrate" disablepictureinpicture onloadedmetadata="fitStage(this.videoWidth/this.videoHeight);this.play().catch(()=>{this.muted=true;this.play()})"></video>`;
   if(v.mp4) return `<video class="stage-media" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" autoplay muted loop playsinline onloadedmetadata="fitStage(this.videoWidth/this.videoHeight)"></video>`;
   if(v.embed) return `<iframe src="${esc(v.embed)}" title="${alt}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`;
   if(v.yt) return ytPlayer(v.yt, title);
