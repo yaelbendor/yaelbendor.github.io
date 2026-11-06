@@ -226,6 +226,10 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 .yt-shield.paused::after{opacity:1}
 .yt-sound{position:absolute;z-index:2;right:12px;bottom:12px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.75);color:var(--mint);cursor:pointer;display:grid;place-items:center}
 .yt-sound:hover{border-color:var(--mint)}
+.v-sound{bottom:18px}
+.vbar{position:absolute;left:0;right:0;bottom:0;height:14px;z-index:2;cursor:pointer;display:flex;align-items:flex-end}
+.vbar::before{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.18)}
+.vbar i{position:relative;display:block;height:3px;width:0;background:var(--mint);box-shadow:0 0 8px var(--glow)}
 .p-screen .ph-label{text-align:center;line-height:1.8}
 .views{display:flex;gap:6px;flex-wrap:wrap}
 .views button{font:500 13px var(--body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--mint-soft);cursor:pointer}
@@ -404,21 +408,21 @@ const SECTIONS = [
     /* from her old Wix AI page (+ the $18K ad from the Wix video editing page). Videos play from Wix / Vimeo */
     projects:[
       { title:"Meta ad for Particle Shaving Gel", client:"Particle", tags:["Mixed"], thumb:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg", result:{ value:"$18K+", label:"revenue in 3 months" },
-        details:{ about:"A top-performing Meta ad I made using AI generative tools. Earned $18,053 in 3 months.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bc/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg", sound:true}] } },
+        details:{ about:"A top-performing Meta ad I made using AI generative tools. Earned $18,053 in 3 months.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bc/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg", sound:true, end:30.35}] } },
       { title:"AI ad for Particle Face Cream", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_d24bc0b7600e44b4a15890b1beb43ed5~mv2.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ views:[{label:"Video", vimeo:"1220452935", ar:1.7778}] } },
       { title:"AI presenter ad for Particle", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_2a01804ee07e4438b1acd98c385ee112~mv2.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ about:"The presenter is 100% AI.", views:[{label:"Video", vimeo:"1220453674", ar:0.5625}] } },
       { title:"100% AI ad for Particle Gravité Cologne", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_bc9c4e4b01304780978be56f8b546272f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_bc9c4e4b01304780978be56f8b546272/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_bc9c4e4b01304780978be56f8b546272f003.jpg", sound:true}] } },
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_bc9c4e4b01304780978be56f8b546272/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_bc9c4e4b01304780978be56f8b546272f003.jpg", sound:true, end:62.3}] } },
       { title:"100% AI ad for Particle Hand Cream", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_6a1824d14af1465cbdd77525d8e9b63cf003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6a1824d14af1465cbdd77525d8e9b63c/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_6a1824d14af1465cbdd77525d8e9b63cf003.jpg", sound:true}] } },
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6a1824d14af1465cbdd77525d8e9b63c/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_6a1824d14af1465cbdd77525d8e9b63cf003.jpg", sound:true, end:48.3}] } },
       { title:"100% AI - Ad for Particle for Men", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_93fd0e673b8f474785b5eb1d057f5813f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_93fd0e673b8f474785b5eb1d057f5813/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_93fd0e673b8f474785b5eb1d057f5813f003.jpg", sound:true}] } },
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_93fd0e673b8f474785b5eb1d057f5813/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_93fd0e673b8f474785b5eb1d057f5813f003.jpg", sound:true, end:28.3}] } },
       { title:"100% AI Meta ad for Particle for Men", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_aa47971890d74b139eb54d678a66a171/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg", sound:true}] } },
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_aa47971890d74b139eb54d678a66a171/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg", sound:true, end:13.1}] } },
       { title:"AI comics ad for Particle Face Cream", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_353de076261b4125800fd8f82450c9fcf003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ about:"I wrote the concept and script, created the AI comics panels, and edited the video.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_353de076261b4125800fd8f82450c9fc/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_353de076261b4125800fd8f82450c9fcf003.jpg", sound:true}] } },
+        details:{ about:"I wrote the concept and script, created the AI comics panels, and edited the video.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_353de076261b4125800fd8f82450c9fc/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_353de076261b4125800fd8f82450c9fcf003.jpg", sound:true, end:32.4}] } },
       { title:"Text-to-video test", tags:["Generation test"], thumb:"https://static.wixstatic.com/media/40dccc_59c71d29a6214f7e99d2c61a419e761af003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_59c71d29a6214f7e99d2c61a419e761a/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_59c71d29a6214f7e99d2c61a419e761af003.jpg", sound:true}] } },
       { title:"Runway Gen-4 test", tags:["Generation test"], thumb:"https://static.wixstatic.com/media/40dccc_a0c5cdb29d9144ae935e2b8045faa3ebf003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
@@ -678,11 +682,12 @@ function openProject(sec, idx){
   panel.querySelectorAll(".pnav").forEach(b=>b.addEventListener("click",()=>step(b.classList.contains("next")?1:-1)));
   panel.querySelectorAll(".vthumb").forEach(b=>b.addEventListener("click",()=>{
     panel.querySelectorAll(".vthumb").forEach(x=>x.setAttribute("aria-pressed",x===b));
-    const v=views[+b.dataset.k]; if(!v.img && !v.mp4) fitStage(v.ar||16/9); $("#pScreen").innerHTML=viewHtml(v, p.title); if(v.yt) setupPlayer();
+    const v=views[+b.dataset.k]; if(!v.img && !v.mp4) fitStage(v.ar||16/9); $("#pScreen").innerHTML=viewHtml(v, p.title); if(v.yt) setupPlayer(); setupVideo();
     b.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
   }));
   panel.querySelector(".close").addEventListener("click",closePanel);
   if(views && views[0].ar) fitStage(views[0].ar);
+  setupVideo();
   setupPlayer();
   if(wasOpen){ panel.scrollTop=0; if(!reduce) panel.animate([{opacity:.35},{opacity:1}],{duration:240,easing:"ease-out"}); return; }
   lastFocus=document.activeElement; overlay.hidden=false;
@@ -698,13 +703,55 @@ function ytPlayer(id, title){
 function viewHtml(v, title){
   const alt = esc(title+" - "+v.label);
   if(v.img) return `<img class="stage-media" src="${esc(v.img)}" alt="${alt}" onload="fitStage(this.naturalWidth/this.naturalHeight)">`;
-  if(v.mp4 && v.sound) return `<video class="stage-media" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" autoplay loop playsinline controls controlslist="nodownload noplaybackrate" disablepictureinpicture onloadedmetadata="fitStage(this.videoWidth/this.videoHeight);this.play().catch(()=>{this.muted=true;this.play()})"></video>`;
+  if(v.mp4 && v.sound) return `<video class="stage-media sound" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" crossorigin="anonymous" data-end="${v.end||""}" autoplay loop playsinline disablepictureinpicture onloadedmetadata="fitStage(this.videoWidth/this.videoHeight)"></video>
+    <button class="yt-shield" id="vShield" type="button" aria-label="Pause"></button>
+    <button class="yt-sound v-sound" id="vSound" type="button" aria-label="Mute">${SOUND_ON}</button>
+    <div class="vbar" id="vBar"><i></i></div>`;
   if(v.mp4) return `<video class="stage-media" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" autoplay muted loop playsinline onloadedmetadata="fitStage(this.videoWidth/this.videoHeight)"></video>`;
   if(v.embed) return `<iframe src="${esc(v.embed)}" title="${alt}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`;
   if(v.yt) return ytPlayer(v.yt, title);
-  if(v.vimeo) return `<iframe src="https://player.vimeo.com/video/${esc(v.vimeo)}?autoplay=1&dnt=1&title=0&byline=0&portrait=0" title="${alt}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+  if(v.vimeo) return `<iframe class="vimeo" src="https://player.vimeo.com/video/${esc(v.vimeo)}?autoplay=1&loop=1&api=1&dnt=1&title=0&byline=0&portrait=0" title="${alt}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
   return "";
 }
+/* our own player for MP4s with sound: click = pause/play, sound button, thin progress line.
+   It stops at data-end (just before the ad's call-to-action) and loops, fading the sound out over the last second */
+let AC = null;
+function audioCtx(){ try{ AC = AC || new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==="suspended") AC.resume(); }catch(_){ AC=null; } return AC; }
+const FADE = 1.1;
+function setupVideo(){
+  const v = $("#pScreen video.sound"); if(!v) return;
+  const shield=$("#vShield"), sound=$("#vSound"), bar=$("#vBar"), fill=bar.querySelector("i");
+  let gain=null; const ac=audioCtx();
+  if(ac){ try{ const src=ac.createMediaElementSource(v); gain=ac.createGain(); src.connect(gain); gain.connect(ac.destination); }catch(_){ gain=null; } }
+  const setVol = x => { x=Math.max(0,Math.min(1,x)); if(gain) gain.gain.value=x; else { try{ v.volume=x; }catch(_){} } };
+  setVol(0);
+  const play = () => v.play().catch(()=>{ v.muted=true; sound.innerHTML=SOUND_OFF; v.play().catch(()=>{}); });
+  play();
+  (function tick(){
+    if(!v.isConnected) return;
+    const end = +v.dataset.end || v.duration || 0, t = v.currentTime;
+    if(end){
+      if(+v.dataset.end && t >= end-0.02){ v.currentTime = 0; }
+      setVol(Math.min((end-t)/FADE, t/0.35, 1));            /* fade out at the end, quick fade in after looping */
+      fill.style.width = Math.min(100, t/end*100) + "%";
+    }
+    requestAnimationFrame(tick);
+  })();
+  shield.addEventListener("click",()=>{ if(v.paused){ play(); } else v.pause(); });
+  v.addEventListener("play",()=>{ shield.classList.remove("paused"); shield.setAttribute("aria-label","Pause"); });
+  v.addEventListener("pause",()=>{ shield.classList.add("paused"); shield.setAttribute("aria-label","Play"); });
+  sound.addEventListener("click",()=>{ v.muted=!v.muted; sound.innerHTML=v.muted?SOUND_OFF:SOUND_ON; sound.setAttribute("aria-label",v.muted?"Unmute":"Mute"); });
+  bar.addEventListener("click",e=>{ const end=+v.dataset.end||v.duration; const r=bar.getBoundingClientRect(); v.currentTime=Math.max(0,Math.min(end-0.1,(e.clientX-r.left)/r.width*end)); });
+}
+/* Vimeo: fade the sound out over the last second */
+addEventListener("message",e=>{
+  if(!/vimeo\.com$/.test(new URL(e.origin).hostname)) return;
+  let d; try{ d=typeof e.data==="string"?JSON.parse(e.data):e.data; }catch(_){ return; }
+  const f=$("#pScreen iframe.vimeo"); if(!f || e.source!==f.contentWindow) return;
+  const send=(method,value)=>f.contentWindow.postMessage(JSON.stringify(value===undefined?{method}:{method,value}),"*");
+  if(d.event==="ready") send("addEventListener","timeupdate");
+  if(d.event==="timeupdate" && d.data){ const left=d.data.duration-d.data.seconds; send("setVolume", Math.max(0,Math.min(1,left/FADE, d.data.seconds/0.35))); }
+});
 /* make the frame match the picture's shape (portrait renders are not squeezed into a wide box) */
 function fitStage(r){ const st=$("#pScreen"); if(st && r>0 && isFinite(r)) st.style.setProperty("--ar", Math.min(2.4, Math.max(.5, r)).toFixed(4)); }
 function viewThumb(v){
