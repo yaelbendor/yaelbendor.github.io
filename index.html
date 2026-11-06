@@ -207,7 +207,7 @@ footer{position:relative;z-index:1;margin-top:40px;background:var(--sky-deep);bo
 .p-media{padding:max(24px,env(safe-area-inset-top,0px)) 24px 24px max(24px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;background:var(--sky-deep);min-height:0}
 .p-media > *{width:100%}
 .p-screen{position:relative;aspect-ratio:16/9;width:min(100%,calc((100dvh - 48px) * 16 / 9))!important;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#000;flex:none}
-.p-screen.stage{aspect-ratio:16/9;width:min(100%,calc((100dvh - 170px) * 16 / 9))!important;background:#06161e}
+.p-screen.stage{aspect-ratio:var(--ar,1.7778);width:min(100%,calc((100dvh - 170px) * var(--ar,1.7778)))!important;background:#06161e;transition:width .25s ease}
 .stage-media{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .vstrip{display:flex;gap:10px;justify-content:safe center;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:thin}
 .vthumb{flex:none;width:72px;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:0;cursor:pointer;color:var(--mint-mute);font:500 11px/1.2 var(--body)}
@@ -261,7 +261,9 @@ footer{position:relative;z-index:1;margin-top:40px;background:var(--sky-deep);bo
 @media (max-width:960px){
   .about{grid-template-columns:1fr}.photo-wrap{max-width:280px}
   .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .panel{grid-template-columns:1fr;align-content:start;grid-auto-rows:max-content}
+  .panel{grid-template-columns:minmax(0,1fr);align-content:start;grid-auto-rows:max-content}
+  .p-media,.p-info{min-width:0}
+  .p-screen.stage{width:min(100%,calc((100dvh - 290px) * var(--ar,1.7778)))!important}
   .p-media{padding:max(70px,env(safe-area-inset-top,0px)) 16px 8px;min-height:auto;justify-content:flex-start}
   .p-screen{width:min(100%,calc((100dvh - 150px) * 16 / 9))!important}
   .p-screen.vert{width:min(100%,calc((100dvh - 150px) * 9 / 16))!important}
@@ -659,7 +661,8 @@ function openProject(sec, idx){
   panel.querySelectorAll(".pnav").forEach(b=>b.addEventListener("click",()=>step(b.classList.contains("next")?1:-1)));
   panel.querySelectorAll(".vthumb").forEach(b=>b.addEventListener("click",()=>{
     panel.querySelectorAll(".vthumb").forEach(x=>x.setAttribute("aria-pressed",x===b));
-    const v=views[+b.dataset.k]; $("#pScreen").innerHTML=viewHtml(v, p.title); if(v.yt) setupPlayer();
+    const v=views[+b.dataset.k]; if(!v.img && !v.mp4) fitStage(16/9); $("#pScreen").innerHTML=viewHtml(v, p.title); if(v.yt) setupPlayer();
+    b.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
   }));
   panel.querySelector(".close").addEventListener("click",closePanel);
   setupPlayer();
@@ -676,13 +679,15 @@ function ytPlayer(id, title){
 }
 function viewHtml(v, title){
   const alt = esc(title+" - "+v.label);
-  if(v.img) return `<img class="stage-media" src="${esc(v.img)}" alt="${alt}">`;
-  if(v.mp4) return `<video class="stage-media" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" autoplay muted loop playsinline></video>`;
+  if(v.img) return `<img class="stage-media" src="${esc(v.img)}" alt="${alt}" onload="fitStage(this.naturalWidth/this.naturalHeight)">`;
+  if(v.mp4) return `<video class="stage-media" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" autoplay muted loop playsinline onloadedmetadata="fitStage(this.videoWidth/this.videoHeight)"></video>`;
   if(v.embed) return `<iframe src="${esc(v.embed)}" title="${alt}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`;
   if(v.yt) return ytPlayer(v.yt, title);
   if(v.vimeo) return `<iframe src="https://player.vimeo.com/video/${esc(v.vimeo)}?autoplay=1&dnt=1&title=0&byline=0&portrait=0" title="${alt}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
   return "";
 }
+/* make the frame match the picture's shape (portrait renders are not squeezed into a wide box) */
+function fitStage(r){ const st=$("#pScreen"); if(st && r>0 && isFinite(r)) st.style.setProperty("--ar", Math.min(2.4, Math.max(.5, r)).toFixed(4)); }
 function viewThumb(v){
   const full = v.thumb || v.poster || v.img || (v.yt ? `https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg` : "");
   if(!full) return "";
