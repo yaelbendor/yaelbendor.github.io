@@ -26,15 +26,16 @@
   --body:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"Sora","Poppins",system-ui,sans-serif; /* labels, specs, numbers */
   --r:14px;
+  --gutter:clamp(16px,3.2vw,56px); /* side margin, grows with the screen */
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;background:var(--sky)}
 body{background:var(--sky);color:var(--mint-soft);font-family:var(--body);font-size:16px;line-height:1.6;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow-x:hidden}
+  padding-left:max(var(--gutter),env(safe-area-inset-left,0px));padding-right:max(var(--gutter),env(safe-area-inset-right,0px));overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--sky)}
 #stars{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto}
+.wrap{position:relative;z-index:1;max-width:1640px;margin:0 auto}
 a{color:var(--mint);text-decoration:none}
 :focus-visible{outline:2px solid var(--mint);outline-offset:3px;border-radius:6px}
 h1,h2,h3{font-family:var(--display);color:var(--mint);font-weight:600;text-wrap:balance;margin:0;line-height:1.15}
@@ -42,10 +43,10 @@ h1,h2,h3{font-family:var(--display);color:var(--mint);font-weight:600;text-wrap:
 
 /* nav */
 nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;
-  padding-block:14px;background:color-mix(in srgb,var(--sky) 82%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid transparent;transition:border-color .3s}
+  padding-block:18px;background:color-mix(in srgb,var(--sky) 82%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  margin-inline:calc(-1 * max(var(--gutter),env(safe-area-inset-left,0px)));padding-inline:max(var(--gutter),env(safe-area-inset-left,0px));border-bottom:1px solid transparent;transition:border-color .3s}
 nav.scrolled{border-bottom-color:var(--line)}
-.brand{font-family:var(--display);font-size:14px;letter-spacing:.02em;white-space:nowrap}
+.brand{font-family:var(--display);font-size:clamp(19px,1.7vw,26px);font-weight:600;letter-spacing:.01em;white-space:nowrap}
 .brand span{color:var(--mint-mute);font-weight:400}
 .nav-links{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 .nav-links a{position:relative;font-size:14px;font-weight:500;color:var(--mint-soft);padding:6px 12px;border-radius:999px;transition:color .2s,background .2s}
@@ -54,7 +55,7 @@ nav.scrolled{border-bottom-color:var(--line)}
 
 /* hero */
 .hero{position:relative;overflow:hidden;isolation:isolate;margin-block:24px 72px;border-radius:22px;border:1px solid var(--line);
-  min-height:clamp(440px,64vh,620px);display:flex;align-items:flex-end;padding:clamp(26px,6vw,64px)}
+  min-height:clamp(480px,84vh,980px);display:flex;align-items:flex-end;padding:clamp(26px,6vw,64px)}
 .hero-bg{position:absolute;inset:0;z-index:-1;overflow:hidden}
 .hero-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s}
 .hero-bg video.on{opacity:1}
@@ -64,7 +65,7 @@ nav.scrolled{border-bottom-color:var(--line)}
 .hero-content{position:relative;z-index:1;max-width:660px}
 .hero .orbit{inset:auto;width:min(460px,70vw);aspect-ratio:1;right:-120px;top:-150px;z-index:0}
 .hero .orbit.small{width:min(300px,48vw);right:-40px;top:-70px;border-style:solid;border-color:rgba(0,255,205,.1);animation-duration:38s;animation-direction:reverse}
-.hero .orbit.small::after{width:5px;height:5px;left:auto;right:-3px;top:30%;opacity:.8}
+.hero .orbit.small::after{width:5px;height:5px;left:auto;right:-3px;top:calc(50% - 2.5px);opacity:.8}
 /* animations wait until the page has loaded */
 .orbit,.float,.reel-ph{animation-play-state:paused}
 .anim-ready .orbit,.anim-ready .float,.anim-ready .reel-ph{animation-play-state:running}
@@ -91,7 +92,7 @@ nav.open .menu-btn span::after{transform:translateY(-5px) rotate(-45deg)}
 .reel-frame{position:absolute;inset:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);
   background:radial-gradient(120% 90% at 20% 10%,#1d5a6b 0%,transparent 55%),radial-gradient(90% 90% at 90% 100%,#0c4a4a 0%,transparent 60%),var(--surface)}
 .orbit{position:absolute;inset:-9%;border:1px dashed rgba(0,255,205,.18);border-radius:50%;pointer-events:none;animation:spin 60s linear infinite}
-.orbit::after{content:"";position:absolute;top:50%;left:-4px;width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint)}
+.orbit::after{content:"";position:absolute;top:calc(50% - 3.5px);left:-4px;width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .play{position:absolute;inset:0;margin:auto;width:72px;height:72px;border-radius:50%;border:1px solid var(--mint);background:rgba(15,43,58,.55);
   display:grid;place-items:center;cursor:pointer;transition:transform .25s,box-shadow .25s}
@@ -111,7 +112,7 @@ section.cat{position:relative}
 footer .bg-deco{left:max(16px,4%);right:auto;top:18px;width:90px;opacity:.35}
 
 /* font preview (temporary) */
-.fontpick{position:fixed;z-index:40;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));
+.fontpick{position:fixed;z-index:40;right:max(var(--gutter),env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));
   width:min(300px,calc(100vw - 32px));background:rgba(10,31,42,.92);border:1px solid rgba(0,255,205,.3);border-radius:14px;padding:12px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 14px 40px -12px rgba(0,0,0,.6)}
 .fontpick .label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .fontpick .label button{background:none;border:0;color:var(--mint-mute);cursor:pointer;font:inherit}
@@ -127,22 +128,20 @@ section.cat{padding-block:72px;border-top:1px solid var(--line)}
 .cat-head h2{font-size:clamp(26px,3.4vw,38px)}
 .cat-head p{max-width:52ch;margin:10px 0 0}
 .count{font-family:var(--mono);font-size:13px;color:var(--mint-mute);font-variant-numeric:tabular-nums}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-.grid.three-d{grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));gap:22px}
+.grid.three-d{grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr))}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;text-align:left;color:inherit;font:inherit;padding:0;
   transform-style:preserve-3d;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;will-change:transform;display:flex;flex-direction:column}
 .card:hover{border-color:rgba(0,255,205,.45);box-shadow:0 18px 40px -18px rgba(0,0,0,.6),0 0 0 1px rgba(0,255,205,.15)}
 .thumb{position:relative;aspect-ratio:16/9;max-width:100%;overflow:hidden}
 .three-d .thumb{aspect-ratio:4/5}
-.grid.vertical{grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid.vertical{grid-template-columns:repeat(auto-fill,minmax(min(210px,calc(50% - 8px)),1fr))}
 .sub-head{margin:0 0 16px}
 .grid + .sub-head{margin-top:48px}
 .sub-head + .grid.wide{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:640px){.sub-head + .grid.wide{grid-template-columns:1fr}}
 .vertical .thumb{aspect-ratio:9/16}
-.p-screen.vert{aspect-ratio:9/16;height:min(70vh,620px);width:auto;max-width:100%;margin-inline:auto;align-self:center}
-.panel.vert{grid-template-columns:minmax(0,.85fr) minmax(0,1fr);width:min(900px,100%)}
-.panel.vert.simple{grid-template-columns:1fr;width:min(460px,100%)}
+.p-screen.vert{aspect-ratio:9/16;width:min(100%,calc((100dvh - 48px) * 9 / 16))!important}
 .thumb .ph{position:absolute;inset:0;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 .card:hover .ph{transform:scale(1.05)}
 .thumb .ph-label{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:rgba(191,238,228,.45);letter-spacing:.1em;text-transform:uppercase}
@@ -177,8 +176,8 @@ section.cat{padding-block:72px;border-top:1px solid var(--line)}
 h3.sub{font-size:14px;letter-spacing:.04em;margin-bottom:4px}
 
 footer{position:relative;z-index:1;margin-top:40px;background:var(--sky-deep);border-top:1px solid var(--line);
-  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:48px max(16px,env(safe-area-inset-left,0px))}
-.foot{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  margin-inline:calc(-1 * max(var(--gutter),env(safe-area-inset-left,0px)));padding:48px max(var(--gutter),env(safe-area-inset-left,0px))}
+.foot{max-width:1640px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
 .foot h2{font-size:clamp(22px,3vw,30px)}
 .socials{display:flex;gap:10px;flex-wrap:wrap}
 .socials{gap:14px}
@@ -189,22 +188,29 @@ footer{position:relative;z-index:1;margin-top:40px;background:var(--sky-deep);bo
 .photo-wrap{position:relative;max-width:300px}
 .photo-wrap .orbit{inset:-7% -10%;animation-duration:70s}
 .moon{position:absolute;right:-26px;top:-22px;width:54px}
-.copy{max-width:1180px;margin:28px auto 0;font-size:13px;color:var(--mint-mute)}
+.copy{max-width:1640px;margin:28px auto 0;font-size:13px;color:var(--mint-mute)}
 
 /* info panel */
 [hidden]{display:none!important}
 .overlay{position:fixed;inset:0;z-index:50;background:rgba(6,20,28,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  display:grid;place-items:center;padding:max(20px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  display:block;padding:0;
   opacity:0;transition:opacity .25s}
 .overlay.open{opacity:1}
-.panel{position:relative;width:min(1040px,100%);max-height:100%;overflow:auto;background:var(--surface);border:1px solid rgba(0,255,205,.25);border-radius:18px;
-  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);transform:translateY(14px) scale(.97);transition:transform .35s cubic-bezier(.2,.8,.2,1);box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
+.panel{position:relative;width:100%;height:100%;overflow:auto;background:var(--surface);
+  display:grid;grid-template-columns:minmax(0,1fr) clamp(320px,26vw,440px);transform:translateY(12px);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
 .overlay.open .panel{transform:none}
-.panel.simple{grid-template-columns:1fr;width:min(860px,100%)}
-.p-media{padding:20px;display:flex;flex-direction:column;gap:12px;background:var(--sky-deep)}
-.p-screen{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
-.p-screen.tall{aspect-ratio:4/5}
+
+.p-media{padding:max(24px,env(safe-area-inset-top,0px)) 24px 24px max(24px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;background:var(--sky-deep);min-height:0}
+.p-media > *{width:100%}
+.p-screen{position:relative;aspect-ratio:16/9;width:min(100%,calc((100dvh - 48px) * 16 / 9))!important;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#000;flex:none}
+.p-screen.tall{aspect-ratio:4/5;width:min(100%,calc((100dvh - 230px) * 4 / 5))!important}
 .p-screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-shield{position:absolute;inset:0;z-index:1;cursor:pointer;display:grid;place-items:center;background:transparent;border:0;padding:0}
+.yt-shield::after{content:"";width:64px;height:64px;border-radius:50%;background:rgba(10,31,42,.7) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z' fill='%2300ffcd'/%3E%3C/svg%3E") 55% 50%/26px no-repeat;border:1px solid var(--mint);opacity:0;transition:opacity .2s}
+.yt-shield.paused{background:rgba(6,20,28,.35)}
+.yt-shield.paused::after{opacity:1}
+.yt-sound{position:absolute;z-index:2;right:12px;bottom:12px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.75);color:var(--mint);cursor:pointer;display:grid;place-items:center}
+.yt-sound:hover{border-color:var(--mint)}
 .p-screen .ph-label{text-align:center;line-height:1.8}
 .views{display:flex;gap:6px;flex-wrap:wrap}
 .views button{font:500 13px var(--body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--mint-soft);cursor:pointer}
@@ -212,10 +218,10 @@ footer{position:relative;z-index:1;margin-top:40px;background:var(--sky-deep);bo
 .maps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
 .map{display:flex;flex-direction:column;gap:4px;font-family:var(--mono);font-size:10px;color:var(--mint-mute);text-align:center}
 .map i{aspect-ratio:1;border-radius:8px;border:1px solid var(--line)}
-.p-info{padding:28px 28px 30px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.p-info{padding:72px 32px 32px;align-self:start;display:flex;flex-direction:column;gap:18px;min-width:0}
 .p-info h2{font-size:22px}
 .p-info p{margin:0}
-.close{position:absolute;top:12px;right:12px;z-index:2;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.85);color:var(--mint);cursor:pointer;font-size:18px;line-height:1}
+.close{position:fixed;top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));z-index:3;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.85);color:var(--mint);cursor:pointer;font-size:18px;line-height:1}
 .close:hover{border-color:var(--mint)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -236,29 +242,28 @@ footer{position:relative;z-index:1;margin-top:40px;background:var(--sky-deep);bo
 @keyframes rise{from{opacity:.25;transform:translateY(18px)}to{opacity:1;transform:none}}
 
 @media (max-width:960px){
-  .grid,.grid.three-d{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .grid.vertical{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .panel.vert{grid-template-columns:1fr}
   .about{grid-template-columns:1fr}.photo{max-width:260px}
   .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .panel{grid-template-columns:1fr}
+  .panel{grid-template-columns:1fr;align-content:start}
+  .p-media{padding:max(64px,env(safe-area-inset-top,0px)) 16px 8px}
+  .p-screen{width:min(100%,calc((100dvh - 150px) * 16 / 9))!important}
+  .p-screen.vert{width:min(100%,calc((100dvh - 150px) * 9 / 16))!important}
+  .p-info{padding:20px 20px 40px}
 }
 @media (max-width:620px){
   nav{position:sticky}
   .menu-btn{display:grid}
   .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:2px;
-    padding:10px max(16px,env(safe-area-inset-left,0px)) 16px;background:rgba(10,31,42,.97);border-bottom:1px solid var(--line);
+    padding:10px max(var(--gutter),env(safe-area-inset-left,0px)) 16px;background:rgba(10,31,42,.97);border-bottom:1px solid var(--line);
     opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .25s,transform .25s,visibility .25s}
   nav.open .nav-links{opacity:1;visibility:visible;transform:none}
   .nav-links a{font-size:17px;padding:12px 14px;border-radius:12px}
-  .hero{align-items:flex-end;min-height:480px}
+  .hero{align-items:flex-end;min-height:max(460px,74svh)}
   .reel-cap{top:16px;bottom:auto;right:16px}
-  .grid,.grid.three-d{grid-template-columns:1fr}
-  .grid.vertical{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .grid.vertical{gap:14px}
   .vertical .card-body{padding:12px 12px 14px}
   .tools{grid-template-columns:1fr}
   .maps{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .p-info{padding:22px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -274,9 +279,9 @@ footer{position:relative;z-index:1;margin-top:40px;background:var(--sky-deep);bo
     <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
     <div class="nav-links" id="navLinks">
       <a href="#ai">AI Ads</a>
+      <a href="#three-d">3D Art</a>
       <a href="#editing">Video Editing</a>
       <a href="#motion">Motion</a>
-      <a href="#three-d">3D Art</a>
       <a href="#about">About</a>
     </div>
   </nav>
@@ -287,7 +292,7 @@ footer{position:relative;z-index:1;margin-top:40px;background:var(--sky-deep);bo
     <div class="orbit small" aria-hidden="true"></div>
     <div class="reel-cap">SHOWREEL · 0:20</div>
     <div class="hero-content">
-      <div class="label">AI Video · 3D Art · Motion Design · Video Editing</div>
+      <div class="label">AI Video · 3D Art · Video Editing · Motion Design</div>
       <h1>Yael Ben-Dor<em>Video editor &amp; AI video specialist</em></h1>
       <p>I make social video ads that people stop scrolling for, built with generative AI, After Effects and a 3D artist's eye for detail. Five years of Meta ads, one of which drove over $18K in revenue.</p>
       <div class="btns">
@@ -384,6 +389,22 @@ const SECTIONS = [
       { title:"Character ad", client:"Sample", year:2025, sample:true, video:"#", tags:["AI-generated"] },
       { title:"Seasonal promo", client:"Sample", year:2025, sample:true, video:"#", tags:["Mixed"] }
     ]},
+  { id:"three-d", title:"3D Art", text:"Modelling and texturing. Open a piece to see wireframe, clay render, texture maps and polycount.", kind:"3d",
+    projects:[
+      { title:"Spaceship", year:2024, sample:true, video:"#", tags:["Hard surface"],
+        details:{ about:"Placeholder. Describe the piece, the reference and what you focused on.", tools:["Maya","ZBrush","Substance Painter"],
+          specs:[["Polygons","24,380"],["Triangles","47,912"],["Vertices","24,106"],["Texture sets","2 × 4K"],["Renderer","Marmoset Toolbag"]],
+          maps:["Base color","Normal","Roughness","Metallic","AO"] } },
+      { title:"Stylized character", year:2024, sample:true, video:"#", tags:["Sculpt"] ,
+        details:{ about:"Placeholder.", tools:["ZBrush","Blender","Substance Painter"],
+          specs:[["Polygons","18,240"],["Triangles","36,102"],["Texture sets","1 × 4K"]], maps:["Base color","Normal","Roughness","AO"] } },
+      { title:"Product render", client:"Particle", year:2025, sample:true, video:"#", tags:["Product"] },
+      { title:"Well", year:2023, sample:true, video:"#", tags:["Prop"] },
+      { title:"Environment kit", year:2023, sample:true, video:"#", tags:["Environment"] },
+      { title:"Guitar", year:2023, sample:true, video:"#", tags:["Prop"] },
+      { title:"Creature bust", year:2022, sample:true, video:"#", tags:["Sculpt"] },
+      { title:"Vehicle", year:2022, sample:true, video:"#", tags:["Hard surface"] }
+    ]},
   { id:"editing", format:"vertical", title:"Video Editing", text:"Editing, pacing and storytelling for social ads and music videos, mostly with live footage and real people.",
     mainHeading:"Social media ads", otherHeading:"Music videos & covers",
     projects:[
@@ -397,8 +418,6 @@ const SECTIONS = [
       { title:"Bareket Shai Social Media Video", client:"Bareket Shai", year:2024, video:"https://youtube.com/shorts/3CArzngzhpg",
         details:{ tools:["Premiere Pro"] } },
       { title:"Lior Assaf Social Media Video", client:"Lior Assaf", year:2024, video:"https://youtube.com/shorts/h9byEfQf9Qg",
-        details:{ tools:["Premiere Pro"] } },
-      { title:"Ofir Segal Deadline Social Media Video", client:"Ofir Segal", year:2025, video:"https://youtube.com/shorts/FBThqXACGgk",
         details:{ tools:["Premiere Pro"] } },
       { title:"Moses Shop Ad", client:"Moses Shop", year:2025, video:"https://youtube.com/shorts/zjWdtL4ZPIA",
         details:{ tools:["Premiere Pro"] } },
@@ -421,23 +440,8 @@ const SECTIONS = [
       { title:"Lower thirds pack", client:"Sample", year:2023, sample:true, video:"#", tags:["After Effects"] },
       { title:"Data animation", client:"Sample", year:2022, sample:true, video:"#", tags:["After Effects"] },
       { title:"Title sequence", client:"Sample", year:2022, sample:true, video:"#", tags:["After Effects"] }
-    ]},
-  { id:"three-d", title:"3D Art", text:"Modelling and texturing. Open a piece to see wireframe, clay render, texture maps and polycount.", kind:"3d",
-    projects:[
-      { title:"Spaceship", year:2024, sample:true, video:"#", tags:["Hard surface"],
-        details:{ about:"Placeholder. Describe the piece, the reference and what you focused on.", tools:["Maya","ZBrush","Substance Painter"],
-          specs:[["Polygons","24,380"],["Triangles","47,912"],["Vertices","24,106"],["Texture sets","2 × 4K"],["Renderer","Marmoset Toolbag"]],
-          maps:["Base color","Normal","Roughness","Metallic","AO"] } },
-      { title:"Stylized character", year:2024, sample:true, video:"#", tags:["Sculpt"] ,
-        details:{ about:"Placeholder.", tools:["ZBrush","Blender","Substance Painter"],
-          specs:[["Polygons","18,240"],["Triangles","36,102"],["Texture sets","1 × 4K"]], maps:["Base color","Normal","Roughness","AO"] } },
-      { title:"Product render", client:"Particle", year:2025, sample:true, video:"#", tags:["Product"] },
-      { title:"Well", year:2023, sample:true, video:"#", tags:["Prop"] },
-      { title:"Environment kit", year:2023, sample:true, video:"#", tags:["Environment"] },
-      { title:"Guitar", year:2023, sample:true, video:"#", tags:["Prop"] },
-      { title:"Creature bust", year:2022, sample:true, video:"#", tags:["Sculpt"] },
-      { title:"Vehicle", year:2022, sample:true, video:"#", tags:["Hard surface"] }
     ]}
+
 ];
 
 const TOOLS = [["Maya","3D modelling"],["Blender","3D & render"],["ZBrush","Sculpting"],["Substance Painter","Texturing"],
@@ -459,10 +463,17 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":
 
 /* placeholder art until real thumbnails are added */
 /* thumbnail: your own image if given, otherwise YouTube's own thumbnail */
-function thumbImg(p){
-  const id = ytId(p.video), src = p.thumb || (id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : "");
-  return src ? `<img class="ph" src="${esc(src)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.remove()">` : "";
+const THUMB_SIZES = { vertical:["oardefault","maxresdefault","sddefault","hqdefault"], wide:["maxresdefault","sddefault","hqdefault"] };
+function thumbImg(p, vertical){
+  const style = `style="width:100%;height:100%;object-fit:cover"`;
+  if(p.thumb) return `<img class="ph" src="${esc(p.thumb)}" alt="" loading="lazy" decoding="async" ${style} onerror="this.remove()">`;
+  const id = ytId(p.video); if(!id) return "";
+  const list = THUMB_SIZES[vertical?"vertical":"wide"];
+  return `<img class="ph" data-id="${id}" data-list="${list}" data-k="0" src="https://i.ytimg.com/vi/${id}/${list[0]}.jpg" alt="" loading="lazy" decoding="async" ${style} onload="thumbOk(this)" onerror="thumbNext(this)">`;
 }
+function thumbNext(img){ const l=img.dataset.list.split(","), k=+img.dataset.k+1;
+  if(k>=l.length){ img.remove(); return; } img.dataset.k=k; img.src=`https://i.ytimg.com/vi/${img.dataset.id}/${l[k]}.jpg`; }
+function thumbOk(img){ if(img.naturalWidth<=120) thumbNext(img); } /* YouTube answers a missing size with a tiny grey image */
 function ph(seed, label){
   let h=0; for(const c of seed) h=(h*31+c.charCodeAt(0))>>>0;
   const x1=20+h%60, y1=10+(h>>3)%50, x2=40+(h>>6)%55, y2=50+(h>>9)%45, hue=165+(h>>12)%35;
@@ -515,7 +526,7 @@ $("#sections").innerHTML = SECTIONS.map(sec => `
     <div class="grid ${sec.kind==="3d"?"three-d":""} ${g.format==="vertical"?"vertical":"wide"}">
       ${g.items.map(([p,i])=>`
         <button class="card" type="button" data-s="${sec.id}" data-i="${i}">
-          <div class="thumb">${ph(p.title, sec.kind==="3d"?"Render":"Thumbnail")}${thumbImg(p)}
+          <div class="thumb">${ph(p.title, sec.kind==="3d"?"Render":"Thumbnail")}${thumbImg(p, g.format==="vertical")}
             <div class="badges"><span></span>${p.sample?`<span class="badge sample">Sample</span>`:""}</div>
           </div>
           <div class="card-body">
@@ -541,7 +552,9 @@ function openProject(sec, p){
   const screen = is3d
     ? `<div class="p-screen tall" id="pScreen">${ph(p.title+"render","Render")}</div>`
     : `<div class="p-screen ${vert?"vert":""}" id="pScreen">${id
-        ? `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="${esc(p.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`
+        ? `<iframe id="ytFrame" src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&loop=1&playlist=${id}&enablejsapi=1" title="${esc(p.title)}" allow="autoplay; encrypted-media; picture-in-picture" ></iframe>
+           <button class="yt-shield" id="ytShield" type="button" aria-label="Pause"></button>
+           <button class="yt-sound" id="ytSound" type="button" aria-label="Mute">${SOUND_ON}</button>`
         : `${ph(p.title+"render","")}<div class="ph-label">Video starts here automatically<br>once a YouTube link is added</div>`}</div>`;
   let media = `<div class="p-media">${screen}`;
   if(is3d && d){
@@ -564,17 +577,35 @@ function openProject(sec, p){
 
   panel.className = "panel" + (d ? "" : " simple") + (vert ? " vert" : "");
   panel.innerHTML = `<button class="close" type="button" aria-label="Close">×</button>${media}${d?info:info}`;
-  if(!d){ panel.querySelector(".p-info").style.paddingTop="8px"; }
   panel.querySelectorAll(".views button").forEach(b=>b.addEventListener("click",()=>{
     panel.querySelectorAll(".views button").forEach(x=>x.setAttribute("aria-pressed",x===b));
     panel.querySelector("#pScreen .ph-label").textContent=b.dataset.v;
     panel.querySelector("#pScreen .ph").style.filter = {Render:"none",Wireframe:"grayscale(1) contrast(1.6) brightness(.7)",Clay:"grayscale(1) brightness(1.3)",UVs:"hue-rotate(120deg) saturate(1.6)"}[b.dataset.v];
   }));
   panel.querySelector(".close").addEventListener("click",closePanel);
+  setupPlayer();
   lastFocus=document.activeElement; overlay.hidden=false;
   requestAnimationFrame(()=>overlay.classList.add("open"));
   document.body.style.overflow="hidden"; panel.querySelector(".close").focus();
 }
+/* talk to the YouTube player: click the video to pause/play, button to mute */
+const SOUND_ON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>`;
+const SOUND_OFF = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 6 6M22 9l-6 6"/></svg>`;
+let ytState = -1;
+function ytCmd(func){ const f=$("#ytFrame"); f && f.contentWindow && f.contentWindow.postMessage(JSON.stringify({event:"command",func,args:[]}),"*"); }
+function setupPlayer(){
+  const f=$("#ytFrame"); if(!f) return; ytState=-1;
+  const shield=$("#ytShield"), sound=$("#ytSound"); let muted=false;
+  f.addEventListener("load",()=>f.contentWindow.postMessage(JSON.stringify({event:"listening",id:"yt",channel:"widget"}),"*"));
+  shield.addEventListener("click",()=>{ const playing = ytState===1 || ytState===3;
+    ytCmd(playing?"pauseVideo":"playVideo"); shield.classList.toggle("paused",playing); shield.setAttribute("aria-label",playing?"Play":"Pause"); });
+  sound.addEventListener("click",()=>{ muted=!muted; ytCmd(muted?"mute":"unMute"); sound.innerHTML=muted?SOUND_OFF:SOUND_ON; sound.setAttribute("aria-label",muted?"Unmute":"Mute"); });
+}
+addEventListener("message",e=>{
+  if(!/youtube/.test(e.origin)) return;
+  try{ const d=JSON.parse(e.data); if(d.info && typeof d.info.playerState==="number"){ ytState=d.info.playerState;
+    const sh=$("#ytShield"); if(sh) sh.classList.toggle("paused", ytState===2); } }catch(_){}
+});
 function closePanel(){
   overlay.classList.remove("open"); document.body.style.overflow="";
   const f=panel.querySelector("iframe"); if(f) f.src="about:blank"; /* stop the video */
@@ -648,7 +679,7 @@ if(!reduce && "IntersectionObserver" in window){
 
 /* stars: small, slow twinkle, with a rare shooting star */
 function startStars(){
-  const cv=$("#stars"), ctx=cv.getContext("2d"); let W,H,stars=[],dpr=Math.min(devicePixelRatio||1,2),shoot=null,nextShoot=6000;
+  const cv=$("#stars"), ctx=cv.getContext("2d"); let W,H,stars=[],dpr=Math.min(devicePixelRatio||1,2),shoot=null,nextShoot=3500;
   function size(){ W=cv.width=innerWidth*dpr; H=cv.height=innerHeight*dpr;
     const n=Math.round(innerWidth*innerHeight/6500);
     stars=Array.from({length:n},()=>{ const big=Math.random()<.08;
@@ -660,7 +691,7 @@ function startStars(){
       ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.28); ctx.fillStyle=s.big?`rgba(200,255,240,${a})`:`rgba(191,238,228,${a})`; ctx.fill(); }
     if(!reduce){
       if(!shoot && t>nextShoot){ shoot={x:Math.random()*W*.7+W*.2,y:Math.random()*H*.4,t0:t}; }
-      if(shoot){ const k=(t-shoot.t0)/900; if(k>1){ shoot=null; nextShoot=t+9000+Math.random()*10000; }
+      if(shoot){ const k=(t-shoot.t0)/900; if(k>1){ shoot=null; nextShoot=t+5000+Math.random()*6000; }
         else{ const len=110*dpr, x=shoot.x-k*260*dpr, y=shoot.y+k*120*dpr, g=ctx.createLinearGradient(x,y,x+len,y-len*.46);
           g.addColorStop(0,`rgba(191,238,228,${.55*(1-k)})`); g.addColorStop(1,"rgba(191,238,228,0)");
           ctx.strokeStyle=g; ctx.lineWidth=1.2*dpr; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+len,y-len*.46); ctx.stroke(); } }
