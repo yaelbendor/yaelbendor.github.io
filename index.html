@@ -400,24 +400,31 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 const SHOWREEL_LOOP = "";  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
 
 const SECTIONS = [
-  { id:"ai", format:"vertical", title:"AI Ads & Video", text:"Performance ads and short films made with generative AI, with the tools and workflow behind each one.",
+  { id:"ai", format:"vertical", title:"AI Ads & Video", text:"Meta performance ads made with generative AI, from 100% AI presenters to AI comics.",
+    /* from her old Wix AI page (+ the $18K ad from the Wix video editing page). Videos play from Wix / Vimeo */
     projects:[
-      { title:"Particle — Meta ad", client:"Particle", year:2025, video:"https://www.youtube.com/watch?v=VIDEO_ID",
-        tags:["AI-generated","Performance"], result:{ value:"$18K+", label:"revenue" },
-        details:{
-          about:"A Meta ad built with generative AI, written for a fast hook and a clear product moment in the first three seconds.",
-          tools:["Nano Banana Pro","Veo3","Kling","Premiere Pro"],
-          workflow:[["Concept","Hook, script and shot list with the marketing team"],["Stills","Key frames generated in Nano Banana Pro"],["Motion","Shots animated in Veo3 and Kling"],["Edit","Pacing, captions and sound in Premiere Pro"]],
-          metrics:[["$18,053","Revenue"],["3,669","Purchases (check)"],["$4.92","Per purchase (check)"],["—","ROAS"]] } },
-      { title:"Mobile game UGC ad", client:"Sample", year:2026, sample:true, video:"#", tags:["AI avatar","UGC"],
-        details:{ about:"Placeholder text. Describe the idea and what you made.", tools:["Arcads","Higgsfield","After Effects"],
-          workflow:[["Script","Write the UGC script"],["Avatar","Generate the presenter"],["Edit","Cut, captions, end card"]] } },
-      { title:"Product launch spot", client:"Sample", year:2026, sample:true, video:"#", tags:["AI-generated"] },
-      { title:"Brand film concept", client:"Sample", year:2025, sample:true, video:"#", tags:["AI-generated"] },
-      { title:"Music video teaser", client:"Sample", year:2025, sample:true, video:"#", tags:["Mixed"] },
-      { title:"App store preview", client:"Sample", year:2025, sample:true, video:"#", tags:["AI-generated"] },
-      { title:"Character ad", client:"Sample", year:2025, sample:true, video:"#", tags:["AI-generated"] },
-      { title:"Seasonal promo", client:"Sample", year:2025, sample:true, video:"#", tags:["Mixed"] }
+      { title:"Meta ad for Particle Shaving Gel", client:"Particle", tags:["Mixed"], thumb:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg", result:{ value:"$18K+", label:"revenue in 3 months" },
+        details:{ about:"A top-performing Meta ad I made using AI generative tools. Earned $18,053 in 3 months.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bc/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg", sound:true}] } },
+      { title:"AI ad for Particle Face Cream", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_d24bc0b7600e44b4a15890b1beb43ed5~mv2.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", vimeo:"1220452935", ar:1.7778}] } },
+      { title:"AI presenter ad for Particle", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_2a01804ee07e4438b1acd98c385ee112~mv2.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ about:"The presenter is 100% AI.", views:[{label:"Video", vimeo:"1220453674", ar:0.5625}] } },
+      { title:"100% AI ad for Particle Gravité Cologne", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_bc9c4e4b01304780978be56f8b546272f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_bc9c4e4b01304780978be56f8b546272/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_bc9c4e4b01304780978be56f8b546272f003.jpg", sound:true}] } },
+      { title:"100% AI ad for Particle Hand Cream", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_6a1824d14af1465cbdd77525d8e9b63cf003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6a1824d14af1465cbdd77525d8e9b63c/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_6a1824d14af1465cbdd77525d8e9b63cf003.jpg", sound:true}] } },
+      { title:"100% AI - Ad for Particle for Men", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_93fd0e673b8f474785b5eb1d057f5813f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_93fd0e673b8f474785b5eb1d057f5813/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_93fd0e673b8f474785b5eb1d057f5813f003.jpg", sound:true}] } },
+      { title:"100% AI Meta ad for Particle for Men", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_aa47971890d74b139eb54d678a66a171/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg", sound:true}] } },
+      { title:"AI comics ad for Particle Face Cream", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_353de076261b4125800fd8f82450c9fcf003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ about:"I wrote the concept and script, created the AI comics panels, and edited the video.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_353de076261b4125800fd8f82450c9fc/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_353de076261b4125800fd8f82450c9fcf003.jpg", sound:true}] } },
+      { title:"Text-to-video test", tags:["Generation test"], thumb:"https://static.wixstatic.com/media/40dccc_59c71d29a6214f7e99d2c61a419e761af003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_59c71d29a6214f7e99d2c61a419e761a/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_59c71d29a6214f7e99d2c61a419e761af003.jpg", sound:true}] } },
+      { title:"Runway Gen-4 test", tags:["Generation test"], thumb:"https://static.wixstatic.com/media/40dccc_a0c5cdb29d9144ae935e2b8045faa3ebf003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_a0c5cdb29d9144ae935e2b8045faa3eb/720p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_a0c5cdb29d9144ae935e2b8045faa3ebf003.jpg", sound:true}] } },
+      { title:"Scientific visualization test", tags:["Generation test"], thumb:"https://static.wixstatic.com/media/40dccc_ff2e4f78daa5410bb88ebededfaa6e42f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_ff2e4f78daa5410bb88ebededfaa6e42/480p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_ff2e4f78daa5410bb88ebededfaa6e42f003.jpg", sound:true}] } }
     ]},
   { id:"three-d", title:"3D Art", text:"Game-ready props, characters and renders. Open a piece for renders, wireframes, turntables and polycounts.", kind:"3d",
     /* from artstation.com/yaelbendor. views = the pictures/videos you can flip through in the pop-up:
@@ -619,7 +626,7 @@ $("#sections").innerHTML = SECTIONS.map(sec => `
           </div>
           <div class="card-body">
             <h3>${esc(p.title)}</h3>
-            <div class="meta">${[p.client,p.year].filter(Boolean).join(" · ")}${p.tags&&p.tags.length?" · "+p.tags.join(", "):""}</div>
+            <div class="meta">${[p.client,p.year,(p.tags||[]).join(", ")].filter(Boolean).join(" · ")}</div>
             ${p.result?`<div class="result"><b>${esc(p.result.value)}</b>${esc(p.result.label)}</div>`:""}
           </div>
         </button>`).join("")}
@@ -671,10 +678,11 @@ function openProject(sec, idx){
   panel.querySelectorAll(".pnav").forEach(b=>b.addEventListener("click",()=>step(b.classList.contains("next")?1:-1)));
   panel.querySelectorAll(".vthumb").forEach(b=>b.addEventListener("click",()=>{
     panel.querySelectorAll(".vthumb").forEach(x=>x.setAttribute("aria-pressed",x===b));
-    const v=views[+b.dataset.k]; if(!v.img && !v.mp4) fitStage(16/9); $("#pScreen").innerHTML=viewHtml(v, p.title); if(v.yt) setupPlayer();
+    const v=views[+b.dataset.k]; if(!v.img && !v.mp4) fitStage(v.ar||16/9); $("#pScreen").innerHTML=viewHtml(v, p.title); if(v.yt) setupPlayer();
     b.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
   }));
   panel.querySelector(".close").addEventListener("click",closePanel);
+  if(views && views[0].ar) fitStage(views[0].ar);
   setupPlayer();
   if(wasOpen){ panel.scrollTop=0; if(!reduce) panel.animate([{opacity:.35},{opacity:1}],{duration:240,easing:"ease-out"}); return; }
   lastFocus=document.activeElement; overlay.hidden=false;
