@@ -208,6 +208,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 
 .p-media{padding:max(24px,env(safe-area-inset-top,0px)) 24px 24px max(24px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;background:var(--sky-deep);min-height:0}
 .p-media > *{width:100%}
+@media (min-width:961px){ .p-media{padding-left:88px;padding-right:88px} } /* room for the arrows */
 .p-screen{position:relative;aspect-ratio:16/9;width:min(100%,calc((100dvh - 48px) * 16 / 9))!important;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#000;flex:none}
 .p-screen.stage{aspect-ratio:var(--ar,1.7778);width:min(100%,calc((100dvh - 170px) * var(--ar,1.7778)))!important;background:#06161e;transition:width .25s ease}
 .stage-media{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
@@ -419,13 +420,13 @@ const SECTIONS = [
       { title:"Meta ad for Particle Shaving Gel", client:"Particle", tags:["Mixed"],  thumb:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg", result:{ value:"$22K", label:"in sales · 3.81 ROAS" },
         details:{ about:"A top-performing Meta ad I made using AI generative tools.",
           metrics:[["$21.96K","Purchase value"],["3.81","ROAS"],["258","Purchases"],["$22.36","Cost per purchase"],["$5.77K","Ad spend"]],
-          metricsNote:"Meta ads data via Upspring", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bc/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg", sound:true, end:30.35}] } },
+          metricsNote:"Meta ads data via Upspring", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bc/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg", sound:true, end:30.35}, {label:"Results", img:"media/shaving-results.webp", thumb:"media/shaving-results-thumb.webp"}] } },
       /* hosted with the site (media/ folder in the GitHub repo) */
       { title:"Anti-Gray Serum - Snake Oil", client:"Particle", tags:["Mixed"], thumb:"media/anti-gray-serum.jpg", result:{ value:"$36K", label:"in sales" },
         details:{ about:"A UGC-style Meta ad that turns a skeptic's comment into the hook. The presenter is AI, made in Arcads, edited together with 3 real creators.", tools:["Arcads","Premiere Pro"],
           metrics:[["$36.02K","Purchase value"],["322","Purchases"],["$25.41K","Ad spend"],["1.42","ROAS"],["$78.90","Cost per purchase"]],
           metricsNote:"Meta ads data via Upspring",
-          views:[{label:"Video", mp4:"media/anti-gray-serum.mp4", poster:"media/anti-gray-serum.jpg", sound:true}] } },
+          views:[{label:"Video", mp4:"media/anti-gray-serum.mp4", poster:"media/anti-gray-serum.jpg", sound:true}, {label:"Results", img:"media/serum-results.webp", thumb:"media/serum-results-thumb.webp"}] } },
       { title:"AI ad for Particle Face Cream", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_d24bc0b7600e44b4a15890b1beb43ed5~mv2.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ views:[{label:"Video", vimeo:"1220452935", ar:1.7778}] } },
       { title:"AI presenter ad for Particle", client:"Particle", tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_2a01804ee07e4438b1acd98c385ee112~mv2.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
