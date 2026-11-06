@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Yael Ben-Dor: AI video, video editing, motion design and 3D art portfolio.">
+<title>Yael Ben-Dor Art</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Sora:wght@400;500;600&display=swap">
+<style>
+/* Layout: one scrolling page under a night sky. Sticky nav, showreel hero,
+   one section per discipline, each card opens an info panel. */
+:root{
+  --sky:#0f2b3a;        /* page background (Yael's color) */
+  --sky-deep:#0a1f2a;   /* footer, overlays */
+  --surface:#143a4c;    /* cards, panels */
+  --surface-2:#1a4659;  /* raised parts inside panels */
+  --mint:#00ffcd;       /* headings, links, highlights (Yael's color) */
+  --mint-soft:#bfeee4;  /* body text */
+  --mint-mute:#7fb3ad;  /* captions, meta */
+  --line:rgba(0,255,205,.14);
+  --glow:rgba(0,255,205,.35);
+  --display:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --body:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Sora","Poppins",system-ui,sans-serif; /* labels, specs, numbers */
+  --r:14px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--sky)}
+body{background:var(--sky);color:var(--mint-soft);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--sky)}
+#stars{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto}
+a{color:var(--mint);text-decoration:none}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);color:var(--mint);font-weight:600;text-wrap:balance;margin:0;line-height:1.15}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mint-mute)}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-block:14px;background:color-mix(in srgb,var(--sky) 82%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid transparent;transition:border-color .3s}
+nav.scrolled{border-bottom-color:var(--line)}
+.brand{font-family:var(--display);font-size:14px;letter-spacing:.02em;white-space:nowrap}
+.brand span{color:var(--mint-mute);font-weight:400}
+.nav-links{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a{position:relative;font-size:14px;font-weight:500;color:var(--mint-soft);padding:6px 12px;border-radius:999px;transition:color .2s,background .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--mint);background:rgba(0,255,205,.08)}
+.spark{position:fixed;width:4px;height:4px;border-radius:50%;background:var(--mint);pointer-events:none;z-index:60;box-shadow:0 0 6px var(--mint)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;isolation:isolate;margin-block:24px 72px;border-radius:22px;border:1px solid var(--line);
+  min-height:clamp(440px,64vh,620px);display:flex;align-items:flex-end;padding:clamp(26px,6vw,64px)}
+.hero-bg{position:absolute;inset:0;z-index:-1;overflow:hidden}
+.hero-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s}
+.hero-bg video.on{opacity:1}
+.reel-ph{position:absolute;inset:-20%;background:radial-gradient(40% 50% at 30% 40%,#1d6070,transparent 70%),radial-gradient(35% 45% at 70% 60%,#0d5552,transparent 70%),radial-gradient(30% 40% at 55% 20%,#174a66,transparent 70%),var(--surface);animation:drift 24s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(6%,-4%) scale(1.08)}}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(15,43,58,.95) 0%,rgba(15,43,58,.55) 50%,rgba(15,43,58,.2) 100%),linear-gradient(to right,rgba(15,43,58,.65),transparent 75%)}
+.hero-content{position:relative;z-index:1;max-width:660px}
+.hero .orbit{inset:auto;width:min(460px,70vw);aspect-ratio:1;right:-120px;top:-150px;z-index:0}
+.hero .orbit.small{width:min(300px,48vw);right:-40px;top:-70px;border-style:solid;border-color:rgba(0,255,205,.1);animation-duration:38s;animation-direction:reverse}
+.hero .orbit.small::after{width:5px;height:5px;left:auto;right:-3px;top:30%;opacity:.8}
+/* animations wait until the page has loaded */
+.orbit,.float,.reel-ph{animation-play-state:paused}
+.anim-ready .orbit,.anim-ready .float,.anim-ready .reel-ph{animation-play-state:running}
+#stars{opacity:0;transition:opacity 1.6s}
+.anim-ready #stars{opacity:1}
+.bg-deco{transition:opacity 1.2s}
+/* mobile menu */
+.menu-btn{display:none;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--mint);cursor:pointer;place-items:center}
+.menu-btn span,.menu-btn span::before,.menu-btn span::after{display:block;width:16px;height:1.5px;background:currentColor;border-radius:2px;position:relative;transition:transform .25s,background .25s}
+.menu-btn span::before,.menu-btn span::after{content:"";position:absolute;left:0}
+.menu-btn span::before{top:-5px}.menu-btn span::after{top:5px}
+nav.open .menu-btn span{background:transparent}
+nav.open .menu-btn span::before{transform:translateY(5px) rotate(45deg)}
+nav.open .menu-btn span::after{transform:translateY(-5px) rotate(-45deg)}
+.hero h1{font-size:clamp(40px,6.4vw,76px);letter-spacing:-.02em;margin-block:14px 20px}
+.hero h1 em{font-style:normal;display:block;font-weight:400;color:var(--mint-soft);font-size:.42em;letter-spacing:.01em;margin-top:12px}
+.hero p{max-width:46ch;margin:0 0 28px;color:var(--mint-soft)}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{font:600 15px var(--body);padding:12px 22px;border-radius:999px;border:1px solid var(--mint);cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s;display:inline-flex;align-items:center;gap:8px}
+.btn.solid{background:var(--mint);color:var(--sky)}
+.btn.ghost{background:transparent;color:var(--mint)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px -8px var(--glow)}
+.reel{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:var(--r);overflow:visible}
+.reel-frame{position:absolute;inset:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);
+  background:radial-gradient(120% 90% at 20% 10%,#1d5a6b 0%,transparent 55%),radial-gradient(90% 90% at 90% 100%,#0c4a4a 0%,transparent 60%),var(--surface)}
+.orbit{position:absolute;inset:-9%;border:1px dashed rgba(0,255,205,.18);border-radius:50%;pointer-events:none;animation:spin 60s linear infinite}
+.orbit::after{content:"";position:absolute;top:50%;left:-4px;width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.play{position:absolute;inset:0;margin:auto;width:72px;height:72px;border-radius:50%;border:1px solid var(--mint);background:rgba(15,43,58,.55);
+  display:grid;place-items:center;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.play:hover{transform:scale(1.07);box-shadow:0 0 0 10px rgba(0,255,205,.08)}
+.play svg{margin-left:4px}
+.reel-cap{position:absolute;right:20px;bottom:16px;z-index:1;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--mint-mute)}
+.hero-planet{position:absolute;left:-34px;bottom:-30px;width:70px;pointer-events:none}
+
+/* space decorations */
+.deco{display:block;pointer-events:none;color:var(--mint)}
+.float{animation:float 9s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+section.cat{position:relative}
+.cat-head,.grid,.about{position:relative;z-index:1}
+.bg-deco{position:absolute;z-index:0;right:4%;top:28px;width:150px;height:auto;opacity:.4}
+.bg-deco.alt{right:auto;left:38%;top:44px}
+footer .bg-deco{left:max(16px,4%);right:auto;top:18px;width:90px;opacity:.35}
+
+/* font preview (temporary) */
+.fontpick{position:fixed;z-index:40;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));
+  width:min(300px,calc(100vw - 32px));background:rgba(10,31,42,.92);border:1px solid rgba(0,255,205,.3);border-radius:14px;padding:12px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 14px 40px -12px rgba(0,0,0,.6)}
+.fontpick .label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.fontpick .label button{background:none;border:0;color:var(--mint-mute);cursor:pointer;font:inherit}
+@media (max-width:620px){.bg-deco{width:96px;top:16px}.bg-deco.alt{left:auto;right:4%}}
+.fontpick .opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.fontpick .opts button{padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--mint-soft);cursor:pointer;font-size:15px;text-align:left}
+.fontpick .opts button[aria-pressed="true"]{border-color:var(--mint);color:var(--mint);background:rgba(0,255,205,.08)}
+.fontpick.min .opts{display:none}.fontpick.min{width:auto}.fontpick.min .label{margin:0;gap:12px}
+
+/* sections */
+section.cat{padding-block:72px;border-top:1px solid var(--line)}
+.cat-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:32px}
+.cat-head h2{font-size:clamp(26px,3.4vw,38px)}
+.cat-head p{max-width:52ch;margin:10px 0 0}
+.count{font-family:var(--mono);font-size:13px;color:var(--mint-mute);font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.grid.three-d{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;text-align:left;color:inherit;font:inherit;padding:0;
+  transform-style:preserve-3d;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;will-change:transform;display:flex;flex-direction:column}
+.card:hover{border-color:rgba(0,255,205,.45);box-shadow:0 18px 40px -18px rgba(0,0,0,.6),0 0 0 1px rgba(0,255,205,.15)}
+.thumb{position:relative;aspect-ratio:16/9;max-width:100%;overflow:hidden}
+.three-d .thumb{aspect-ratio:4/5}
+.grid.vertical{grid-template-columns:repeat(4,minmax(0,1fr))}
+.sub-head{margin:0 0 16px}
+.grid + .sub-head{margin-top:48px}
+.sub-head + .grid.wide{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:640px){.sub-head + .grid.wide{grid-template-columns:1fr}}
+.vertical .thumb{aspect-ratio:9/16}
+.p-screen.vert{aspect-ratio:9/16;height:min(70vh,620px);width:auto;max-width:100%;margin-inline:auto;align-self:center}
+.panel.vert{grid-template-columns:minmax(0,.85fr) minmax(0,1fr);width:min(900px,100%)}
+.panel.vert.simple{grid-template-columns:1fr;width:min(460px,100%)}
+.thumb .ph{position:absolute;inset:0;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.card:hover .ph{transform:scale(1.05)}
+.thumb .ph-label{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:rgba(191,238,228,.45);letter-spacing:.1em;text-transform:uppercase}
+.badges{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;gap:8px}
+.badge{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:999px;background:rgba(10,31,42,.75);color:var(--mint);border:1px solid var(--line);backdrop-filter:blur(4px)}
+.badge.sample{color:var(--mint-mute)}
+.card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card-body h3{font-size:15px;line-height:1.3}
+.meta{font-size:13px;color:var(--mint-mute)}
+.result{margin-top:auto;padding-top:10px;display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--mint-mute)}
+.result b{font-family:var(--display);font-weight:600;color:var(--mint);font-size:18px;font-variant-numeric:tabular-nums}
+
+/* about */
+.about{display:grid;grid-template-columns:300px minmax(0,1fr);gap:56px}
+.photo{aspect-ratio:4/5;max-width:100%;border-radius:var(--r);border:1px solid var(--line);background:linear-gradient(160deg,var(--surface-2),var(--sky-deep));display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--mint-mute);letter-spacing:.1em;text-transform:uppercase}
+.about p{max-width:62ch}
+.tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-block:20px 40px}
+.tool{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);transition:transform .25s,border-color .25s}
+.tool:hover{transform:translateY(-3px);border-color:rgba(0,255,205,.45)}
+.tool .logo{width:38px;height:38px;flex:none;border-radius:9px;border:1px dashed rgba(0,255,205,.35);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--mint-mute)}
+.tool b{display:block;color:var(--mint);font-size:14px;font-weight:600;line-height:1.2}
+.tool small{color:var(--mint-mute);font-size:12px}
+.ai-tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
+.chip{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mint-soft);background:rgba(0,255,205,.04)}
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:0;border-left:1px solid var(--line)}
+.timeline li{position:relative;padding:0 0 22px 22px}
+.timeline li::before{content:"";position:absolute;left:-4px;top:8px;width:7px;height:7px;border-radius:50%;background:var(--sky);border:1px solid var(--mint)}
+.timeline li:first-child::before{background:var(--mint);box-shadow:0 0 8px var(--mint)}
+.timeline .when{font-family:var(--mono);font-size:12px;color:var(--mint-mute)}
+.timeline b{display:block;color:var(--mint);font-weight:600}
+.timeline span{font-size:14px}
+h3.sub{font-size:14px;letter-spacing:.04em;margin-bottom:4px}
+
+footer{position:relative;z-index:1;margin-top:40px;background:var(--sky-deep);border-top:1px solid var(--line);
+  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:48px max(16px,env(safe-area-inset-left,0px))}
+.foot{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.foot h2{font-size:clamp(22px,3vw,30px)}
+.socials{display:flex;gap:10px;flex-wrap:wrap}
+.socials{gap:14px}
+.socials a{width:52px;height:52px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;transition:background .25s,border-color .25s,transform .25s,box-shadow .25s}
+.socials a:hover{background:rgba(0,255,205,.08);border-color:var(--mint);transform:translateY(-3px);box-shadow:0 0 18px -4px var(--glow)}
+.socials .slot{width:24px;height:24px;border-radius:6px;border:1px dashed rgba(0,255,205,.45);display:grid;place-items:center;font-family:var(--mono);font-size:8px;color:var(--mint-mute)}
+.foot-left{display:flex;align-items:center;gap:18px}
+.photo-wrap{position:relative;max-width:300px}
+.photo-wrap .orbit{inset:-7% -10%;animation-duration:70s}
+.moon{position:absolute;right:-26px;top:-22px;width:54px}
+.copy{max-width:1180px;margin:28px auto 0;font-size:13px;color:var(--mint-mute)}
+
+/* info panel */
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(6,20,28,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:grid;place-items:center;padding:max(20px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  opacity:0;transition:opacity .25s}
+.overlay.open{opacity:1}
+.panel{position:relative;width:min(1040px,100%);max-height:100%;overflow:auto;background:var(--surface);border:1px solid rgba(0,255,205,.25);border-radius:18px;
+  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);transform:translateY(14px) scale(.97);transition:transform .35s cubic-bezier(.2,.8,.2,1);box-shadow:0 30px 80px -20px rgba(0,0,0,.7)}
+.overlay.open .panel{transform:none}
+.panel.simple{grid-template-columns:1fr;width:min(860px,100%)}
+.p-media{padding:20px;display:flex;flex-direction:column;gap:12px;background:var(--sky-deep)}
+.p-screen{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.p-screen.tall{aspect-ratio:4/5}
+.p-screen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.p-screen .ph-label{text-align:center;line-height:1.8}
+.views{display:flex;gap:6px;flex-wrap:wrap}
+.views button{font:500 13px var(--body);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--mint-soft);cursor:pointer}
+.views button[aria-pressed="true"]{background:var(--mint);color:var(--sky);border-color:var(--mint)}
+.maps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.map{display:flex;flex-direction:column;gap:4px;font-family:var(--mono);font-size:10px;color:var(--mint-mute);text-align:center}
+.map i{aspect-ratio:1;border-radius:8px;border:1px solid var(--line)}
+.p-info{padding:28px 28px 30px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.p-info h2{font-size:22px}
+.p-info p{margin:0}
+.close{position:absolute;top:12px;right:12px;z-index:2;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.85);color:var(--mint);cursor:pointer;font-size:18px;line-height:1}
+.close:hover{border-color:var(--mint)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.metric{padding:12px 14px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line)}
+.metric b{display:block;font-family:var(--display);color:var(--mint);font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.metric small{color:var(--mint-mute);font-size:12px}
+.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:10px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;font-size:14px}
+.steps li::before{content:counter(s);width:24px;height:24px;border-radius:50%;border:1px solid var(--mint);display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--mint)}
+.steps b{color:var(--mint);font-weight:600}
+.specs{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.specs td{padding:7px 0;border-bottom:1px solid var(--line)}
+.specs td:last-child{text-align:right;color:var(--mint)}
+.yt{font-size:14px;font-weight:600}
+
+/* entrance */
+.rise{animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:.25;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+@media (max-width:960px){
+  .grid,.grid.three-d{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid.vertical{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .panel.vert{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr}.photo{max-width:260px}
+  .tools{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .panel{grid-template-columns:1fr}
+}
+@media (max-width:620px){
+  nav{position:sticky}
+  .menu-btn{display:grid}
+  .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:2px;
+    padding:10px max(16px,env(safe-area-inset-left,0px)) 16px;background:rgba(10,31,42,.97);border-bottom:1px solid var(--line);
+    opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .25s,transform .25s,visibility .25s}
+  nav.open .nav-links{opacity:1;visibility:visible;transform:none}
+  .nav-links a{font-size:17px;padding:12px 14px;border-radius:12px}
+  .hero{align-items:flex-end;min-height:480px}
+  .reel-cap{top:16px;bottom:auto;right:16px}
+  .grid,.grid.three-d{grid-template-columns:1fr}
+  .grid.vertical{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .vertical .card-body{padding:12px 12px 14px}
+  .tools{grid-template-columns:1fr}
+  .maps{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .p-info{padding:22px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+
+<canvas id="stars" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <nav id="nav" aria-label="Main">
+    <a class="brand" href="#top">Yael Ben-Dor <span>Art</span></a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="#ai">AI Ads</a>
+      <a href="#editing">Video Editing</a>
+      <a href="#motion">Motion</a>
+      <a href="#three-d">3D Art</a>
+      <a href="#about">About</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="hero-bg" id="heroBg" aria-hidden="true"><div class="reel-ph"></div></div>
+    <div class="orbit" aria-hidden="true"></div>
+    <div class="orbit small" aria-hidden="true"></div>
+    <div class="reel-cap">SHOWREEL · 0:20</div>
+    <div class="hero-content">
+      <div class="label">AI Video · 3D Art · Motion Design · Video Editing</div>
+      <h1>Yael Ben-Dor<em>Video editor &amp; AI video specialist</em></h1>
+      <p>I make social video ads that people stop scrolling for, built with generative AI, After Effects and a 3D artist's eye for detail. Five years of Meta ads, one of which drove over $18K in revenue.</p>
+      <div class="btns">
+        <a class="btn solid" href="#ai">See the work</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="sections"></main>
+
+  <section class="cat" id="about">
+    <div class="about">
+      <div class="photo-wrap">
+        <div class="orbit" aria-hidden="true"></div>
+        <div class="photo">Your photo</div>
+        <svg class="deco moon float" viewBox="0 0 60 60" aria-hidden="true">
+          <path d="M38 8 A22 22 0 1 0 52 40 A17 17 0 1 1 38 8 Z" fill="#143a4c" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="20" cy="34" r="2.2" fill="none" stroke="currentColor" stroke-opacity=".4"/>
+          <circle cx="27" cy="45" r="1.4" fill="none" stroke="currentColor" stroke-opacity=".4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="label">About</div>
+        <h2 style="font-size:clamp(26px,3.4vw,38px);margin:10px 0 18px">Hi, I'm Yael.</h2>
+        <p>I'm a video editor with over five years of producing social media ads, with a strong background in AI, design and 3D art. Right now I edit Meta video ads and lead AI video at Particle, where I also render the company's products in 3D.</p>
+        <p>Outside work I play guitar, draw, play video games and look at the sky. Astronomy is where the stars on this page come from.</p>
+
+        <h3 class="sub" style="margin-top:36px">Software</h3>
+        <div class="tools" id="tools"></div>
+
+        <h3 class="sub">AI tools</h3>
+        <div class="ai-tools" id="aiTools"></div>
+
+        <h3 class="sub" style="margin-bottom:16px">Experience</h3>
+        <ul class="timeline" id="timeline"></ul>
+        <div class="btns" style="margin-top:12px"><a class="btn ghost" href="https://d8fcd527-d91c-4fbd-adae-05feec2427f2.filesusr.com/ugd/40dccc_05fc38a964414892be5156877c865220.pdf" target="_blank" rel="noopener">View CV</a></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="foot">
+    <div class="foot-left">
+      <svg class="deco bg-deco float" viewBox="0 0 60 60" aria-hidden="true">
+        <rect x="22" y="22" width="16" height="16" rx="2" fill="#143a4c" stroke="currentColor" stroke-width="1.2" transform="rotate(45 30 30)"/>
+        <rect x="2" y="25" width="15" height="10" fill="none" stroke="currentColor" stroke-width="1" transform="rotate(45 30 30)"/>
+        <rect x="43" y="25" width="15" height="10" fill="none" stroke="currentColor" stroke-width="1" transform="rotate(45 30 30)"/>
+        <path d="M30 22 L30 14" stroke="currentColor"/><circle cx="30" cy="12" r="2" fill="currentColor"/>
+      </svg>
+      <h2>Let's talk.</h2>
+    </div>
+    <div class="socials">
+      <a href="https://www.linkedin.com/in/yael-ben-dor-73916b223/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><span class="slot">in</span></a>
+      <a href="https://yaelbendor.artstation.com/" target="_blank" rel="noopener" aria-label="ArtStation" title="ArtStation"><span class="slot">AS</span></a>
+      <a href="https://www.instagram.com/yael.bendor.guitartist/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><span class="slot">IG</span></a>
+      <a href="https://www.facebook.com/YaelBenDorGuitArtist/" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><span class="slot">FB</span></a>
+    </div>
+  </div>
+  <div class="copy">© 2026 Yael Ben-Dor · Made in Israel</div>
+</footer>
+
+
+<div class="overlay" id="overlay" hidden>
+  <div class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="pTitle"></div>
+</div>
+
+<script>
+/* =====================================================================
+   YOUR CONTENT — this is the only part you need to edit.
+   Each project is one { ... } block. Copy a block to add a project,
+   delete a block to remove one. Optional fields can be left out:
+   if a project has no "details", clicking it simply plays the video.
+   ===================================================================== */
+const SHOWREEL_LOOP = "";  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
+
+const SECTIONS = [
+  { id:"ai", format:"vertical", title:"AI Ads & Video", text:"Performance ads and short films made with generative AI, with the tools and workflow behind each one.",
+    projects:[
+      { title:"Particle — Meta ad", client:"Particle", year:2025, video:"https://www.youtube.com/watch?v=VIDEO_ID",
+        tags:["AI-generated","Performance"], result:{ value:"$18K+", label:"revenue" },
+        details:{
+          about:"A Meta ad built with generative AI, written for a fast hook and a clear product moment in the first three seconds.",
+          tools:["Nano Banana Pro","Veo3","Kling","Premiere Pro"],
+          workflow:[["Concept","Hook, script and shot list with the marketing team"],["Stills","Key frames generated in Nano Banana Pro"],["Motion","Shots animated in Veo3 and Kling"],["Edit","Pacing, captions and sound in Premiere Pro"]],
+          metrics:[["$18,053","Revenue"],["3,669","Purchases (check)"],["$4.92","Per purchase (check)"],["—","ROAS"]] } },
+      { title:"Mobile game UGC ad", client:"Sample", year:2026, sample:true, video:"#", tags:["AI avatar","UGC"],
+        details:{ about:"Placeholder text. Describe the idea and what you made.", tools:["Arcads","Higgsfield","After Effects"],
+          workflow:[["Script","Write the UGC script"],["Avatar","Generate the presenter"],["Edit","Cut, captions, end card"]] } },
+      { title:"Product launch spot", client:"Sample", year:2026, sample:true, video:"#", tags:["AI-generated"] },
+      { title:"Brand film concept", client:"Sample", year:2025, sample:true, video:"#", tags:["AI-generated"] },
+      { title:"Music video teaser", client:"Sample", year:2025, sample:true, video:"#", tags:["Mixed"] },
+      { title:"App store preview", client:"Sample", year:2025, sample:true, video:"#", tags:["AI-generated"] },
+      { title:"Character ad", client:"Sample", year:2025, sample:true, video:"#", tags:["AI-generated"] },
+      { title:"Seasonal promo", client:"Sample", year:2025, sample:true, video:"#", tags:["Mixed"] }
+    ]},
+  { id:"editing", format:"vertical", title:"Video Editing", text:"Editing, pacing and storytelling for social ads and music videos, mostly with live footage and real people.",
+    mainHeading:"Social media ads", otherHeading:"Music videos & covers",
+    projects:[
+      /* tags: only add one when the video is "AI-generated" or "Mixed" (AI + real people). Live action is the default, no tag. */
+      { title:"Nona Roza Ice Cream", client:"Nona Roza", year:2022, video:"https://youtube.com/shorts/5wzy-GZA2NY",
+        details:{ tools:["Premiere Pro"] } },
+      { title:"Alex Daniel Business Class Social Media Video", client:"Alex Daniel", year:2021, video:"https://youtube.com/shorts/xN-BLlkWFzk",
+        details:{ tools:["Premiere Pro","After Effects"] } },
+      { title:"Podcast Services Ad for HaMisrad", client:"Hodaya Benebo", year:2021, video:"https://youtube.com/shorts/QbA0v7zu5c0",
+        details:{ tools:["Premiere Pro","After Effects"] } },
+      { title:"Bareket Shai Social Media Video", client:"Bareket Shai", year:2024, video:"https://youtube.com/shorts/3CArzngzhpg",
+        details:{ tools:["Premiere Pro"] } },
+      { title:"Lior Assaf Social Media Video", client:"Lior Assaf", year:2024, video:"https://youtube.com/shorts/h9byEfQf9Qg",
+        details:{ tools:["Premiere Pro"] } },
+      { title:"Ofir Segal Deadline Social Media Video", client:"Ofir Segal", year:2025, video:"https://youtube.com/shorts/FBThqXACGgk",
+        details:{ tools:["Premiere Pro"] } },
+      { title:"Moses Shop Ad", client:"Moses Shop", year:2025, video:"https://youtube.com/shorts/zjWdtL4ZPIA",
+        details:{ tools:["Premiere Pro"] } },
+      /* horizontal videos: format:"horizontal" puts them in the second row */
+      { title:"Moon Safari - Between the Devil and Me (Official Lyric Video)", client:"Moon Safari", year:2023, format:"horizontal", video:"https://www.youtube.com/watch?v=ryzIHFOjnG4",
+        details:{ about:"Official lyric video I created for the Swedish band Moon Safari.", tools:["Premiere Pro","After Effects"] } },
+      { title:"Moon Safari - Emma, Come On (Official Music Video)", client:"Moon Safari", year:2023, format:"horizontal", video:"https://www.youtube.com/watch?v=CPQnsCQGXdI",
+        details:{ about:"Official music video I made for the Swedish band Moon Safari.", tools:["Premiere Pro"] } },
+      { title:"Brothers - Fullmetal Alchemist - Flute & Guitar Cover", year:2022, format:"horizontal", video:"https://www.youtube.com/watch?v=IBKgL7ZD-xU",
+        details:{ about:"A flute and guitar cover of 'Brothers' from the anime Fullmetal Alchemist, performed with my friend Danielle Sassi and edited by me.", tools:["Premiere Pro"] } },
+      { title:"Horizons - Guitar Cover", year:2020, format:"horizontal", video:"https://www.youtube.com/watch?v=esWob1xs3xA",
+        details:{ about:"A guitar cover I played and edited.", tools:["Premiere Pro"] } }
+    ]},
+  { id:"motion", title:"Motion Design", text:"Motion graphics, kinetic type and animated ad elements, made in After Effects.",
+    projects:[
+      { title:"Logo animation", client:"Sample", year:2025, sample:true, video:"#", tags:["After Effects"] },
+      { title:"Kinetic type ad", client:"Sample", year:2024, sample:true, video:"#", tags:["After Effects"],
+        details:{ about:"Placeholder. A motion piece can have a short breakdown too.", tools:["After Effects","Illustrator"] } },
+      { title:"Explainer", client:"Sample", year:2023, sample:true, video:"#", tags:["2D animation"] },
+      { title:"Lower thirds pack", client:"Sample", year:2023, sample:true, video:"#", tags:["After Effects"] },
+      { title:"Data animation", client:"Sample", year:2022, sample:true, video:"#", tags:["After Effects"] },
+      { title:"Title sequence", client:"Sample", year:2022, sample:true, video:"#", tags:["After Effects"] }
+    ]},
+  { id:"three-d", title:"3D Art", text:"Modelling and texturing. Open a piece to see wireframe, clay render, texture maps and polycount.", kind:"3d",
+    projects:[
+      { title:"Spaceship", year:2024, sample:true, video:"#", tags:["Hard surface"],
+        details:{ about:"Placeholder. Describe the piece, the reference and what you focused on.", tools:["Maya","ZBrush","Substance Painter"],
+          specs:[["Polygons","24,380"],["Triangles","47,912"],["Vertices","24,106"],["Texture sets","2 × 4K"],["Renderer","Marmoset Toolbag"]],
+          maps:["Base color","Normal","Roughness","Metallic","AO"] } },
+      { title:"Stylized character", year:2024, sample:true, video:"#", tags:["Sculpt"] ,
+        details:{ about:"Placeholder.", tools:["ZBrush","Blender","Substance Painter"],
+          specs:[["Polygons","18,240"],["Triangles","36,102"],["Texture sets","1 × 4K"]], maps:["Base color","Normal","Roughness","AO"] } },
+      { title:"Product render", client:"Particle", year:2025, sample:true, video:"#", tags:["Product"] },
+      { title:"Well", year:2023, sample:true, video:"#", tags:["Prop"] },
+      { title:"Environment kit", year:2023, sample:true, video:"#", tags:["Environment"] },
+      { title:"Guitar", year:2023, sample:true, video:"#", tags:["Prop"] },
+      { title:"Creature bust", year:2022, sample:true, video:"#", tags:["Sculpt"] },
+      { title:"Vehicle", year:2022, sample:true, video:"#", tags:["Hard surface"] }
+    ]}
+];
+
+const TOOLS = [["Maya","3D modelling"],["Blender","3D & render"],["ZBrush","Sculpting"],["Substance Painter","Texturing"],
+  ["Photoshop","Image editing"],["After Effects","Motion"],["Premiere Pro","Editing"],["Illustrator","Vector"]];
+const AI_TOOLS = ["Nano Banana Pro","Veo3","Kling","Seedance","Midjourney","Runway","Arcads","ElevenLabs","LTX","Higgsfield","Weavy"];
+const EXPERIENCE = [
+  ["2025 — now","Particle","Video Editor, AI Video Specialist & 3D Rendering"],
+  ["2023 — 2025","Freelance","Video Editor & Graphic Designer"],
+  ["2021 — 2023","Alex Daniel & Fine Digital Branding","Video Editor, Motion Designer, Graphic Designer"],
+  ["2020 — 2024","World of Astronomy","Video Editor, Graphic Designer, Astronomy Guide"],
+  ["2019 — 2021","IDF, Human Resources Corps","Video Editor, Motion Designer, Photographer"],
+  ["2022 — 2024","Israeli Animation College","3D Art and Animation course"]
+];
+/* ===================== end of your content ===================== */
+
+const $ = s => document.querySelector(s);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* placeholder art until real thumbnails are added */
+/* thumbnail: your own image if given, otherwise YouTube's own thumbnail */
+function thumbImg(p){
+  const id = ytId(p.video), src = p.thumb || (id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : "");
+  return src ? `<img class="ph" src="${esc(src)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.remove()">` : "";
+}
+function ph(seed, label){
+  let h=0; for(const c of seed) h=(h*31+c.charCodeAt(0))>>>0;
+  const x1=20+h%60, y1=10+(h>>3)%50, x2=40+(h>>6)%55, y2=50+(h>>9)%45, hue=165+(h>>12)%35;
+  return `<div class="ph" style="background:radial-gradient(70% 80% at ${x1}% ${y1}%,hsl(${hue} 70% 32% / .9),transparent 60%),radial-gradient(60% 70% at ${x2}% ${y2}%,hsl(${hue+15} 60% 22%),transparent 65%),#123445"></div><div class="ph-label">${label}</div>`;
+}
+
+/* little space objects, one per section */
+const DECO = {
+  ai:`<svg class="deco float" viewBox="0 0 100 70" aria-hidden="true">
+      <ellipse cx="50" cy="37" rx="44" ry="11" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2" transform="rotate(-14 50 37)"/>
+      <circle cx="50" cy="35" r="19" fill="#143a4c" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M33 29 Q50 24 67 31 M32 40 Q50 36 68 42" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+      <path d="M7 47 A44 11 -14 0 0 93 26" fill="none" stroke="currentColor" stroke-width="1.2" transform="rotate(0)"/>
+      <circle cx="88" cy="12" r="2.5" fill="currentColor" opacity=".7"/></svg>`,
+  editing:`<svg class="deco" viewBox="0 0 110 70" aria-hidden="true">
+      <path d="M8 52 L30 30 L52 40 L74 14 L100 24 M52 40 L66 60" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="2 3"/>
+      ${[[8,52],[30,30],[52,40],[74,14],[100,24],[66,60]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${i===3?3:2}" fill="currentColor"><animate attributeName="opacity" values="1;.35;1" dur="${3+i*.7}s" repeatCount="indefinite"/></circle>`).join("")}</svg>`,
+  motion:`<svg class="deco float" viewBox="0 0 110 70" aria-hidden="true">
+      <path d="M8 60 L78 22" stroke="currentColor" stroke-opacity=".12" stroke-width="7" stroke-linecap="round"/>
+      <path d="M22 54 L80 22" stroke="currentColor" stroke-opacity=".25" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M40 46 L82 21" stroke="currentColor" stroke-opacity=".5" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="84" cy="20" r="6" fill="#143a4c" stroke="currentColor" stroke-width="1.2"/></svg>`,
+  "three-d":`<svg class="deco" viewBox="0 0 80 80" aria-hidden="true">
+      <circle cx="40" cy="40" r="28" fill="#143a4c" stroke="currentColor" stroke-width="1.2"/>
+      <ellipse cx="40" cy="40" rx="28" ry="9" fill="none" stroke="currentColor" stroke-opacity=".35"/>
+      <ellipse cx="40" cy="40" rx="25" ry="5" fill="none" stroke="currentColor" stroke-opacity=".2" transform="translate(0 -14)"/>
+      <ellipse cx="40" cy="40" rx="25" ry="5" fill="none" stroke="currentColor" stroke-opacity=".2" transform="translate(0 14)"/>
+      ${[0,1,2].map(i=>`<ellipse cx="40" cy="40" rx="28" ry="28" fill="none" stroke="currentColor" stroke-opacity=".45"><animate attributeName="rx" values="28;0;28" dur="9s" begin="${-i*3}s" repeatCount="indefinite"/></ellipse>`).join("")}</svg>`
+};
+
+/* a section's projects split into rows by shape: the section's own format first, then any project marked otherwise */
+function groupsOf(sec){
+  const all = sec.projects.map((p,i)=>[p,i]);
+  const base = sec.format||"horizontal";
+  const main = all.filter(([p])=>(p.format||base)===base);
+  const other = all.filter(([p])=>(p.format||base)!==base);
+  const gs = [{ format:base, items:main, heading: other.length ? sec.mainHeading : "" }];
+  if(other.length) gs.push({ format:other[0][0].format, items:other, heading: sec.otherHeading||"More" });
+  return gs.filter(g=>g.items.length);
+}
+/* build sections */
+$("#sections").innerHTML = SECTIONS.map(sec => `
+  <section class="cat" id="${sec.id}">
+    <div class="cat-head">
+      <div><div class="label">${sec.kind==="3d"?"Modelling · Texturing":"Video"}</div><h2 style="margin-top:8px">${esc(sec.title)}</h2><p>${esc(sec.text)}</p></div>
+      <div class="count">${String(sec.projects.length).padStart(2,"0")} projects</div>
+    </div>
+    ${groupsOf(sec).map(g=>`
+    ${g.heading?`<div class="sub-head label">${esc(g.heading)}</div>`:""}
+    <div class="grid ${sec.kind==="3d"?"three-d":""} ${g.format==="vertical"?"vertical":"wide"}">
+      ${g.items.map(([p,i])=>`
+        <button class="card" type="button" data-s="${sec.id}" data-i="${i}">
+          <div class="thumb">${ph(p.title, sec.kind==="3d"?"Render":"Thumbnail")}${thumbImg(p)}
+            <div class="badges"><span></span>${p.sample?`<span class="badge sample">Sample</span>`:""}</div>
+          </div>
+          <div class="card-body">
+            <h3>${esc(p.title)}</h3>
+            <div class="meta">${[p.client,p.year].filter(Boolean).join(" · ")}${p.tags&&p.tags.length?" · "+p.tags.join(", "):""}</div>
+            ${p.result?`<div class="result"><b>${esc(p.result.value)}</b>${esc(p.result.label)}</div>`:""}
+          </div>
+        </button>`).join("")}
+    </div>`).join("")}
+  </section>`).join("");
+
+$("#tools").innerHTML = TOOLS.map(([n,d])=>`<div class="tool"><div class="logo">logo</div><div><b>${n}</b><small>${d}</small></div></div>`).join("");
+$("#aiTools").innerHTML = AI_TOOLS.map(t=>`<span class="chip">${t}</span>`).join("");
+$("#timeline").innerHTML = EXPERIENCE.map(([w,c,r])=>`<li><div class="when">${w}</div><b>${c}</b><span>${r}</span></li>`).join("");
+
+/* info panel */
+const overlay=$("#overlay"), panel=$("#panel"); let lastFocus=null;
+function ytId(url){ const m=String(url||"").match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/); return m?m[1]:null; }
+function videoLink(url){ return url && url!=="#" ? `<a class="yt" href="${esc(url)}" target="_blank" rel="noopener">Watch on YouTube ↗</a>` : `<span class="meta">Video link goes here</span>`; }
+function openProject(sec, p){
+  const d=p.details, is3d=sec.kind==="3d";
+  const id = ytId(p.video), vert = (p.format||sec.format)==="vertical";
+  const screen = is3d
+    ? `<div class="p-screen tall" id="pScreen">${ph(p.title+"render","Render")}</div>`
+    : `<div class="p-screen ${vert?"vert":""}" id="pScreen">${id
+        ? `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="${esc(p.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`
+        : `${ph(p.title+"render","")}<div class="ph-label">Video starts here automatically<br>once a YouTube link is added</div>`}</div>`;
+  let media = `<div class="p-media">${screen}`;
+  if(is3d && d){
+    media += `<div class="views" role="group" aria-label="View">${["Render","Wireframe","Clay","UVs"].map((v,i)=>`<button type="button" aria-pressed="${i===0}" data-v="${v}">${v}</button>`).join("")}</div>`;
+    if(d.maps) media += `<div class="label" style="margin-top:6px">Texture maps</div><div class="maps">${d.maps.map((m,i)=>`<div class="map"><i style="background:${["linear-gradient(135deg,#2e6b6a,#123445)","linear-gradient(135deg,#7f7fff,#8080ff 50%,#a0a0ff)","linear-gradient(135deg,#777,#333)","linear-gradient(135deg,#222,#aaa)","linear-gradient(135deg,#eee,#666)"][i%5]}"></i>${esc(m)}</div>`).join("")}</div>`;
+  }
+  media += `</div>`;
+
+  let info = `<div class="p-info"><div><div class="label">${esc(sec.title)}</div><h2 id="pTitle" style="margin-top:8px">${esc(p.title)}</h2>
+    <div class="meta" style="margin-top:6px">${[p.client,p.year].filter(Boolean).join(" · ")}</div></div>`;
+  if(p.tags) info += `<div class="chips">${p.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>`;
+  if(d){
+    if(d.about) info += `<p>${esc(d.about)}</p>`;
+    if(d.metrics) info += `<div><div class="label" style="margin-bottom:8px">Results</div><div class="metrics">${d.metrics.map(([v,l])=>`<div class="metric"><b>${esc(v)}</b><small>${esc(l)}</small></div>`).join("")}</div></div>`;
+    if(d.workflow) info += `<div><div class="label" style="margin-bottom:10px">Workflow</div><ol class="steps">${d.workflow.map(([a,b])=>`<li><div><b>${esc(a)}</b> — ${esc(b)}</div></li>`).join("")}</ol></div>`;
+    if(d.specs) info += `<div><div class="label" style="margin-bottom:4px">Technical</div><table class="specs">${d.specs.map(([a,b])=>`<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join("")}</table></div>`;
+    if(d.tools) info += `<div><div class="label" style="margin-bottom:8px">Tools</div><div class="chips">${d.tools.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div></div>`;
+  }
+  info += `</div>`;
+
+  panel.className = "panel" + (d ? "" : " simple") + (vert ? " vert" : "");
+  panel.innerHTML = `<button class="close" type="button" aria-label="Close">×</button>${media}${d?info:info}`;
+  if(!d){ panel.querySelector(".p-info").style.paddingTop="8px"; }
+  panel.querySelectorAll(".views button").forEach(b=>b.addEventListener("click",()=>{
+    panel.querySelectorAll(".views button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+    panel.querySelector("#pScreen .ph-label").textContent=b.dataset.v;
+    panel.querySelector("#pScreen .ph").style.filter = {Render:"none",Wireframe:"grayscale(1) contrast(1.6) brightness(.7)",Clay:"grayscale(1) brightness(1.3)",UVs:"hue-rotate(120deg) saturate(1.6)"}[b.dataset.v];
+  }));
+  panel.querySelector(".close").addEventListener("click",closePanel);
+  lastFocus=document.activeElement; overlay.hidden=false;
+  requestAnimationFrame(()=>overlay.classList.add("open"));
+  document.body.style.overflow="hidden"; panel.querySelector(".close").focus();
+}
+function closePanel(){
+  overlay.classList.remove("open"); document.body.style.overflow="";
+  const f=panel.querySelector("iframe"); if(f) f.src="about:blank"; /* stop the video */
+  setTimeout(()=>{overlay.hidden=true; lastFocus&&lastFocus.focus();}, reduce?0:250);
+}
+overlay.addEventListener("click",e=>{ if(e.target===overlay) closePanel(); });
+addEventListener("keydown",e=>{ if(e.key==="Escape"&&!overlay.hidden) closePanel(); });
+document.querySelectorAll(".card").forEach(c=>c.addEventListener("click",()=>{
+  const sec=SECTIONS.find(s=>s.id===c.dataset.s); openProject(sec, sec.projects[+c.dataset.i]);
+}));
+
+
+/* mobile menu */
+const menuBtn=$("#menuBtn");
+function setMenu(open){ $("#nav").classList.toggle("open",open); menuBtn.setAttribute("aria-expanded",open); menuBtn.setAttribute("aria-label",open?"Close menu":"Open menu"); }
+menuBtn.addEventListener("click",()=>setMenu(!$("#nav").classList.contains("open")));
+document.querySelectorAll(".nav-links a").forEach(a=>a.addEventListener("click",()=>setMenu(false)));
+addEventListener("keydown",e=>{ if(e.key==="Escape") setMenu(false); });
+
+/* card tilt (starts after load) */
+function startTilt(){ if(reduce || !matchMedia("(pointer:fine)").matches) return;
+  document.querySelectorAll(".card").forEach(c=>{
+    c.addEventListener("mousemove",e=>{ const r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      c.style.transform=`perspective(800px) rotateY(${x*7}deg) rotateX(${-y*7}deg) translateY(-3px)`; });
+    c.addEventListener("mouseleave",()=>{ c.style.transform=""; });
+  });
+}
+
+/* everything decorative starts only after the page has finished loading */
+function startExtras(){
+  document.querySelectorAll("section.cat").forEach(sec=>{
+    const svg=DECO[sec.id]; if(!svg) return;
+    sec.insertAdjacentHTML("afterbegin", svg.replace('class="deco','class="deco bg-deco'+(sec.id==="editing"||sec.id==="three-d"?" alt":"")));
+  });
+  if(SHOWREEL_LOOP && !reduce){
+    const v=document.createElement("video"); Object.assign(v,{muted:true,loop:true,autoplay:true,playsInline:true,preload:"auto",src:SHOWREEL_LOOP});
+    v.setAttribute("muted",""); v.setAttribute("playsinline",""); v.addEventListener("playing",()=>v.classList.add("on"),{once:true});
+    $("#heroBg").appendChild(v);
+  }
+  startTilt(); startStars();
+  if(reduce) document.querySelectorAll("svg").forEach(s=>s.pauseAnimations&&s.pauseAnimations());
+  document.documentElement.classList.add("anim-ready");
+}
+function whenIdle(fn){ ("requestIdleCallback" in window) ? requestIdleCallback(fn,{timeout:1500}) : setTimeout(fn,200); }
+if(document.readyState==="complete") whenIdle(startExtras); else addEventListener("load",()=>whenIdle(startExtras),{once:true});
+
+/* sparks from nav links */
+function sparks(x,y){
+  if(reduce) return;
+  for(let i=0;i<9;i++){
+    const s=document.createElement("span"); s.className="spark"; s.style.left=x+"px"; s.style.top=y+"px"; document.body.appendChild(s);
+    const a=Math.random()*Math.PI*2, d=18+Math.random()*26;
+    s.animate([{transform:"translate(-50%,-50%) scale(1)",opacity:1},{transform:`translate(calc(-50% + ${Math.cos(a)*d}px),calc(-50% + ${Math.sin(a)*d}px)) scale(.2)`,opacity:0}],
+      {duration:520+Math.random()*200,easing:"cubic-bezier(.2,.8,.2,1)"}).onfinish=()=>s.remove();
+  }
+}
+document.querySelectorAll(".nav-links a").forEach(a=>a.addEventListener("click",e=>sparks(e.clientX,e.clientY)));
+
+/* nav state */
+const nav=$("#nav"), links=[...document.querySelectorAll(".nav-links a")];
+addEventListener("scroll",()=>nav.classList.toggle("scrolled",scrollY>10),{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) links.forEach(l=>l.classList.toggle("active",l.getAttribute("href")==="#"+e.target.id)); }),{rootMargin:"-45% 0px -50% 0px"});
+document.querySelectorAll("section.cat").forEach(s=>io.observe(s));
+
+/* gentle entrance for things below the fold (visible at rest) */
+if(!reduce && "IntersectionObserver" in window){
+  const vh=innerHeight;
+  const ro=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("rise"); ro.unobserve(e.target);} }),{threshold:.15});
+  document.querySelectorAll(".card,.cat-head,.tool,.timeline li").forEach((el,i)=>{ if(el.getBoundingClientRect().top>vh){ el.style.animationDelay=(i%4)*60+"ms"; ro.observe(el);} });
+}
+
+/* stars: small, slow twinkle, with a rare shooting star */
+function startStars(){
+  const cv=$("#stars"), ctx=cv.getContext("2d"); let W,H,stars=[],dpr=Math.min(devicePixelRatio||1,2),shoot=null,nextShoot=6000;
+  function size(){ W=cv.width=innerWidth*dpr; H=cv.height=innerHeight*dpr;
+    const n=Math.round(innerWidth*innerHeight/6500);
+    stars=Array.from({length:n},()=>{ const big=Math.random()<.08;
+      return {x:Math.random()*W,y:Math.random()*H,r:(big?1.3+Math.random()*.6:.5+Math.random()*.8)*dpr,a:big?.8:Math.random()*.45+.25,s:Math.random()*.0015+.0005,p:Math.random()*6.28,big}; });
+  }
+  function draw(t){ ctx.clearRect(0,0,W,H);
+    for(const s of stars){ const a=reduce?s.a:s.a*(.45+.55*Math.sin(t*s.s+s.p));
+      if(s.big){ ctx.beginPath(); ctx.arc(s.x,s.y,s.r*3.2,0,6.28); ctx.fillStyle=`rgba(0,255,205,${a*.08})`; ctx.fill(); }
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.28); ctx.fillStyle=s.big?`rgba(200,255,240,${a})`:`rgba(191,238,228,${a})`; ctx.fill(); }
+    if(!reduce){
+      if(!shoot && t>nextShoot){ shoot={x:Math.random()*W*.7+W*.2,y:Math.random()*H*.4,t0:t}; }
+      if(shoot){ const k=(t-shoot.t0)/900; if(k>1){ shoot=null; nextShoot=t+9000+Math.random()*10000; }
+        else{ const len=110*dpr, x=shoot.x-k*260*dpr, y=shoot.y+k*120*dpr, g=ctx.createLinearGradient(x,y,x+len,y-len*.46);
+          g.addColorStop(0,`rgba(191,238,228,${.55*(1-k)})`); g.addColorStop(1,"rgba(191,238,228,0)");
+          ctx.strokeStyle=g; ctx.lineWidth=1.2*dpr; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+len,y-len*.46); ctx.stroke(); } }
+      requestAnimationFrame(draw);
+    }
+  }
+  size(); addEventListener("resize",()=>{ size(); if(reduce) draw(0); }); requestAnimationFrame(draw);
+}
+</script>
