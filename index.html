@@ -259,6 +259,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .metric{padding:12px 14px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line)}
+.m-high{margin:0 0 12px;padding:10px 12px;border-left:2px solid var(--mint);background:rgba(0,255,205,.06);border-radius:0 8px 8px 0;color:var(--mint);font-size:14px;line-height:1.5}
 .m-note{margin:10px 0 0;font-size:12px;color:var(--mint-mute)}
 .metric b{display:block;font-family:var(--display);color:var(--mint);font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
 .metric small{color:var(--mint-mute);font-size:12px}
@@ -420,11 +421,13 @@ const SECTIONS = [
     projects:[
       { title:"Meta ad for Particle Shaving Gel", client:"Particle", tags:["Mixed"], top:true,  thumb:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg", result:{ value:"$22K", label:"in sales · 3.81 ROAS" },
         details:{ about:"A top-performing Meta ad I made using AI generative tools.",
+          highlight:"#2 by revenue out of 296 ad groups in the account, with more than 3× the account's average ROAS (3.81 vs. 1.16).",
           metrics:[["$21.96K","Purchase value"],["3.81","ROAS"],["258","Purchases"],["$22.36","Cost per purchase"],["$5.77K","Ad spend"]],
           metricsNote:"Meta ads data via Upspring", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bc/1080p/mp4/file.mp4", poster:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg", sound:true, end:30.35}, {label:"Results", img:"media/shaving-results.webp", thumb:"media/shaving-results-thumb.webp"}] } },
       /* hosted with the site (media/ folder in the GitHub repo) */
       { title:"Anti-Gray Serum - Snake Oil", client:"Particle", tags:["Mixed"], top:true, thumb:"media/anti-gray-serum.jpg", result:{ value:"$36K", label:"in sales" },
         details:{ about:"A UGC-style Meta ad that turns a skeptic's comment into the hook. The presenter is AI, made in Arcads, edited together with 3 real creators.", tools:["Arcads","Premiere Pro"],
+          highlight:"#1 by revenue out of 296 ad groups in the account. ROAS 1.42 vs. the account average of 1.16.",
           metrics:[["$36.02K","Purchase value"],["322","Purchases"],["$25.41K","Ad spend"],["1.42","ROAS"],["$78.90","Cost per purchase"]],
           metricsNote:"Meta ads data via Upspring",
           views:[{label:"Video", mp4:"media/anti-gray-serum.mp4", poster:"media/anti-gray-serum.jpg", sound:true}, {label:"Results", img:"media/serum-results.webp", thumb:"media/serum-results-thumb.webp"}] } },
@@ -689,7 +692,7 @@ function openProject(sec, idx){
   if(p.tags) info += `<div class="chips">${p.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>`;
   if(d){
     if(d.about) info += `<p>${esc(d.about)}</p>`;
-    if(d.metrics) info += `<div><div class="label" style="margin-bottom:8px">Results</div><div class="metrics">${d.metrics.map(([v,l])=>`<div class="metric"><b>${esc(v)}</b><small>${esc(l)}</small></div>`).join("")}</div>${d.metricsNote?`<p class="m-note">${esc(d.metricsNote)}</p>`:""}</div>`;
+    if(d.metrics) info += `<div><div class="label" style="margin-bottom:8px">Results</div>${d.highlight?`<p class="m-high">${esc(d.highlight)}</p>`:""}<div class="metrics">${d.metrics.map(([v,l])=>`<div class="metric"><b>${esc(v)}</b><small>${esc(l)}</small></div>`).join("")}</div>${d.metricsNote?`<p class="m-note">${esc(d.metricsNote)}</p>`:""}</div>`;
     if(d.workflow) info += `<div><div class="label" style="margin-bottom:10px">Workflow</div><ol class="steps">${d.workflow.map(([a,b])=>`<li><div><b>${esc(a)}</b> — ${esc(b)}</div></li>`).join("")}</ol></div>`;
     if(d.specs) info += `<div><div class="label" style="margin-bottom:4px">Technical</div><table class="specs">${d.specs.map(([a,b])=>`<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join("")}</table></div>`;
     if(d.tools) info += `<div><div class="label" style="margin-bottom:8px">Tools</div><div class="chips">${d.tools.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div></div>`;
