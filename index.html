@@ -54,6 +54,7 @@ nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;ali
 nav.scrolled{border-bottom-color:var(--line)}
 .brand{font-family:var(--display);font-size:clamp(19px,1.7vw,26px);font-weight:600;letter-spacing:.01em;white-space:nowrap}
 .brand span{color:var(--mint-mute);font-weight:400}
+.brand{display:inline-flex;align-items:center;gap:.4em}.brand .logo{width:2em;height:2em;flex:none;margin:-.3em 0}
 .nav-links{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 .nav-links a{position:relative;font-size:14px;font-weight:500;color:var(--mint-soft);padding:6px 12px;border-radius:999px;transition:color .2s,background .2s}
 .nav-links a:hover,.nav-links a.active{color:var(--mint);background:rgba(0,255,205,.08)}
@@ -198,7 +199,8 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 .foot-left{display:flex;align-items:center;gap:18px}
 .photo-wrap{position:relative;max-width:300px}
 .photo-wrap{align-self:start} /* keep the orbit centered on the photo */
-.photo-wrap .orbit{inset:auto;left:50%;top:50%;width:118%;aspect-ratio:1;translate:-50% -50%;animation-duration:70s}
+.photo-wrap .photo{position:relative;z-index:1}
+.photo-wrap .orbit{z-index:0;inset:auto;left:50%;top:50%;width:118%;aspect-ratio:1;translate:-50% -50%;animation-duration:70s}
 .moon{position:absolute;right:-26px;top:-22px;width:54px}
 .copy{max-width:1640px;margin:22px auto 0;font-size:13px;color:var(--mint-mute);display:flex;justify-content:space-between;align-items:center;gap:16px}
 
@@ -327,7 +329,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 
 <div class="wrap">
   <nav id="nav" aria-label="Main">
-    <a class="brand" href="#top">Yael Ben-Dor <span>Art</span></a>
+    <a class="brand" href="#top"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="logo" aria-hidden="true"><g transform="rotate(-12 32 37)"><path d="M3 37 A29 10 0 0 1 61 37" fill="none" stroke="#00ffcd" stroke-width="2.2" stroke-linecap="round" opacity=".45"/></g><path transform="translate(9.84 40.90) scale(0.02249)" d="M664 -702 421 -232V0H250V-232L7 -702H201L337 -408L472 -702ZM1263 -191Q1263 -103 1201.5 -51.5Q1140 0 1030 0H703V-702H1019Q1126 -702 1186.5 -653.0Q1247 -604 1247 -520Q1247 -458 1214.5 -417.0Q1182 -376 1128 -360Q1189 -347 1226.0 -299.5Q1263 -252 1263 -191ZM874 -418H986Q1028 -418 1050.5 -436.5Q1073 -455 1073 -491Q1073 -527 1050.5 -546.0Q1028 -565 986 -565H874ZM1090 -214Q1090 -251 1065.5 -272.0Q1041 -293 998 -293H874V-138H1000Q1043 -138 1066.5 -157.5Q1090 -177 1090 -214ZM1963 -351Q1963 -248 1917.5 -168.0Q1872 -88 1788.5 -44.0Q1705 0 1595 0H1332V-702H1595Q1706 -702 1789.0 -658.0Q1872 -614 1917.5 -534.5Q1963 -455 1963 -351ZM1789 -351Q1789 -448 1735.0 -502.0Q1681 -556 1584 -556H1503V-148H1584Q1681 -148 1735.0 -201.0Q1789 -254 1789 -351Z" fill="#00ffcd"/><g transform="rotate(-12 32 37)"><path d="M61 37 A29 10 0 0 1 3 37" fill="none" stroke="#0b2431" stroke-width="5.5" stroke-linecap="round"/><path d="M61 37 A29 10 0 0 1 3 37" fill="none" stroke="#00ffcd" stroke-width="2.2" stroke-linecap="round"/></g><circle cx="55.6" cy="38.4" r="3.6" fill="#e9fffa" stroke="#0b2431" stroke-width="1.6"/><path d="M54 6 L55.3 9.7 L59 11 L55.3 12.3 L54 16 L52.7 12.3 L49 11 L52.7 9.7Z" fill="#00ffcd"/><circle cx="9" cy="14" r="1.6" fill="#00ffcd" opacity=".7"/></svg>Yael Ben-Dor <span>Art</span></a>
     <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
     <div class="nav-links" id="navLinks">
       <a href="#ai">AI Ads</a>
@@ -345,8 +347,8 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
     <div class="reel-cap">SHOWREEL · 0:20</div>
     <div class="hero-content">
       <div class="label">AI Video · 3D Art · Video Editing · Motion Design</div>
-      <h1>Yael Ben-Dor<em>Video editor &amp; AI video specialist</em></h1>
-      <p>I make social video ads that people stop scrolling for, built with generative AI, After Effects and a 3D artist's eye for detail. Five years of making Meta ads.</p>
+      <h1>Yael Ben-Dor<em>AI video specialist, video editor &amp; 3D artist</em></h1>
+      <p>I make social video ads that people stop scrolling for, built with generative AI, Premiere Pro and After Effects. I'm also a 3D artist: I model, sculpt, texture and render, from stylized game-ready props to product renders.</p>
       <div class="btns">
         <a class="btn solid" href="#ai">See the work</a>
       </div>
@@ -364,7 +366,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
       <div>
         <div class="label">About</div>
         <h2 style="font-size:clamp(26px,3.4vw,38px);margin:10px 0 18px">Hi, I'm Yael.</h2>
-        <p>I'm a video editor with over five years of producing social media ads, with a strong background in AI, design and 3D art. Right now I edit Meta video ads and lead AI video at Particle, where I also render the company's products in 3D.</p>
+        <p>I'm a video editor and 3D artist with over five years of producing social media ads. At Particle I edit Meta video ads, lead AI video and render the company's products in 3D.</p><p>In 3D I model in Maya and Blender, sculpt in ZBrush and texture in Substance Painter, with a soft spot for stylized, hand-painted, game-ready assets. It's also what gives my video work its eye for light, form and detail.</p>
         <p>Outside work I play guitar, draw, play video games and look at the sky. Astronomy is where the stars on this page come from.</p>
 
         <h3 class="sub" style="margin-top:36px">Software</h3>
@@ -593,8 +595,8 @@ const DECO = {
       <path d="M7 47 A44 11 -14 0 0 93 26" fill="none" stroke="currentColor" stroke-width="1.2" transform="rotate(0)"/>
       <circle cx="88" cy="12" r="2.5" fill="currentColor" opacity=".7"/></svg>`,
   editing:`<svg class="deco" viewBox="0 0 110 70" aria-hidden="true">
-      <path d="M6 18 L26 26 L44 32 L60 40 L62 60 L92 62 L98 40 L60 40" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="2 3"/>
-      ${[[6,18],[26,26],[44,32],[60,40],[62,60],[92,62],[98,40]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${i===3?3:2}" fill="currentColor"><animate attributeName="opacity" values="1;.35;1" dur="${3+i*.7}s" repeatCount="indefinite"/></circle>`).join("")}</svg>`,
+      <path d="M4 14 L30 6 L45 20 L65 33 L106 30 L101 64 L70 63 L65 33" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-dasharray="2 3"/>
+      ${[[4,14],[30,6],[45,20],[65,33],[106,30],[101,64],[70,63]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${i===3?3:2}" fill="currentColor"><animate attributeName="opacity" values="1;.35;1" dur="${3+i*.7}s" repeatCount="indefinite"/></circle>`).join("")}</svg>`,
   motion:`<svg class="deco float" viewBox="0 0 110 70" aria-hidden="true">
       <path d="M8 60 L78 22" stroke="currentColor" stroke-opacity=".12" stroke-width="7" stroke-linecap="round"/>
       <path d="M22 54 L80 22" stroke="currentColor" stroke-opacity=".25" stroke-width="3.5" stroke-linecap="round"/>
