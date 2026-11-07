@@ -446,7 +446,10 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
    delete a block to remove one. Optional fields can be left out:
    if a project has no "details", clicking it simply plays the video.
    ===================================================================== */
-const SHOWREEL_LOOP = /(^|[?&])3d\b/i.test(location.search.slice(1)) ? "media/showreel-3d.mp4" : "media/showreel.mp4";  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
+/* 3D version of the site: yaelbendor.github.io/3d (that page forwards here as ?3d, then the address is shown as /3d again) */
+const IS3D = /(^|[?&])3d\b/i.test(location.search.slice(1));
+if(IS3D && history.replaceState) history.replaceState(null, "", "/3d" + location.hash);
+const SHOWREEL_LOOP = IS3D ? "media/showreel-3d.mp4" : "media/showreel.mp4";  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
 
 const SECTIONS = [
   { id:"ai", format:"vertical", title:"AI Ads", text:"Meta performance ads made with generative AI, from 100% AI presenters to AI comics.",
@@ -655,7 +658,7 @@ function groupsOf(sec){
 }
 /* build sections */
 /* section order: video work first; add ?3d to the link to put 3D Art first */
-const SECTION_ORDER = /(^|[?&])3d\b/i.test(location.search.slice(1)) ? ["three-d","ai","editing","motion"] : ["ai","editing","motion","three-d"];
+const SECTION_ORDER = IS3D ? ["three-d","ai","editing","motion"] : ["ai","editing","motion","three-d"];
 SECTIONS.sort((a,b)=>SECTION_ORDER.indexOf(a.id)-SECTION_ORDER.indexOf(b.id));
 { const nl=document.getElementById("navLinks"); SECTION_ORDER.slice().reverse().forEach(id=>{ const a=nl.querySelector('a[href="#'+id+'"]'); if(a) nl.prepend(a); }); }
 $("#sections").innerHTML = SECTIONS.map(sec => `
