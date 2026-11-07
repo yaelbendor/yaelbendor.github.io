@@ -177,10 +177,13 @@ section.cat{padding-block:72px;border-top:1px solid var(--line)}
 .tool small{color:var(--mint-mute);font-size:12px}
 .ai-tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
 .chip{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mint-soft);background:rgba(0,255,205,.04)}
-.timeline{list-style:none;margin:0;padding:0;display:grid;gap:0;border-left:1px solid var(--line)}
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:0}
 .timeline li{position:relative;padding:0 0 22px 22px}
-.timeline li::before{content:"";position:absolute;left:-4px;top:8px;width:7px;height:7px;border-radius:50%;background:var(--sky);border:1px solid var(--mint)}
-.timeline li:first-child::before{background:var(--mint);box-shadow:0 0 8px var(--mint)}
+.timeline li::after{content:"";position:absolute;left:0;top:12px;bottom:-12px;width:1px;background:var(--line)}
+.timeline li:last-child::after{display:none}
+.timeline li:last-child{padding-bottom:0}
+.timeline li::before{content:"";position:absolute;z-index:1;left:-4px;top:8px;width:7px;height:7px;border-radius:50%;background:var(--sky);border:1px solid var(--mint)}
+#timeline li:first-child::before{background:var(--mint);box-shadow:0 0 8px var(--mint)}
 .timeline .when{font-family:var(--mono);font-size:12px;color:var(--mint-mute)}
 .timeline b{display:block;color:var(--mint);font-weight:600}
 .timeline span{font-size:14px}
@@ -366,7 +369,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
       <div>
         <div class="label">About</div>
         <h2 style="font-size:clamp(26px,3.4vw,38px);margin:10px 0 18px">Hi, I'm Yael.</h2>
-        <p>I'm a video editor and 3D artist with over five years of producing social media ads. At Particle I edit Meta video ads, lead AI video and render the company's products in 3D.</p><p>In 3D I model in Maya and Blender, sculpt in ZBrush and texture in Substance Painter, with a soft spot for stylized, hand-painted, game-ready assets. It's also what gives my video work its eye for light, form and detail.</p>
+        <p>I'm a video editor and 3D artist with over five years of producing social media ads. At Particle I edit Meta video ads, create AI videos and render the company's products in 3D.</p><p>In 3D I model in Maya and Blender, sculpt in ZBrush and texture in Substance Painter, with a soft spot for stylized, hand-painted, game-ready assets. It's also what gives my video work its eye for light, form and detail.</p>
         <p>Outside work I play guitar, draw, play video games and look at the sky. Astronomy is where the stars on this page come from.</p>
 
         <h3 class="sub" style="margin-top:36px">Software</h3>
@@ -377,6 +380,8 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 
         <h3 class="sub" style="margin-bottom:16px">Experience</h3>
         <ul class="timeline" id="timeline"></ul>
+        <h3 class="sub" style="margin:28px 0 16px">Education</h3>
+        <ul class="timeline" id="education"></ul>
         <div class="btns" style="margin-top:12px"><a class="btn ghost" href="https://d8fcd527-d91c-4fbd-adae-05feec2427f2.filesusr.com/ugd/40dccc_05fc38a964414892be5156877c865220.pdf" target="_blank" rel="noopener">View CV</a></div>
       </div>
     </div>
@@ -431,8 +436,8 @@ const SECTIONS = [
           metrics:[["$36.02K","Purchase value"],["322","Purchases"],["$25.41K","Ad spend"],["1.42","ROAS"],["$78.90","Cost per purchase"]],
           metricsNote:"Meta ads data via Upspring",
           views:[{label:"Video", mp4:"media/anti-gray-serum.mp4", ar:.5625, poster:"media/anti-gray-serum.jpg", sound:true}, {label:"Results", img:"media/serum-results.webp", thumb:"media/serum-results-thumb.webp"}] } },
-      { title:"100% AI founder-style ad for Particle NeoRoot", client:"Particle", year:2026, tags:["AI-generated"], thumb:"media/thumbs/neoroot-founder.webp",
-        details:{ about:"A founder-style Meta ad for NeoRoot: one AI presenter tells his hair-thinning story and demos the weekly serum across a dozen scenes, staying consistent from shot to shot. Every shot is AI-generated.", views:[{label:"Video", mp4:"media/neoroot-founder.mp4", ar:.5625, poster:"media/neoroot-founder.jpg", sound:true, end:48.95}] } },
+      { title:"100% AI Founder-Style Ad for Particle NeoRoot", client:"Particle", year:2026, tags:["AI-generated"], thumb:"media/thumbs/neoroot-founder.webp",
+        details:{ tools:["Higgsfield Soul 2.0","GPT Image 2","Seedance"], about:"A founder-style Meta ad for NeoRoot: one AI presenter tells his hair-thinning story and demos the weekly serum across a dozen scenes, staying consistent from shot to shot. Every shot is AI-generated.", views:[{label:"Video", mp4:"media/neoroot-founder.mp4", ar:.5625, poster:"media/neoroot-founder.jpg", sound:true, end:48.95}] } },
       { title:"100% AI Amazon video for Particle NeoRoot", client:"Particle", year:2026, tags:["AI-generated"], thumb:"media/thumbs/neoroot-vial.jpg",
         details:{ tools:["Higgsfield", "GPT Image 2", "Seedance", "Suno", "Premiere Pro"], about:"An educational how-to video for the NeoRoot product page on Amazon: unboxing, step-by-step use and results. Every shot is AI-generated.",
           views:[{label:"Video", mp4:"media/neoroot.mp4", ar:1.7778, poster:"media/neoroot.jpg", sound:true}] } },
@@ -441,7 +446,7 @@ const SECTIONS = [
           views:[{label:"Video", mp4:"media/gravite-born.mp4", ar:.5625, poster:"media/gravite-born.jpg", sound:true}] } },
       { title:"AI ad for Particle Face Cream", client:"Particle", year:2026, tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_d24bc0b7600e44b4a15890b1beb43ed5~mv2.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ about:"A gym-set ad for Particle Face Cream: men mid-workout, then applying the cream. All of the footage is AI-generated.", tools:["Higgsfield", "Seedance", "Seedream", "Premiere Pro"], views:[{label:"Video", vimeo:"1220452935", ar:1.7778}] } },
-      { title:"AI presenter ad for Particle", client:"Particle", year:2026, tags:["Mixed"], thumb:"https://static.wixstatic.com/media/40dccc_2a01804ee07e4438b1acd98c385ee112~mv2.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+      { title:"AI Presenter Ad for Particle", client:"Particle", year:2026, tags:["Mixed"], thumb:"https://static.wixstatic.com/media/40dccc_2a01804ee07e4438b1acd98c385ee112~mv2.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ tools:["Higgsfield Soul 2.0", "Midjourney", "Gemini Omni Flash", "Premiere Pro"], about:"An AI dermatologist presents Particle, intercut with B-roll from real creators. I generated the presenter and edited the ad.", views:[{label:"Video", vimeo:"1220453674", ar:0.5625}] } },
       { title:"100% AI ad for Particle Hand Cream", client:"Particle", year:2026, tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_6a1824d14af1465cbdd77525d8e9b63cf003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ about:"A skeptic-turned-fan testimonial for Particle Hand Cream, with an AI presenter, before-and-after hands and product shots. Everything on screen is AI.", tools:["Higgsfield Soul 2.0", "Nano Banana", "Gemini Omni Flash", "Premiere Pro"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6a1824d14af1465cbdd77525d8e9b63c/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_6a1824d14af1465cbdd77525d8e9b63cf003.jpg", sound:true, end:48.3}] } },
@@ -551,13 +556,15 @@ const SECTIONS = [
 
 const TOOLS = [["Maya","3D modelling"],["Blender","3D & render"],["ZBrush","Sculpting"],["Substance Painter","Texturing"],
   ["Photoshop","Image editing"],["After Effects","Motion"],["Premiere Pro","Editing"],["Illustrator","Vector"]];
-const AI_TOOLS = ["Nano Banana Pro", "Veo3", "Kling", "Seedance", "Midjourney", "Runway", "Arcads", "ElevenLabs", "LTX", "Higgsfield", "Weavy", "Seedream", "Suno", "Gemini Omni Flash", "GPT Image 2"];
+const AI_TOOLS = ["Seedance", "Higgsfield", "GPT Image 2", "Nano Banana", "Veo3", "Kling", "Seedream", "Midjourney", "Gemini Omni Flash", "Runway", "Arcads", "ElevenLabs", "LTX", "Weavy", "Suno"];
 const EXPERIENCE = [
   ["2025 — now","Particle","Video Editor, AI Video Specialist & 3D Rendering"],
   ["2023 — 2025","Freelance","Video Editor & Graphic Designer"],
   ["2021 — 2023","Alex Daniel & Fine Digital Branding","Video Editor, Motion Designer, Graphic Designer"],
   ["2020 — 2024","World of Astronomy","Video Editor, Graphic Designer, Astronomy Guide"],
-  ["2019 — 2021","IDF, Human Resources Corps","Video Editor, Motion Designer, Photographer"],
+  ["2019 — 2021","IDF, Human Resources Corps","Video Editor, Motion Designer, Photographer"]
+];
+const EDUCATION = [
   ["2022 — 2024","Israeli Animation College","3D Art and Animation course"]
 ];
 /* ===================== end of your content ===================== */
@@ -645,9 +652,11 @@ $("#sections").innerHTML = SECTIONS.map(sec => `
     </div>`).join("")}
   </section>`).join("");
 
-$("#tools").innerHTML = TOOLS.map(([n,d])=>`<div class="tool"><div class="logo${LOGOS[n]?" has-img":""}">${LOGOS[n]?`<img src="${LOGOS[n]}" alt="" width="38" height="38">`:"logo"}</div><div><b>${n}</b><small>${d}</small></div></div>`).join("");
+$("#tools").innerHTML = TOOLS.map(([n,d])=>`<div class="tool"><div class="logo${LOGOS[n]?" has-img":""}">${LOGOS[n]?`<img src="${LOGOS[n]}" alt="" width="38" height="38"${n==="Maya"?' style="transform:scale(.88)"':""}>`:"logo"}</div><div><b>${n}</b><small>${d}</small></div></div>`).join("");
 $("#aiTools").innerHTML = AI_TOOLS.map(t=>`<span class="chip">${t}</span>`).join("");
-$("#timeline").innerHTML = EXPERIENCE.map(([w,c,r])=>`<li><div class="when">${w}</div><b>${c}</b><span>${r}</span></li>`).join("");
+const tl=a=>a.map(([w,c,r])=>`<li><div class="when">${w}</div><b>${c}</b><span>${r}</span></li>`).join("");
+$("#timeline").innerHTML = tl(EXPERIENCE);
+$("#education").innerHTML = tl(EDUCATION);
 
 /* info panel */
 const overlay=$("#overlay"), panel=$("#panel"); let lastFocus=null;
