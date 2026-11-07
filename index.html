@@ -715,7 +715,7 @@ function viewHtml(v, title){
   const alt = esc(title+" - "+v.label);
   if(v.img) return `<img class="stage-media" src="${esc(v.img)}" alt="${alt}" onload="fitStage(this.naturalWidth/this.naturalHeight)">`;
   if(v.mp4 && v.sound) return `<video class="stage-media pl-mp4" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" crossorigin="anonymous" data-end="${v.end||""}" autoplay loop playsinline disablepictureinpicture onloadedmetadata="fitStage(this.videoWidth/this.videoHeight)"></video>${controlsHtml()}`;
-  if(v.mp4) return `<video class="stage-media" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" autoplay muted loop playsinline onloadedmetadata="fitStage(this.videoWidth/this.videoHeight)"></video>`;
+  if(v.mp4) return `<video class="stage-media pl-mp4 silent" src="${esc(v.mp4)}" poster="${esc(v.poster||"")}" autoplay muted loop playsinline disablepictureinpicture onloadedmetadata="fitStage(this.videoWidth/this.videoHeight)"></video>${controlsHtml(false)}`;
   if(v.embed) return `<iframe src="${esc(v.embed)}" title="${alt}" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen></iframe>`;
   if(v.yt) return ytPlayer(v.yt, title);
   if(v.vimeo) return `<iframe class="pl-vimeo" src="https://player.vimeo.com/video/${esc(v.vimeo)}?autoplay=1&loop=1&controls=0&api=1&dnt=1&title=0&byline=0&portrait=0&keyboard=0&pip=0" title="${alt}" allow="autoplay; fullscreen"></iframe>${controlsHtml()}`;
@@ -732,9 +732,9 @@ function ytPlayer(id, title){
 const SOUND_ON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>`;
 const SOUND_OFF = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 6 6M22 9l-6 6"/></svg>`;
 const FADE = 1.1;
-function controlsHtml(){
+function controlsHtml(withSound=true){
   return `<button class="yt-shield pl-shield" type="button" aria-label="Pause"></button>
-    <button class="yt-sound pl-sound" type="button" aria-label="Mute">${SOUND_ON}</button>
+    ${withSound?`<button class="yt-sound pl-sound" type="button" aria-label="Mute">${SOUND_ON}</button>`:""}
     <div class="pl-bar" role="slider" tabindex="0" aria-label="Video position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i><b></b></i></div>`;
 }
 let AC = null;
@@ -749,12 +749,13 @@ function setupMedia(){
   const est=()=> S.playing ? S.t + (performance.now()-S.at)/1000 : S.t;
   let ctl;
   if(v){
-    let gain=null; const ac=audioCtx();
+    const silent=v.classList.contains("silent");
+    let gain=null; const ac=silent?null:audioCtx();
     if(ac){ try{ const src=ac.createMediaElementSource(v); gain=ac.createGain(); src.connect(gain); gain.connect(ac.destination); }catch(_){ gain=null; } }
     ctl={ time:()=>v.currentTime, dur:()=> +v.dataset.end || v.duration || 0, paused:()=>v.paused,
       play:()=>v.play().catch(()=>{ v.muted=true; showMute(); v.play().catch(()=>{}); }),
       pause:()=>v.pause(), seek:(t)=>{ v.currentTime=t; }, setMuted:m=>{ v.muted=m; }, muted:()=>v.muted,
-      vol:x=>{ if(gain) gain.gain.value=x; else { try{ v.volume=x; }catch(_){} } } };
+      vol:x=>{ if(silent) return; if(gain) gain.gain.value=x; else { try{ v.volume=x; }catch(_){} } } };
     ctl.vol(0); ctl.play();
   } else if(yt){
     const cmd=(func,args=[])=>yt.contentWindow && yt.contentWindow.postMessage(JSON.stringify({event:"command",func,args}),"*");
@@ -786,7 +787,7 @@ function setupMedia(){
       vol:x=>{ const q=S.muted?0:Math.round(x*50)/50; if(q!==S.vol){ S.vol=q; send("setVolume",q); } } };
   } else return;
 
-  function showMute(){ const m=ctl.muted(); sound.innerHTML=m?SOUND_OFF:SOUND_ON; sound.setAttribute("aria-label",m?"Unmute":"Mute"); }
+  function showMute(){ if(!sound) return; const m=ctl.muted(); sound.innerHTML=m?SOUND_OFF:SOUND_ON; sound.setAttribute("aria-label",m?"Unmute":"Mute"); }
   let drag=false, lastSeek=0;
   (function tick(){
     if(!shield.isConnected) return;
@@ -801,7 +802,7 @@ function setupMedia(){
     requestAnimationFrame(tick);
   })();
   shield.addEventListener("click",()=>{ ctl.paused() ? ctl.play() : ctl.pause(); });
-  sound.addEventListener("click",()=>{ ctl.setMuted(!ctl.muted()); showMute(); });
+  if(sound) sound.addEventListener("click",()=>{ ctl.setMuted(!ctl.muted()); showMute(); });
   /* drag the timeline */
   const seekAt=(e,final)=>{ const D=ctl.dur(); if(!D) return; const r=bar.getBoundingClientRect();
     const f=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)); fill.style.width=f*100+"%";
