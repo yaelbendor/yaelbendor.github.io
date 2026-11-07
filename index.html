@@ -117,7 +117,6 @@ section.cat{position:relative}
 .cat-head,.grid,.about{position:relative;z-index:1}
 .bg-deco{position:absolute;z-index:0;right:4%;top:28px;width:150px;height:auto;opacity:.4}
 .bg-deco.alt{right:auto;left:38%;top:44px}
-.bg-deco.dipper{width:200px;opacity:.75}
 .foot-sat{width:34px;height:34px;flex:none;opacity:.5;margin-right:4px}
 
 /* font preview (temporary) */
@@ -125,7 +124,7 @@ section.cat{position:relative}
   width:min(300px,calc(100vw - 32px));background:rgba(10,31,42,.92);border:1px solid rgba(0,255,205,.3);border-radius:14px;padding:12px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 14px 40px -12px rgba(0,0,0,.6)}
 .fontpick .label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .fontpick .label button{background:none;border:0;color:var(--mint-mute);cursor:pointer;font:inherit}
-@media (max-width:620px){.bg-deco{width:96px;top:16px}.bg-deco.dipper{width:130px}.bg-deco.alt{left:auto;right:4%}}
+@media (max-width:620px){.bg-deco{width:96px;top:16px}.bg-deco.alt{left:auto;right:4%}}
 .fontpick .opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .fontpick .opts button{padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--mint-soft);cursor:pointer;font-size:15px;text-align:left}
 .fontpick .opts button[aria-pressed="true"]{border-color:var(--mint);color:var(--mint);background:rgba(0,255,205,.08)}
@@ -151,6 +150,10 @@ section.cat{padding-block:72px;border-top:1px solid var(--line)}
 .sub-head + .grid.wide{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:640px){.sub-head + .grid.wide{grid-template-columns:1fr}}
 .vertical .thumb{aspect-ratio:9/16}
+.hover-prev{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:0;opacity:0;transition:opacity .35s;pointer-events:none;z-index:1;background:#000}
+.hover-prev.on{opacity:1}
+iframe.hover-prev{width:100%;height:100%}
+.thumb .badges{z-index:2}
 .p-screen.vert{aspect-ratio:9/16;width:min(100%,calc((100dvh - 48px) * 9 / 16))!important}
 .thumb .ph{position:absolute;inset:0;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 .card:hover .ph{transform:scale(1.05)}
@@ -177,16 +180,16 @@ section.cat{padding-block:72px;border-top:1px solid var(--line)}
 .tool .logo img{width:100%;height:100%;object-fit:contain}
 .tool b{display:block;color:var(--mint);font-size:14px;font-weight:600;line-height:1.2}
 .tool small{color:var(--mint-mute);font-size:12px}
-.ai-tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
+.ai-tools{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 40px}
 .chip{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mint-soft);background:rgba(0,255,205,.04)}
 .timeline{list-style:none;margin:0;padding:0;display:grid;gap:0}
 .timeline li{position:relative;padding:0 0 22px 22px}
-.timeline li::after{content:"";position:absolute;left:0;top:12px;bottom:-12px;width:1px;background:var(--line)}
+.timeline li::after{content:"";position:absolute;left:0;top:9px;bottom:-9px;width:1px;background:var(--line)}
 .timeline li:last-child::after{display:none}
 .timeline li:last-child{padding-bottom:0}
-.timeline li::before{content:"";position:absolute;z-index:1;left:-4px;top:8px;width:7px;height:7px;border-radius:50%;background:var(--sky);border:1px solid var(--mint)}
+.timeline li::before{content:"";position:absolute;z-index:1;left:-4px;top:4.5px;width:9px;height:9px;box-sizing:border-box;border-radius:50%;background:var(--sky);border:1px solid var(--mint)}
 #timeline li:first-child::before{background:var(--mint);box-shadow:0 0 8px var(--mint)}
-.timeline .when{font-family:var(--mono);font-size:12px;color:var(--mint-mute)}
+.timeline .when{display:block;height:18px;line-height:18px;font-family:var(--mono);font-size:12px;color:var(--mint-mute)}
 .timeline b{display:block;color:var(--mint);font-weight:600}
 .timeline span{font-size:14px}
 h3.sub{font-size:14px;letter-spacing:.04em;margin-bottom:4px}
@@ -399,7 +402,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
         <ul class="timeline" id="timeline"></ul>
         <h3 class="sub" style="margin:28px 0 16px">Education</h3>
         <ul class="timeline" id="education"></ul>
-        <div class="btns" style="margin-top:12px"><a class="btn ghost" href="Yael_Ben-Dor_Resume.pdf" target="_blank" rel="noopener">View CV</a></div>
+        <div class="btns" style="margin-top:28px"><a class="btn ghost" href="Yael_Ben-Dor_Resume.pdf" target="_blank" rel="noopener">View CV</a></div>
       </div>
     </div>
   </section>
@@ -556,22 +559,22 @@ const SECTIONS = [
     /* from her old Wix site. Videos play straight from Wix (mp4); square cards like on Wix */
     projects:[
       { title:"Ad for Particle", client:"Particle", year:2026, thumb:"https://static.wixstatic.com/media/40dccc_716b9625821542f69bd337de6db94036f003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ about:"An animated product ad for Particle's Starter Bundle that shows what's inside the box.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_716b9625821542f69bd337de6db94036/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_716b9625821542f69bd337de6db94036f003.jpg", sound:true}] } },
+        details:{ tools:["After Effects"], about:"An animated product ad for Particle's Starter Bundle that shows what's inside the box.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_716b9625821542f69bd337de6db94036/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_716b9625821542f69bd337de6db94036f003.jpg", sound:true}] } },
       { title:"\"The Red Rug\" ad", client:"The Red Rug", thumb:"https://static.wixstatic.com/media/40dccc_0f9b211c5c8d4b6f834818df35f8aa4ef003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ about:"A Hebrew kinetic typography ad for The Red Rug, with playful text animation and illustrated graphics.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_0f9b211c5c8d4b6f834818df35f8aa4e/720p/mp4/file.mp4", ar:1, poster:"https://static.wixstatic.com/media/40dccc_0f9b211c5c8d4b6f834818df35f8aa4ef003.jpg", sound:true}] } },
+        details:{ tools:["After Effects"], about:"A Hebrew kinetic typography ad for The Red Rug, with playful text animation and illustrated graphics.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_0f9b211c5c8d4b6f834818df35f8aa4e/720p/mp4/file.mp4", ar:1, poster:"https://static.wixstatic.com/media/40dccc_0f9b211c5c8d4b6f834818df35f8aa4ef003.jpg", sound:true}] } },
       { title:"Ad for Alex Daniel - Dream Team", client:"Alex Daniel", thumb:"https://static.wixstatic.com/media/40dccc_b8b8343d5c5a4c77b12f459345ddf313f003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ about:"A cinematic promo for Alex Daniel's Dream Team, with gold Hebrew typography on dark textures.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_b8b8343d5c5a4c77b12f459345ddf313/720p/mp4/file.mp4", ar:0.8, poster:"https://static.wixstatic.com/media/40dccc_b8b8343d5c5a4c77b12f459345ddf313f003.jpg", sound:true}], tools:["After Effects"] } },
+        details:{ tools:["After Effects"], about:"A cinematic promo for Alex Daniel's Dream Team, with gold Hebrew typography on dark textures.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_b8b8343d5c5a4c77b12f459345ddf313/720p/mp4/file.mp4", ar:0.8, poster:"https://static.wixstatic.com/media/40dccc_b8b8343d5c5a4c77b12f459345ddf313f003.jpg", sound:true}], tools:["After Effects"] } },
       { title:"Social media video for Fine Branding", client:"Fine Branding", thumb:"https://static.wixstatic.com/media/40dccc_ae547ad7ac784a2991f353be35f582c5f003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ about:"A social video for the Fine Branding agency, combining animated text, phone mockups and icons in the brand's pink palette.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_ae547ad7ac784a2991f353be35f582c5/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_ae547ad7ac784a2991f353be35f582c5f003.jpg", sound:true}] } },
+        details:{ tools:["After Effects"], about:"A social video for the Fine Branding agency, combining animated text, phone mockups and icons in the brand's pink palette.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_ae547ad7ac784a2991f353be35f582c5/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_ae547ad7ac784a2991f353be35f582c5f003.jpg", sound:true}] } },
       { title:"Logo animation for Fine Branding", client:"Fine Branding", thumb:"https://static.wixstatic.com/media/40dccc_d6219958649945cb8709679e920e14eff003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ about:"A logo animation for the Fine Branding agency.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_d6219958649945cb8709679e920e14ef/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_d6219958649945cb8709679e920e14eff003.jpg", sound:true}] } },
+        details:{ tools:["After Effects"], about:"A logo animation for the Fine Branding agency.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_d6219958649945cb8709679e920e14ef/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_d6219958649945cb8709679e920e14eff003.jpg", sound:true}] } },
       { title:"Ad for Alex Daniel - Business Class Seminar", client:"Alex Daniel", thumb:"https://static.wixstatic.com/media/40dccc_86e01528037641ba82572b4899c8d6def003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ about:"A promo for Alex Daniel's Business Class seminar, mixing animated Hebrew typography with event footage.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_86e01528037641ba82572b4899c8d6de/720p/mp4/file.mp4", ar:0.8, poster:"https://static.wixstatic.com/media/40dccc_86e01528037641ba82572b4899c8d6def003.jpg", sound:true}], tools:["After Effects"] } }
+        details:{ tools:["After Effects"], about:"A promo for Alex Daniel's Business Class seminar, mixing animated Hebrew typography with event footage.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_86e01528037641ba82572b4899c8d6de/720p/mp4/file.mp4", ar:0.8, poster:"https://static.wixstatic.com/media/40dccc_86e01528037641ba82572b4899c8d6def003.jpg", sound:true}], tools:["After Effects"] } }
     ]}
 
 ];
 
-const TOOLS = [["Maya","3D modelling"],["Blender","3D & render"],["ZBrush","Sculpting"],["Substance Painter","Texturing"],
+const TOOLS = [["Maya","Modeling & rendering"],["Blender","Modeling & rendering"],["ZBrush","Sculpting"],["Substance Painter","Texturing"],
   ["Photoshop","Image editing"],["After Effects","Motion"],["Premiere Pro","Editing"],["Illustrator","Vector"]];
 const AI_TOOLS = ["Seedance", "Higgsfield", "GPT Image 2", "Nano Banana", "Veo3", "Kling", "Seedream", "Midjourney", "Gemini Omni Flash", "Runway", "Arcads", "ElevenLabs", "LTX", "Weavy", "Suno"];
 const EXPERIENCE = [
@@ -620,9 +623,6 @@ const DECO = {
       <path d="M33 29 Q50 24 67 31 M32 40 Q50 36 68 42" fill="none" stroke="currentColor" stroke-opacity=".3"/>
       <path d="M7 47 A44 11 -14 0 0 93 26" fill="none" stroke="currentColor" stroke-width="1.2" transform="rotate(0)"/>
       <circle cx="88" cy="12" r="2.5" fill="currentColor" opacity=".7"/></svg>`,
-  editing:`<svg class="deco dipper" viewBox="-4 -2 120 74" aria-hidden="true">
-      <path d="M4 14 L30 6 L45 20 L65 33 L106 30 L101 64 L70 63 L65 33" fill="none" stroke="currentColor" stroke-opacity=".7" stroke-width="1.1" stroke-linejoin="round"/>
-      ${[[4,14],[30,6],[45,20],[65,33],[106,30],[101,64],[70,63]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="4.6" fill="currentColor" opacity=".18"/><circle cx="${x}" cy="${y}" r="2.4" fill="currentColor"><animate attributeName="opacity" values="1;.45;1" dur="${3+i*.7}s" repeatCount="indefinite"/></circle>`).join("")}</svg>`,
   motion:`<svg class="deco float" viewBox="0 0 110 70" aria-hidden="true">
       <path d="M8 60 L78 22" stroke="currentColor" stroke-opacity=".12" stroke-width="7" stroke-linecap="round"/>
       <path d="M22 54 L80 22" stroke="currentColor" stroke-opacity=".25" stroke-width="3.5" stroke-linecap="round"/>
@@ -912,6 +912,37 @@ function sparks(x,y){
 document.querySelectorAll(".nav-links a").forEach(a=>a.addEventListener("click",e=>sparks(e.clientX,e.clientY)));
 
 /* nav state */
+
+/* hover preview: play the work silently while the mouse is over its card */
+function previewOf(p){
+  for(const v of (p.details&&p.details.views)||[]){
+    if(v.mp4) return {mp4: v.mp4.replace(/\/(1080p|720p)\//,"/480p/"), end:v.end};
+    if(v.vimeo) return {vimeo:v.vimeo};
+    if(v.yt) return {yt:v.yt};
+  }
+  const m=(p.video||"").match(/(?:v=|youtu\.be\/|shorts\/)([\w-]{11})/); if(m) return {yt:m[1]};
+  return null;
+}
+if(matchMedia("(hover:hover) and (pointer:fine)").matches){
+  document.querySelectorAll("#sections .card").forEach(card=>{
+    const p=SECTIONS.find(s=>s.id===card.dataset.s).projects[+card.dataset.i], pv=previewOf(p); if(!pv) return;
+    const th=card.querySelector(".thumb"); let el=null, t=null;
+    card.addEventListener("pointerenter",()=>{ t=setTimeout(()=>{
+      if(pv.mp4){ el=document.createElement("video"); Object.assign(el,{muted:true,loop:!pv.end,autoplay:true,playsInline:true,src:pv.mp4}); el.setAttribute("muted","");
+        const vv=el; vv.addEventListener("playing",()=>vv.classList.add("on"),{once:true});
+        const vid=el; if(pv.end) vid.addEventListener("timeupdate",()=>{ if(vid.currentTime>=pv.end) vid.currentTime=0; });
+      } else {
+        el=document.createElement("iframe"); el.allow="autoplay"; el.tabIndex=-1;
+        el.src = pv.vimeo ? `https://player.vimeo.com/video/${pv.vimeo}?background=1&muted=1&autoplay=1&loop=1`
+                          : `https://www.youtube-nocookie.com/embed/${pv.yt}?autoplay=1&mute=1&controls=0&loop=1&playlist=${pv.yt}&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1`;
+        const ff=el; ff.addEventListener("load",()=>setTimeout(()=>ff.classList.add("on"),pv.yt?900:300),{once:true});
+      }
+      el.className=el.className?el.className+" hover-prev":"hover-prev"; el.setAttribute("aria-hidden","true"); th.appendChild(el);
+    },180); });
+    card.addEventListener("pointerleave",()=>{ clearTimeout(t); if(el){ try{el.pause&&el.pause();}catch(_){} el.remove(); el=null; } });
+  });
+}
+
 const nav=$("#nav"), links=[...document.querySelectorAll(".nav-links a")];
 addEventListener("scroll",()=>nav.classList.toggle("scrolled",scrollY>10),{passive:true});
 const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) links.forEach(l=>l.classList.toggle("active",l.getAttribute("href")==="#"+e.target.id)); }),{rootMargin:"-45% 0px -50% 0px"});
