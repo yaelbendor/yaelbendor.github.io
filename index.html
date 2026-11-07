@@ -126,7 +126,7 @@ section.cat{position:relative}
   width:min(300px,calc(100vw - 32px));background:rgba(10,31,42,.92);border:1px solid rgba(0,255,205,.3);border-radius:14px;padding:12px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 14px 40px -12px rgba(0,0,0,.6)}
 .fontpick .label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .fontpick .label button{background:none;border:0;color:var(--mint-mute);cursor:pointer;font:inherit}
-@media (max-width:620px){.bg-deco{width:96px;top:16px}.bg-deco.alt{left:auto;right:4%}}
+@media (max-width:620px){.bg-deco{width:96px;top:16px}.bg-deco.alt{left:auto;right:4%}#three-d .bg-deco{width:58px;top:14px;right:2%}}
 .fontpick .opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .fontpick .opts button{padding:8px 10px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--mint-soft);cursor:pointer;font-size:15px;text-align:left}
 .fontpick .opts button[aria-pressed="true"]{border-color:var(--mint);color:var(--mint);background:rgba(0,255,205,.08)}
@@ -654,6 +654,10 @@ function groupsOf(sec){
   return gs.filter(g=>g.items.length);
 }
 /* build sections */
+/* section order: video work first; add ?3d to the link to put 3D Art first */
+const SECTION_ORDER = /(^|[?&])3d\b/i.test(location.search.slice(1)) ? ["three-d","ai","editing","motion"] : ["ai","editing","motion","three-d"];
+SECTIONS.sort((a,b)=>SECTION_ORDER.indexOf(a.id)-SECTION_ORDER.indexOf(b.id));
+{ const nl=document.getElementById("navLinks"); SECTION_ORDER.slice().reverse().forEach(id=>{ const a=nl.querySelector('a[href="#'+id+'"]'); if(a) nl.prepend(a); }); }
 $("#sections").innerHTML = SECTIONS.map(sec => `
   <section class="cat" id="${sec.id}">
     <div class="cat-head">
