@@ -446,7 +446,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
    delete a block to remove one. Optional fields can be left out:
    if a project has no "details", clicking it simply plays the video.
    ===================================================================== */
-const SHOWREEL_LOOP = "media/showreel.mp4";  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
+const SHOWREEL_LOOP = /(^|[?&])3d\b/i.test(location.search.slice(1)) ? "media/showreel-3d.mp4" : "media/showreel.mp4";  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
 
 const SECTIONS = [
   { id:"ai", format:"vertical", title:"AI Ads", text:"Meta performance ads made with generative AI, from 100% AI presenters to AI comics.",
