@@ -878,6 +878,17 @@ document.querySelectorAll(".card").forEach(c=>c.addEventListener("click",()=>{
   const sec=SECTIONS.find(s=>s.id===c.dataset.s); openProject(sec, +c.dataset.i);
 }));
 
+/* direct links to a project's pop-up: add #project-name to the address, e.g. /3d#stylized-pirate-book
+   (the name is the project title in lowercase with dashes, without anything after " - ") */
+function projectSlug(title){ return String(title).split(" - ")[0].toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""); }
+function openFromHash(){
+  const h=decodeURIComponent(location.hash.slice(1)).toLowerCase(); if(!h) return;
+  for(const sec of SECTIONS){ const i=sec.projects.findIndex(p=>projectSlug(p.title)===h);
+    if(i>-1){ const el=document.getElementById(sec.id); if(el) el.scrollIntoView({block:"start"}); openProject(sec, i); return; } }
+}
+addEventListener("hashchange", openFromHash);
+requestAnimationFrame(openFromHash);
+
 
 /* mobile menu */
 const menuBtn=$("#menuBtn");
