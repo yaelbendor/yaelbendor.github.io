@@ -38,7 +38,7 @@ html{scroll-behavior:smooth;background:var(--sky);overflow-x:hidden;overflow-x:c
 /* nothing may stick out sideways: on phones that makes the whole page zoom out */
 section.cat:not(#about),footer{overflow-x:clip}
 body{background:var(--sky);color:var(--mint-soft);font-family:var(--body);font-size:16px;line-height:1.6;
-  padding-left:max(var(--gutter),env(safe-area-inset-left,0px));padding-right:max(var(--gutter),env(safe-area-inset-right,0px));overflow-x:hidden}
+  padding-left:max(var(--gutter),env(safe-area-inset-left,0px));padding-right:max(var(--gutter),env(safe-area-inset-right,0px));overflow-x:clip}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--sky)}
 #stars{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .wrap{position:relative;z-index:1;max-width:1640px;margin:0 auto}
@@ -49,12 +49,13 @@ h1,h2,h3{font-family:var(--display);color:var(--mint);font-weight:600;text-wrap:
 
 /* nav */
 nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;
-  padding-block:18px;background:color-mix(in srgb,var(--sky) 82%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  padding-block:8px;background:color-mix(in srgb,var(--sky) 82%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   margin-inline:calc(-1 * max(var(--gutter),env(safe-area-inset-left,0px)));padding-inline:max(var(--gutter),env(safe-area-inset-left,0px));border-bottom:1px solid transparent;transition:border-color .3s}
 nav.scrolled{border-bottom-color:var(--line)}
-.brand{font-family:var(--display);font-size:clamp(19px,1.7vw,26px);font-weight:600;letter-spacing:.01em;white-space:nowrap}
+.brand{font-family:var(--display);font-size:clamp(18px,1.45vw,22px);font-weight:600;letter-spacing:.01em;white-space:nowrap}
 .brand span{color:var(--mint-mute);font-weight:400}
-.brand{display:inline-flex;align-items:center;gap:.4em}.brand .logo{width:2.5em;height:2.5em;flex:none;margin:-.5em -.1em -.5em 0}
+.brand{display:inline-flex;align-items:center;gap:.4em}.brand .logo{width:2.2em;height:2.2em;flex:none;margin:-.45em -.1em -.45em 0}
+section[id],header[id]{scroll-margin-top:64px}
 .nav-links{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 .nav-links a{position:relative;font-size:14px;font-weight:500;color:var(--mint-soft);padding:6px 12px;border-radius:999px;transition:color .2s,background .2s}
 .nav-links a:hover,.nav-links a.active{color:var(--mint);background:rgba(0,255,205,.08)}
@@ -80,7 +81,7 @@ nav.scrolled{border-bottom-color:var(--line)}
 .anim-ready #stars{opacity:1}
 .bg-deco{transition:opacity 1.2s}
 /* mobile menu */
-.menu-btn{display:none;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--mint);cursor:pointer;place-items:center}
+.menu-btn{display:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--mint);cursor:pointer;place-items:center}
 .menu-btn span,.menu-btn span::before,.menu-btn span::after{display:block;width:16px;height:1.5px;background:currentColor;border-radius:2px;position:relative;transition:transform .25s,background .25s}
 .menu-btn span::before,.menu-btn span::after{content:"";position:absolute;left:0}
 .menu-btn span::before{top:-5px}.menu-btn span::after{top:5px}
