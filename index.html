@@ -375,7 +375,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
     <div class="orbit" aria-hidden="true"></div>
     <div class="orbit small" aria-hidden="true"></div>
     <div class="hero-content">
-      <div class="label">AI Video · 3D Art · Video Editing · Motion Design</div>
+      <div class="label">AI Video · Video Editing · Motion Design · 3D Art</div>
       <h1>Yael Ben-Dor<em>AI video specialist, video editor &amp; 3D artist</em></h1>
       <p>I make social video ads that people stop scrolling for, built with generative AI, Premiere Pro and After Effects. I'm also a 3D artist: I model, sculpt, texture and render, from stylized game-ready props to product renders.</p>
       <div class="btns">
@@ -450,6 +450,17 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 const IS3D = /(^|[?&])3d\b/i.test(location.search.slice(1));
 if(IS3D && history.replaceState) history.replaceState(null, "", "/3d" + location.hash);
 const SHOWREEL_LOOP = IS3D ? "media/showreel-3d.mp4" : "media/showreel.mp4";  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
+/* 3D-focused wording for the top of the page and the About text (the main site keeps its own) */
+if(IS3D){
+  const q=(sel)=>document.querySelector(sel);
+  if(q(".hero-content .label")) q(".hero-content .label").textContent="3D Art · AI Video · Video Editing · Motion Design";
+  if(q("#top h1")) q("#top h1").innerHTML="Yael Ben-Dor<em>3D Artist, AI Video Specialist &amp; Video Editor</em>";
+  if(q(".hero-content > p")) q(".hero-content > p").textContent="I'm a 3D artist first: I model, sculpt, texture and render stylized game-ready props and product renders. I also make AI video ads and motion design, built with generative AI, Premiere Pro and After Effects.";
+  if(q("#top .btn.solid")) q("#top .btn.solid").setAttribute("href","#three-d");
+  const ps=document.querySelectorAll("#about .about > div:last-child > p");
+  if(ps[0]) ps[0].textContent="I'm a 3D artist at heart, with a background in video editing and social media ads. At Particle I render the company's products in 3D, create AI videos and edit Meta video ads.";
+  if(ps[1]) ps[1].textContent="In 3D I model in Maya and Blender, sculpt in ZBrush and texture in Substance Painter, with a soft spot for stylized, hand-painted, game-ready assets. The same eye for light, form and detail carries into my AI video and motion work.";
+}
 
 const SECTIONS = [
   { id:"ai", format:"vertical", title:"AI Ads", text:"Meta performance ads made with generative AI, from 100% AI presenters to AI comics.",
@@ -535,7 +546,7 @@ const SECTIONS = [
           tools:["Maya","V-Ray"], specs:[["Renderer","V-Ray"]],
           views:[ {label:"Render", img:"https://cdna.artstation.com/p/assets/images/images/081/423/066/large/yael-ben-dor-final-vray-day-yael-ben-dor.jpg?1730223327"} ] } }
     ]},
-  { id:"editing", format:"vertical", title:"Video Editing", text:"Editing, pacing and storytelling for social ads and music videos, mostly with live footage and real people.",
+  { id:"editing", format:"vertical", title:"Video Editing", text:"Editing, pacing and storytelling for social ads and music videos, with live footage and real people.",
     mainHeading:"Social media ads", otherHeading:"Music videos & covers",
     projects:[
       /* tags: only add one when the video is "AI-generated" or "Mixed" (AI + real people). Live action is the default, no tag.
@@ -570,14 +581,14 @@ const SECTIONS = [
     projects:[
       { title:"Ad for Particle", client:"Particle", year:2026, thumb:"https://static.wixstatic.com/media/40dccc_716b9625821542f69bd337de6db94036f003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
         details:{ tools:["After Effects"], about:"An animated product ad for Particle's Starter Bundle that shows what's inside the box.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_716b9625821542f69bd337de6db94036/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_716b9625821542f69bd337de6db94036f003.jpg", sound:true}] } },
-      { title:"\"The Red Rug\" ad", client:"The Red Rug", thumb:"https://static.wixstatic.com/media/40dccc_0f9b211c5c8d4b6f834818df35f8aa4ef003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
+      { title:"\"The Red Rug\" ad", client:"The Red Rug", year:2023, thumb:"https://static.wixstatic.com/media/40dccc_0f9b211c5c8d4b6f834818df35f8aa4ef003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
         details:{ tools:["After Effects"], about:"A Hebrew kinetic typography ad for The Red Rug, with playful text animation and illustrated graphics.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_0f9b211c5c8d4b6f834818df35f8aa4e/720p/mp4/file.mp4", ar:1, poster:"https://static.wixstatic.com/media/40dccc_0f9b211c5c8d4b6f834818df35f8aa4ef003.jpg", sound:true}] } },
-      { title:"Ad for Alex Daniel - Dream Team", client:"Alex Daniel", thumb:"https://static.wixstatic.com/media/40dccc_b8b8343d5c5a4c77b12f459345ddf313f003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
+      { title:"Ad for Alex Daniel - Dream Team", client:"Alex Daniel", year:2022, thumb:"https://static.wixstatic.com/media/40dccc_b8b8343d5c5a4c77b12f459345ddf313f003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
         details:{ tools:["After Effects"], about:"A cinematic promo for Alex Daniel's Dream Team, with gold Hebrew typography on dark textures.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_b8b8343d5c5a4c77b12f459345ddf313/720p/mp4/file.mp4", ar:0.8, poster:"https://static.wixstatic.com/media/40dccc_b8b8343d5c5a4c77b12f459345ddf313f003.jpg", sound:true}], tools:["After Effects"] } },
-      { title:"Social media video for Fine Branding", client:"Fine Branding", thumb:"https://static.wixstatic.com/media/40dccc_ae547ad7ac784a2991f353be35f582c5f003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ tools:["After Effects"], about:"A social video for the Fine Branding agency, combining animated text, phone mockups and icons in the brand's pink palette.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_ae547ad7ac784a2991f353be35f582c5/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_ae547ad7ac784a2991f353be35f582c5f003.jpg", sound:true}] } },
-      { title:"Logo animation for Fine Branding", client:"Fine Branding", thumb:"https://static.wixstatic.com/media/40dccc_d6219958649945cb8709679e920e14eff003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
-        details:{ tools:["After Effects"], about:"A logo animation for the Fine Branding agency.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_d6219958649945cb8709679e920e14ef/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_d6219958649945cb8709679e920e14eff003.jpg", sound:true}] } },
+      { title:"Social media video for Fine House of Brands", client:"Fine House of Brands", year:2022, thumb:"https://static.wixstatic.com/media/40dccc_ae547ad7ac784a2991f353be35f582c5f003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ tools:["After Effects"], about:"A social video for the Fine House of Brands agency, combining animated text, phone mockups and icons in the brand's pink palette.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_ae547ad7ac784a2991f353be35f582c5/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_ae547ad7ac784a2991f353be35f582c5f003.jpg", sound:true}] } },
+      { title:"Logo animation for Fine House of Brands", client:"Fine House of Brands", year:2022, thumb:"https://static.wixstatic.com/media/40dccc_d6219958649945cb8709679e920e14eff003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
+        details:{ tools:["After Effects"], about:"A logo animation for the Fine House of Brands agency.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_d6219958649945cb8709679e920e14ef/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_d6219958649945cb8709679e920e14eff003.jpg", sound:true}] } },
       { title:"Ad for Alex Daniel - Business Class Seminar", client:"Alex Daniel", year:2022, thumb:"https://static.wixstatic.com/media/40dccc_86e01528037641ba82572b4899c8d6def003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
         details:{ tools:["After Effects"], about:"A promo for Alex Daniel's Business Class seminar, mixing animated Hebrew typography with event footage.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_86e01528037641ba82572b4899c8d6de/720p/mp4/file.mp4", ar:0.8, poster:"https://static.wixstatic.com/media/40dccc_86e01528037641ba82572b4899c8d6def003.jpg", sound:true}], tools:["After Effects"] } }
     ]}
