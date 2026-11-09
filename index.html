@@ -408,7 +408,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
         <ul class="timeline" id="timeline"></ul>
         <h3 class="sub" style="margin:28px 0 16px">Education</h3>
         <ul class="timeline" id="education"></ul>
-        <div class="btns" style="margin-top:28px"><a class="btn ghost" href="Yael_Ben-Dor_Resume.pdf?v=20261109" id="cvLink" target="_blank" rel="noopener">View CV</a></div>
+        <div class="btns" style="margin-top:28px"><a class="btn ghost" href="Yael_Ben-Dor_Resume.pdf?v=20261109b" id="cvLink" target="_blank" rel="noopener">View CV</a></div>
       </div>
     </div>
   </section>
@@ -448,7 +448,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
    ===================================================================== */
 /* 3D version of the site: yaelbendor.github.io/3d (that page forwards here as ?3d, then the address is shown as /3d again) */
 const IS3D = /(^|[?&])3d\b/i.test(location.search.slice(1));
-if(IS3D){ const cv=document.getElementById("cvLink"); if(cv) cv.href="Yael_Ben-Dor_3D_Resume.pdf?v=20261109"; }
+if(IS3D){ const cv=document.getElementById("cvLink"); if(cv) cv.href="Yael_Ben-Dor_3D_Resume.pdf?v=20261109b"; }
 if(IS3D && history.replaceState) history.replaceState(null, "", "/3d" + location.hash);
 const SHOWREEL_LOOP = IS3D ? "media/showreel-3d.mp4" : "media/showreel.mp4";  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
 /* 3D-focused wording for the top of the page and the About text (the main site keeps its own) */
