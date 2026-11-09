@@ -450,7 +450,9 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 const IS3D = /(^|[?&])3d\b/i.test(location.search.slice(1));
 if(IS3D){ const cv=document.getElementById("cvLink"); if(cv) cv.href="Yael_Ben-Dor_3D_Resume.pdf?v=20261109c"; }
 if(IS3D && history.replaceState) history.replaceState(null, "", "/3d" + location.hash);
-const SHOWREEL_LOOP = IS3D ? "media/showreel-3d.mp4" : "media/showreel.mp4";  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
+const SHOWREEL_LOOP = IS3D ? "media/showreel-3d.mp4" : null;  // main site: no showreel behind the title  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
+/* main site: the hero has no background at all (the showreel was removed) */
+if(!IS3D){ const hb=document.getElementById("heroBg"); if(hb) hb.remove(); }
 /* 3D-focused wording for the top of the page and the About text (the main site keeps its own) */
 if(IS3D){
   const q=(sel)=>document.querySelector(sel);
