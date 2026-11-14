@@ -184,7 +184,8 @@ iframe.hover-prev{width:100%;height:100%}
 .tool b{display:block;color:var(--mint);font-size:14px;font-weight:600;line-height:1.2}
 .tool small{color:var(--mint-mute);font-size:12px}
 .ai-tools{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 40px}
-.chip{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mint-soft);background:rgba(0,255,205,.04)}
+.chip{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mint-soft);background:rgba(0,255,205,.04);transition:transform .25s,border-color .25s}
+.chip:hover{transform:translateY(-3px);border-color:rgba(0,255,205,.45)}
 .timeline{list-style:none;margin:0;padding:0;display:grid;gap:0}
 .timeline li{position:relative;padding:0 0 22px 22px}
 .timeline li::after{content:"";position:absolute;left:0;top:9px;bottom:-9px;width:1px;background:var(--line)}
@@ -407,7 +408,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
         <ul class="timeline" id="timeline"></ul>
         <h3 class="sub" style="margin:28px 0 16px">Education</h3>
         <ul class="timeline" id="education"></ul>
-        <div class="btns" style="margin-top:28px"><a class="btn ghost" href="Yael_Ben-Dor_Resume.pdf?v=20261112b" id="cvLink" target="_blank" rel="noopener">View CV</a></div>
+        <div class="btns" style="margin-top:28px"><a class="btn ghost" href="Yael_Ben-Dor_Resume.pdf?v=20261109c" id="cvLink" target="_blank" rel="noopener">View CV</a></div>
       </div>
     </div>
   </section>
@@ -447,7 +448,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
    ===================================================================== */
 /* 3D version of the site: yaelbendor.github.io/3d (that page forwards here as ?3d, then the address is shown as /3d again) */
 const IS3D = /(^|[?&])3d\b/i.test(location.search.slice(1));
-if(IS3D){ const cv=document.getElementById("cvLink"); if(cv) cv.href="Yael_Ben-Dor_3D_Resume.pdf?v=20261112b"; }
+if(IS3D){ const cv=document.getElementById("cvLink"); if(cv) cv.href="Yael_Ben-Dor_3D_Resume.pdf?v=20261109c"; }
 if(IS3D && history.replaceState) history.replaceState(null, "", "/3d" + location.hash);
 const SHOWREEL_LOOP = IS3D ? "media/showreel-3d.mp4" : null;  // main site: no showreel behind the title  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
 /* main site: the hero has no background at all (the showreel was removed) */
@@ -598,7 +599,7 @@ const SECTIONS = [
 ];
 
 const TOOLS = [["Maya","Modeling & rendering"],["Blender","Modeling & rendering"],["ZBrush","Sculpting"],["Substance Painter","Texturing"],
-  ["Photoshop","Image editing"],["After Effects","Motion"],["Premiere Pro","Editing"],["Illustrator","Vector"]];
+  ["Photoshop","Image editing"],["After Effects","Motion"],["Premiere Pro","Video Editing"],["Illustrator","Vector"]];
 const AI_TOOLS = ["Seedance", "Higgsfield", "GPT Image 2", "Nano Banana", "Veo3", "Kling", "Seedream", "Midjourney", "Gemini Omni Flash", "Runway", "Arcads", "ElevenLabs", "LTX", "Figma Weave", "Suno"];
 const EXPERIENCE = [
   ["2025 — now","Particle","Video Editor, AI Video Specialist & 3D Rendering"],
