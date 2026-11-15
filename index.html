@@ -367,6 +367,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
       <a href="#three-d">3D Art</a>
       <a href="#editing">Video Editing</a>
       <a href="#motion">Motion</a>
+      <a href="#illustration">Illustration</a>
       <a href="#about">About</a>
     </div>
   </nav>
@@ -594,8 +595,22 @@ const SECTIONS = [
         details:{ tools:["After Effects"], about:"A logo animation for the Fine House of Brands agency.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_d6219958649945cb8709679e920e14ef/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_d6219958649945cb8709679e920e14eff003.jpg", sound:true}] } },
       { title:"Ad for Alex Daniel - Business Class Seminar", client:"Alex Daniel", year:2022, thumb:"https://static.wixstatic.com/media/40dccc_86e01528037641ba82572b4899c8d6def003.jpg/v1/fill/w_800,h_800,al_c,q_85,enc_auto/thumb.jpg",
         details:{ tools:["After Effects"], about:"A promo for Alex Daniel's Business Class seminar, mixing animated Hebrew typography with event footage.", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_86e01528037641ba82572b4899c8d6de/720p/mp4/file.mp4", ar:0.8, poster:"https://static.wixstatic.com/media/40dccc_86e01528037641ba82572b4899c8d6def003.jpg", sound:true}], tools:["After Effects"] } }
-    ]}
-
+    ]},
+  { id:"illustration", format:"square", title:"Illustration", text:"Digital paintings and pencil drawings, from fan art to album covers.",
+    projects:[
+      { title:"Digital Eye Study", year:2019, thumb:"media/2d/digital-eye-thumb.webp",
+        details:{ about:"An eye drawn from imagination, digitally.", tools:["Photoshop"], views:[{label:"Drawing", img:"media/2d/digital-eye.webp"}] } },
+      { title:"Neil Peart Portrait", year:2021, thumb:"media/2d/neil-peart-thumb.webp",
+        details:{ about:"A pencil portrait of Neil Peart, drummer of Rush.", tools:["Pencil"], views:[{label:"Drawing", img:"media/2d/neil-peart.webp"}] } },
+      { title:"Album Cover for Yoav Hanukkah", year:2022, thumb:"media/2d/yoav-hanukkah-album-thumb.webp",
+        details:{ about:"Album cover art for Yoav Hanukkah, digitally drawn.", tools:["Photoshop"], views:[{label:"Drawing", img:"media/2d/yoav-hanukkah-album.webp"}] } },
+      { title:"Nebula Planet", year:2018, thumb:"media/2d/nebula-planet-thumb.webp",
+        details:{ about:"A planet in a nebula, digitally drawn.", tools:["Photoshop"], views:[{label:"Drawing", img:"media/2d/nebula-planet.webp"}] } },
+      { title:"The Dragon Prince Fan Art", year:2020, thumb:"media/2d/dragon-prince-knight-thumb.webp",
+        details:{ about:"Fan art of a character from The Dragon Prince, digitally drawn.", tools:["Photoshop"], views:[{label:"Drawing", img:"media/2d/dragon-prince-knight.webp"}] } },
+      { title:"Wall-E Drawing", year:2022, thumb:"media/2d/wall-e-thumb.webp",
+        details:{ about:"A pencil drawing of Wall-E, the Pixar robot.", tools:["Pencil"], views:[{label:"Drawing", img:"media/2d/wall-e.webp"}] } }
+    ] }
 ];
 
 const TOOLS = [["Maya","Modeling & rendering"],["Blender","Modeling & rendering"],["ZBrush","Sculpting"],["Substance Painter","Texturing"],
@@ -672,7 +687,7 @@ function groupsOf(sec){
 }
 /* build sections */
 /* section order: video work first; add ?3d to the link to put 3D Art first */
-const SECTION_ORDER = IS3D ? ["three-d","ai","editing","motion"] : ["ai","editing","motion","three-d"];
+const SECTION_ORDER = IS3D ? ["three-d","ai","editing","motion","illustration"] : ["ai","editing","motion","three-d","illustration"];
 SECTIONS.sort((a,b)=>SECTION_ORDER.indexOf(a.id)-SECTION_ORDER.indexOf(b.id));
 { const nl=document.getElementById("navLinks"); SECTION_ORDER.slice().reverse().forEach(id=>{ const a=nl.querySelector('a[href="#'+id+'"]'); if(a) nl.prepend(a); }); }
 $("#sections").innerHTML = SECTIONS.map(sec => `
