@@ -687,7 +687,7 @@ function groupsOf(sec){
 }
 /* build sections */
 /* section order: video work first; add ?3d to the link to put 3D Art first */
-const SECTION_ORDER = IS3D ? ["three-d","ai","editing","motion","illustration"] : ["ai","editing","motion","three-d","illustration"];
+const SECTION_ORDER = IS3D ? ["three-d","illustration","ai","editing","motion"] : ["ai","editing","motion","three-d","illustration"];
 SECTIONS.sort((a,b)=>SECTION_ORDER.indexOf(a.id)-SECTION_ORDER.indexOf(b.id));
 { const nl=document.getElementById("navLinks"); SECTION_ORDER.slice().reverse().forEach(id=>{ const a=nl.querySelector('a[href="#'+id+'"]'); if(a) nl.prepend(a); }); }
 $("#sections").innerHTML = SECTIONS.map(sec => `
