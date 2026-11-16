@@ -613,6 +613,7 @@ const EXPERIENCE = [
   ["2020 — 2024","World of Astronomy","Video Editor, Graphic Designer, Astronomy Guide"],
   ["2019 — 2021","IDF, Human Resources Corps","Video Editor, Motion Designer, Photographer"]
 ];
+if(IS_AI){ const r=EXPERIENCE.find(e=>e[1]==="Particle"); if(r) r[2]="Video Editor & AI Video Specialist"; }  // /ai: no 3D rendering in the title
 const EDUCATION = [
   ["2022 — 2024","Israeli Animation College","3D Art and Animation course"]
 ];
