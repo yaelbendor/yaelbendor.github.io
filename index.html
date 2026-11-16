@@ -564,13 +564,13 @@ const SECTIONS = [
       { title:"Ofir Segal Deadline Social Media Video", client:"Ofir Segal", year:2025, thumb:"https://static.wixstatic.com/media/40dccc_bdb3c23bb96c44408317d7243c8afe84f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ about:"A talking-head video for Ofir Segal about deadlines, edited with Hebrew captions.", tools:["Premiere Pro"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_bdb3c23bb96c44408317d7243c8afe84/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_bdb3c23bb96c44408317d7243c8afe84f003.jpg", sound:true}] } },
 
-      { title:"Moon Safari - Between the Devil and Me (Official Lyric Video)", client:"Moon Safari", year:2023, format:"horizontal", video:"https://www.youtube.com/watch?v=ryzIHFOjnG4",
+      { title:"Moon Safari - Between the Devil and Me (Official Lyric Video)", hideOn:"ai", client:"Moon Safari", year:2023, format:"horizontal", video:"https://www.youtube.com/watch?v=ryzIHFOjnG4",
         details:{ about:"Official lyric video I created for the Swedish band Moon Safari.", tools:["Premiere Pro","After Effects"] } },
-      { title:"Moon Safari - Emma, Come On (Official Music Video)", client:"Moon Safari", year:2023, format:"horizontal", video:"https://www.youtube.com/watch?v=CPQnsCQGXdI",
+      { title:"Moon Safari - Emma, Come On (Official Music Video)", hideOn:"ai", client:"Moon Safari", year:2023, format:"horizontal", video:"https://www.youtube.com/watch?v=CPQnsCQGXdI",
         details:{ about:"Official music video I made for the Swedish band Moon Safari.", tools:["Premiere Pro"] } },
-      { title:"Brothers - Fullmetal Alchemist - Flute & Guitar Cover", year:2022, format:"horizontal", video:"https://www.youtube.com/watch?v=IBKgL7ZD-xU",
+      { title:"Brothers - Fullmetal Alchemist - Flute & Guitar Cover", hideOn:"ai", year:2022, format:"horizontal", video:"https://www.youtube.com/watch?v=IBKgL7ZD-xU",
         details:{ about:"A flute and guitar cover of 'Brothers' from the anime Fullmetal Alchemist, performed with my friend Danielle Sassi and edited by me.", tools:["Premiere Pro"] } },
-      { title:"Horizons - Guitar Cover", year:2020, format:"horizontal", video:"https://www.youtube.com/watch?v=esWob1xs3xA",
+      { title:"Horizons - Guitar Cover", hideOn:"ai", year:2020, format:"horizontal", video:"https://www.youtube.com/watch?v=esWob1xs3xA",
         details:{ about:"A guitar cover I played and edited.", tools:["Premiere Pro"] } }
     ]},
   { id:"motion", format:"square", title:"Motion Design", text:"Motion graphics, logo animation and animated ads, made in After Effects.",
@@ -681,7 +681,8 @@ const SECTION_ORDER = IS3D ? ["three-d","illustration","ai","editing","motion"]
                     : IS_AI ? ["ai","editing","motion"]
                     : ["ai","three-d","illustration","motion"];   // main site: no Video Editing
 for(let i=SECTIONS.length-1;i>=0;i--) if(!SECTION_ORDER.includes(SECTIONS[i].id)) SECTIONS.splice(i,1);
-SECTIONS.forEach(sec=>{ sec.projects=sec.projects.filter(p=>!p.site || (p.site==="ai" && IS_AI)); });  // site:"ai" = shown only on /ai
+SECTIONS.forEach(sec=>{ sec.projects=sec.projects.filter(p=>(!p.site || (p.site==="ai" && IS_AI)) && !(p.hideOn==="ai" && IS_AI)); });  // site:"ai" = only on /ai; hideOn:"ai" = not on /ai
+if(IS_AI){ const ed=SECTIONS.find(x=>x.id==="editing"); if(ed) ed.text="Editing, pacing and storytelling for social ads, with live footage and real people."; }
 { const nl=document.getElementById("navLinks"); nl.querySelectorAll('a[href^="#"]').forEach(a=>{ const id=a.getAttribute("href").slice(1); if(["ai","editing","motion","three-d","illustration"].includes(id) && !SECTION_ORDER.includes(id)) a.remove(); }); }
 SECTIONS.sort((a,b)=>SECTION_ORDER.indexOf(a.id)-SECTION_ORDER.indexOf(b.id));
 { const nl=document.getElementById("navLinks"); SECTION_ORDER.slice().reverse().forEach(id=>{ const a=nl.querySelector('a[href="#'+id+'"]'); if(a) nl.prepend(a); }); }
