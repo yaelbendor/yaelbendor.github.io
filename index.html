@@ -466,8 +466,8 @@ if(!IS3D){ const hb=document.getElementById("heroBg"); if(hb) hb.remove(); const
 /* 3D-focused wording for the top of the page and the About text (the main site keeps its own) */
 if(IS3D){
   const q=(sel)=>document.querySelector(sel);
-  if(q(".hero-content .label")) q(".hero-content .label").textContent="3D Art · AI Video · Video Editing · Motion Design";
-  if(q("#top h1")) q("#top h1").innerHTML="Yael Ben-Dor<em>3D Artist, AI Video Specialist &amp; Video Editor</em>";
+  if(q(".hero-content .label")) q(".hero-content .label").textContent="3D Art · AI Video · Motion Design";
+  if(q("#top h1")) q("#top h1").innerHTML="Yael Ben-Dor<em>3D Artist &amp; AI Video Specialist</em>";
   if(q(".hero-content > p")) q(".hero-content > p").textContent="I model, sculpt, texture and render stylized game-ready props and product renders. I also make AI video ads and motion design, built with generative AI, Premiere Pro and After Effects.";
   if(q("#top .btn.solid")) q("#top .btn.solid").setAttribute("href","#three-d");
   const ps=document.querySelectorAll("#about .about > div:last-child > p");
@@ -676,7 +676,7 @@ function groupsOf(sec){
 }
 /* build sections */
 /* section order: video work first; add ?3d to the link to put 3D Art first */
-const SECTION_ORDER = IS3D ? ["three-d","illustration","ai","editing","motion"]
+const SECTION_ORDER = IS3D ? ["three-d","illustration","ai","motion"]
                     : IS_AI ? ["ai","editing","motion"]
                     : ["ai","three-d","illustration","motion"];   // main site: no Video Editing
 for(let i=SECTIONS.length-1;i>=0;i--) if(!SECTION_ORDER.includes(SECTIONS[i].id)) SECTIONS.splice(i,1);
