@@ -409,7 +409,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
         <ul class="timeline" id="timeline"></ul>
         <h3 class="sub" style="margin:28px 0 16px">Education</h3>
         <ul class="timeline" id="education"></ul>
-        <div class="btns" style="margin-top:28px"><a class="btn ghost" href="Yael_Ben-Dor_Resume.pdf?v=20261109c" id="cvLink" target="_blank" rel="noopener">View CV</a></div>
+        <div class="btns" style="margin-top:28px"><a class="btn ghost" href="Yael_Ben-Dor_Resume.pdf?v=20261117" id="cvLink" target="_blank" rel="noopener">View CV</a></div>
       </div>
     </div>
   </section>
@@ -449,9 +449,10 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
    ===================================================================== */
 /* 3D version of the site: yaelbendor.github.io/3d (that page forwards here as ?3d, then the address is shown as /3d again) */
 const IS3D = /(^|[?&])3d\b/i.test(location.search.slice(1));
-if(IS3D){ const cv=document.getElementById("cvLink"); if(cv) cv.href="Yael_Ben-Dor_3D_Resume.pdf?v=20261109c"; }
+if(IS3D){ const cv=document.getElementById("cvLink"); if(cv) cv.href="Yael_Ben-Dor_3D_Resume.pdf?v=20261117"; }
 if(IS3D && history.replaceState) history.replaceState(null, "", "/3d" + location.hash);
 const IS_AI = !IS3D && /(^|[?&])ai\b/i.test(location.search.slice(1));  // the AI / video editing / motion site at /ai
+if(IS_AI){ const cv=document.getElementById("cvLink"); if(cv) cv.href="Yael_Ben-Dor_AI_Resume.pdf?v=20261117"; }
 if(IS_AI && history.replaceState) history.replaceState(null, "", "/ai" + location.hash);
 if(IS3D) document.title="Yael Ben-Dor 3D"; else if(IS_AI) document.title="Yael Ben-Dor AI";  // tab name per site
 if(IS_AI){
