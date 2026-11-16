@@ -453,6 +453,7 @@ if(IS3D){ const cv=document.getElementById("cvLink"); if(cv) cv.href="Yael_Ben-D
 if(IS3D && history.replaceState) history.replaceState(null, "", "/3d" + location.hash);
 const IS_AI = !IS3D && /(^|[?&])ai\b/i.test(location.search.slice(1));  // the AI / video editing / motion site at /ai
 if(IS_AI && history.replaceState) history.replaceState(null, "", "/ai" + location.hash);
+if(IS3D) document.title="Yael Ben-Dor 3D"; else if(IS_AI) document.title="Yael Ben-Dor AI";  // tab name per site
 if(IS_AI){
   const q=(sel)=>document.querySelector(sel);
   if(q(".hero-content .label")) q(".hero-content .label").textContent="AI Video · Video Editing · Motion Design";
