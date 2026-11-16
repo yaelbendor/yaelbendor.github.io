@@ -458,6 +458,7 @@ if(IS_AI){
   if(q(".hero-content .label")) q(".hero-content .label").textContent="AI Video · Video Editing · Motion Design";
   if(q("#top h1")) q("#top h1").innerHTML="Yael Ben-Dor<em>AI video specialist, video editor &amp; motion designer</em>";
   if(q(".hero-content > p")) q(".hero-content > p").textContent="I make social video ads that people stop scrolling for, built with generative AI, Premiere Pro and After Effects.";
+  document.querySelectorAll("#about .about > div:last-child > p").forEach(el=>{ if(/Maya and Blender/.test(el.textContent)) el.remove(); });  // no 3D paragraph on /ai
 }
 const SHOWREEL_LOOP = IS3D ? "media/showreel-3d.mp4" : null;  // main site: no showreel behind the title  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
 /* main site: the hero has no background at all (the showreel was removed) */
@@ -622,6 +623,7 @@ const SECTIONS = [
 
 const TOOLS = [["Maya","Modeling & rendering"],["Blender","Modeling & rendering"],["ZBrush","Sculpting"],["Substance Painter","Texturing"],
   ["Photoshop","Image editing"],["After Effects","Motion"],["Premiere Pro","Video Editing"],["Illustrator","Vector"]];
+if(IS_AI){ const ord=["After Effects","Premiere Pro","Photoshop","Illustrator","Maya","Blender","ZBrush","Substance Painter"]; TOOLS.sort((a,b)=>ord.indexOf(a[0])-ord.indexOf(b[0])); }  // /ai: Adobe row first, 3D row below
 const AI_TOOLS = ["Seedance", "Higgsfield", "GPT Image 2", "Nano Banana", "Veo3", "Kling", "Seedream", "Midjourney", "Gemini Omni Flash", "Runway", "Arcads", "ElevenLabs", "LTX", "Figma Weave", "Suno"];
 const EXPERIENCE = [
   ["2025 — now","Particle","Video Editor, AI Video Specialist & 3D Rendering"],
