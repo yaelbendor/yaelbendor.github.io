@@ -490,6 +490,10 @@ const SECTIONS = [
         details:{ about:"A gym-set ad for Particle Face Cream: men mid-workout, then applying the cream. All of the footage is AI-generated.", tools:["Higgsfield", "Seedance", "Seedream", "Premiere Pro"], views:[{label:"Video", vimeo:"1220452935", ar:1.7778}] } },
       { title:"Bold Moves Bundle Ad for Particle for Men", client:"Particle", year:2025, tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ about:"A short Meta reel introducing the Bold Moves Bundle, with Gravité and the new Varros cologne, in moody, fully AI-generated product shots.", tools:["Nano Banana", "Google Veo 3", "Premiere Pro"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_aa47971890d74b139eb54d678a66a171/720p/mp4/file.mp4", ar:0.8, poster:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg", sound:true, end:13.1}] } },
+      { title:"Animated Hook Ad for Particle Shaving Gel", site:"ai", client:"Particle", year:2025, tags:["Mixed"], top:true,  thumb:"media/thumbs/shave.webp", result:{ value:"$22K", label:"in sales · 3.81 ROAS" },
+        details:{ tools:["Midjourney", "Premiere Pro"], about:"A Meta ad for Particle's anti-aging shaving gel, built around a timed shave test, product close-ups and a testimonial. It mixes Midjourney visuals with real footage.",
+          metrics:[["$21.96K","Purchase value"],["3.81","ROAS"],["258","Purchases"],["$22.36","Cost per purchase"],["$5.77K","Ad spend"]],
+          metricsNote:"Meta ads data via Upspring", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bc/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg", sound:true, end:30.35}, {label:"Results", img:"media/shaving-results.webp", thumb:"media/shaving-results-thumb.webp"}] } },
     ]},
   { id:"three-d", title:"3D Art", text:"Game-ready props, characters and renders. Open a piece for renders, wireframes, turntables and polycounts.", kind:"3d",
     /* from artstation.com/yaelbendor. views = the pictures/videos you can flip through in the pop-up:
@@ -681,6 +685,7 @@ const SECTION_ORDER = IS3D ? ["three-d","illustration","ai","editing","motion"]
                     : IS_AI ? ["ai","editing","motion"]
                     : ["ai","three-d","illustration","motion"];   // main site: no Video Editing
 for(let i=SECTIONS.length-1;i>=0;i--) if(!SECTION_ORDER.includes(SECTIONS[i].id)) SECTIONS.splice(i,1);
+SECTIONS.forEach(sec=>{ sec.projects=sec.projects.filter(p=>!p.site || (p.site==="ai" && IS_AI)); });  // site:"ai" = shown only on /ai
 { const nl=document.getElementById("navLinks"); nl.querySelectorAll('a[href^="#"]').forEach(a=>{ const id=a.getAttribute("href").slice(1); if(["ai","editing","motion","three-d","illustration"].includes(id) && !SECTION_ORDER.includes(id)) a.remove(); }); }
 SECTIONS.sort((a,b)=>SECTION_ORDER.indexOf(a.id)-SECTION_ORDER.indexOf(b.id));
 { const nl=document.getElementById("navLinks"); SECTION_ORDER.slice().reverse().forEach(id=>{ const a=nl.querySelector('a[href="#'+id+'"]'); if(a) nl.prepend(a); }); }
