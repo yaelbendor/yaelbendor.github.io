@@ -377,8 +377,8 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
     <div class="orbit" aria-hidden="true"></div>
     <div class="orbit small" aria-hidden="true"></div>
     <div class="hero-content">
-      <div class="label">AI Video · Video Editing · Motion Design · 3D Art</div>
-      <h1>Yael Ben-Dor<em>AI video specialist, video editor &amp; 3D artist</em></h1>
+      <div class="label">AI Video · Motion Design · 3D Art</div>
+      <h1>Yael Ben-Dor<em>AI video specialist &amp; 3D artist</em></h1>
       <p>I make social video ads that people stop scrolling for, built with generative AI, Premiere Pro and After Effects. I'm also a 3D artist: I model, sculpt, texture and render, from stylized game-ready props to product renders.</p>
       <div class="btns">
         <a class="btn solid" href="#ai">See the work</a>
@@ -451,6 +451,14 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 const IS3D = /(^|[?&])3d\b/i.test(location.search.slice(1));
 if(IS3D){ const cv=document.getElementById("cvLink"); if(cv) cv.href="Yael_Ben-Dor_3D_Resume.pdf?v=20261109c"; }
 if(IS3D && history.replaceState) history.replaceState(null, "", "/3d" + location.hash);
+const IS_AI = !IS3D && /(^|[?&])ai\b/i.test(location.search.slice(1));  // the AI / video editing / motion site at /ai
+if(IS_AI && history.replaceState) history.replaceState(null, "", "/ai" + location.hash);
+if(IS_AI){
+  const q=(sel)=>document.querySelector(sel);
+  if(q(".hero-content .label")) q(".hero-content .label").textContent="AI Video · Video Editing · Motion Design";
+  if(q("#top h1")) q("#top h1").innerHTML="Yael Ben-Dor<em>AI video specialist, video editor &amp; motion designer</em>";
+  if(q(".hero-content > p")) q(".hero-content > p").textContent="I make social video ads that people stop scrolling for, built with generative AI, Premiere Pro and After Effects.";
+}
 const SHOWREEL_LOOP = IS3D ? "media/showreel-3d.mp4" : null;  // main site: no showreel behind the title  // short silent loop behind the title, e.g. "videos/reel-loop.mp4"
 /* main site: the hero has no background at all (the showreel was removed) */
 if(!IS3D){ const hb=document.getElementById("heroBg"); if(hb) hb.remove(); const hr=document.querySelector(".hero"); if(hr) hr.style.minHeight="clamp(300px,52vh,480px)"; }
@@ -686,7 +694,11 @@ function groupsOf(sec){
 }
 /* build sections */
 /* section order: video work first; add ?3d to the link to put 3D Art first */
-const SECTION_ORDER = IS3D ? ["three-d","illustration","ai","editing","motion"] : ["ai","three-d","illustration","editing","motion"];
+const SECTION_ORDER = IS3D ? ["three-d","illustration","ai","editing","motion"]
+                    : IS_AI ? ["ai","editing","motion"]
+                    : ["ai","three-d","illustration","motion"];   // main site: no Video Editing
+for(let i=SECTIONS.length-1;i>=0;i--) if(!SECTION_ORDER.includes(SECTIONS[i].id)) SECTIONS.splice(i,1);
+{ const nl=document.getElementById("navLinks"); nl.querySelectorAll('a[href^="#"]').forEach(a=>{ const id=a.getAttribute("href").slice(1); if(["ai","editing","motion","three-d","illustration"].includes(id) && !SECTION_ORDER.includes(id)) a.remove(); }); }
 SECTIONS.sort((a,b)=>SECTION_ORDER.indexOf(a.id)-SECTION_ORDER.indexOf(b.id));
 { const nl=document.getElementById("navLinks"); SECTION_ORDER.slice().reverse().forEach(id=>{ const a=nl.querySelector('a[href="#'+id+'"]'); if(a) nl.prepend(a); }); }
 $("#sections").innerHTML = SECTIONS.map(sec => `
