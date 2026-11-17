@@ -271,7 +271,8 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 .p-info p{margin:0}
 .close{position:fixed;top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));z-index:20;touch-action:manipulation;-webkit-tap-highlight-color:transparent;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.85);color:var(--mint);cursor:pointer;font-size:18px;line-height:1}
 .close:hover{border-color:var(--mint)}
-.jump{display:none;align-items:center;gap:8px;position:relative;overflow:hidden;padding:9px 16px 9px 18px;border-radius:999px;border:1px solid var(--mint);background:rgba(0,255,205,.1);color:var(--mint);font:inherit;font-size:14px;font-weight:600;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;box-shadow:0 0 0 0 rgba(0,255,205,.35)}
+.jump-wrap{display:none}
+.jump{display:inline-flex;align-items:center;gap:8px;position:relative;overflow:hidden;padding:9px 16px 9px 18px;border-radius:999px;border:1px solid var(--mint);background:rgba(0,255,205,.1);color:var(--mint);font:inherit;font-size:14px;font-weight:600;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;box-shadow:0 0 0 0 rgba(0,255,205,.35)}
 .jump svg{flex:none;animation:jumpBob 1.6s ease-in-out infinite}
 .jump::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:jumpShine 3.2s ease-in-out infinite;pointer-events:none}
 @keyframes jumpShine{0%,55%{left:-60%}85%,100%{left:130%}}
@@ -312,7 +313,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
   .p-screen{width:min(100%,calc((100dvh - 150px) * 16 / 9))!important}
   .p-screen.vert{width:min(100%,calc((100dvh - 150px) * 9 / 16))!important}
   .p-info{padding:20px 20px 40px}
-  .jump{display:inline-flex}
+  .jump-wrap{display:block}
   .pnav{top:max(14px,env(safe-area-inset-top,0px));margin-top:0;width:44px;height:44px}
   .pnav.prev{left:16px}.pnav.next{left:68px;right:auto}
 }
@@ -497,8 +498,9 @@ const SECTIONS = [
           views:[{label:"Video", mp4:"media/neoroot.mp4", ar:1.7778, poster:"media/neoroot.jpg", sound:true}, {label:"Kit", img:"media/ai/neoroot/kit.webp", thumb:"media/ai/neoroot/kit-thumb.webp"}, {label:"Vial", img:"media/ai/neoroot/vial.webp", thumb:"media/ai/neoroot/vial-thumb.webp"}, {label:"Vial & stamp", img:"media/ai/neoroot/vial-stamp.webp", thumb:"media/ai/neoroot/vial-stamp-thumb.webp"}, {label:"Start frame 1", img:"media/ai/neoroot/start-frame-1.webp", thumb:"media/ai/neoroot/start-frame-1-thumb.webp"}, {label:"Start frame 2", img:"media/ai/neoroot/start-frame-2.webp", thumb:"media/ai/neoroot/start-frame-2-thumb.webp"}, {label:"Start frame 3", img:"media/ai/neoroot/start-frame-3.webp", thumb:"media/ai/neoroot/start-frame-3-thumb.webp"}],
           workflow:[["Product shots","The kit, vial and scalp stamp generated first, so the packaging stays accurate in every scene."],["Start frames","A still image for each shot: different men in their bathrooms, holding and using the product."],["Video generation","Each start frame animated into a short clip."],["Edit","The clips edited into the final video in Premiere Pro."]] } },
       { title:"Born in France Ad for Particle Gravité", client:"Particle", year:2026, tags:["AI-generated"], thumb:"media/gravite-born.jpg",
-        details:{ about:"A cologne ad that tells Gravité's “Born in France” story. Every shot and the music are AI-generated.", tools:["Higgsfield Soul 2.0","Seedance","Suno","Premiere Pro"],
-          views:[{label:"Video", mp4:"media/gravite-born.mp4", ar:.5625, poster:"media/gravite-born.jpg", sound:true}] } },
+        details:{ about:"A cologne ad that tells Gravité's “Born in France” story. Every shot and the music are AI-generated.", tools:["Claude","Higgsfield Soul 2.0","Seedance","Suno","Premiere Pro"],
+          views:[{label:"Video", mp4:"media/gravite-born.mp4", ar:.5625, poster:"media/gravite-born.jpg", sound:true}, {label:"Product sheet", img:"media/ai/gravite/product-sheet.webp", thumb:"media/ai/gravite/product-sheet-thumb.webp"}, {label:"Start frame", img:"media/ai/gravite/start-frame.webp", thumb:"media/ai/gravite/start-frame-thumb.webp"}],
+          workflow:[["Product sheet","The Gravité bottle from every angle, with and without the cap, used as a reference so the bottle stays accurate."],["Start frame","The opening image: the woman with the bottle in a Paris kitchen."],["Script","A short script for what she says."],["Automated generation","Claude, connected to Higgsfield through MCP, turned the image and script into the video."],["Fixes & edit","The lip-sync fixed, and the video re-edited in Premiere Pro to a faster pace for social media."]] } },
       { title:"Bold Moves Bundle Ad for Particle for Men", client:"Particle", year:2025, tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ about:"A short Meta reel introducing the Bold Moves Bundle, with Gravité and the new Varros cologne, in moody, fully AI-generated product shots.", tools:["Nano Banana", "Google Veo 3", "Premiere Pro"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_aa47971890d74b139eb54d678a66a171/720p/mp4/file.mp4", ar:0.8, poster:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg", sound:true, end:13.1}] } },
       { title:"Animated Hook Ad for Particle Shaving Gel", sites:["main","ai"], client:"Particle", year:2025, tags:["Mixed"], top:true,  thumb:"media/thumbs/shave.webp", result:{ value:"$22K", label:"in sales · 3.81 ROAS" },
@@ -754,7 +756,7 @@ function openProject(sec, idx, fromHistory){
   let info = `<div class="p-info"><div><div class="label">${esc(sec.title)}${o.length>1?` · ${pos} / ${o.length}`:""}</div><h2 id="pTitle" style="margin-top:8px">${esc(p.title)}</h2>
     <div class="meta" style="margin-top:6px">${[p.client,p.year].filter(Boolean).join(" · ")}</div></div>`;
   if(p.tags) info += `<div class="chips">${p.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>`;
-  if(d && (d.workflow||(d.specs && p.techJump))) info += `<div><button type="button" class="jump" data-to="${d.workflow?"pProcess":"pSpecs"}"><span>${d.workflow?"See the process":"See the technical details"}</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15"/><path d="m5 12 7 7 7-7"/></svg></button></div>`;
+  if(d && (d.workflow||(d.specs && p.techJump))) info += `<div class="jump-wrap"><button type="button" class="jump" data-to="${d.workflow?"pProcess":"pSpecs"}"><span>${d.workflow?"See the process":"See the technical details"}</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15"/><path d="m5 12 7 7 7-7"/></svg></button></div>`;
   if(d){
     if(d.about) info += `<p>${esc(d.about)}</p>`;
     if(d.metrics) info += `<div><div class="label" style="margin-bottom:8px">Results</div>${d.highlight?`<p class="m-high">${esc(d.highlight)}</p>`:""}<div class="metrics">${d.metrics.map(([v,l])=>`<div class="metric"><b>${esc(v)}</b><small>${esc(l)}</small></div>`).join("")}</div>${d.metricsNote?`<p class="m-note">${esc(d.metricsNote)}</p>`:""}</div>`;
