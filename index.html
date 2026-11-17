@@ -271,7 +271,8 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 .p-info p{margin:0}
 .close{position:fixed;top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));z-index:20;touch-action:manipulation;-webkit-tap-highlight-color:transparent;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.85);color:var(--mint);cursor:pointer;font-size:18px;line-height:1}
 .close:hover{border-color:var(--mint)}
-.jump-wrap{display:none}
+.jump.jump-float{display:none;position:fixed;left:50%;bottom:max(20px,calc(env(safe-area-inset-bottom,0px) + 12px));z-index:20;transform:translate(-50%,12px);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;background:rgba(10,40,52,.92);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 6px 24px rgba(0,0,0,.45);white-space:nowrap}
+.jump.jump-float.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 .jump{display:inline-flex;align-items:center;gap:8px;position:relative;overflow:hidden;padding:9px 16px 9px 18px;border-radius:999px;border:1px solid var(--mint);background:rgba(0,255,205,.1);color:var(--mint);font:inherit;font-size:14px;font-weight:600;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;box-shadow:0 0 0 0 rgba(0,255,205,.35)}
 .jump svg{flex:none;animation:jumpBob 1.6s ease-in-out infinite}
 .jump::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:jumpShine 3.2s ease-in-out infinite;pointer-events:none}
@@ -313,7 +314,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
   .p-screen{width:min(100%,calc((100dvh - 150px) * 16 / 9))!important}
   .p-screen.vert{width:min(100%,calc((100dvh - 150px) * 9 / 16))!important}
   .p-info{padding:20px 20px 40px}
-  .jump-wrap{display:block}
+  .jump.jump-float{display:inline-flex}
   .pnav{top:max(14px,env(safe-area-inset-top,0px));margin-top:0;width:44px;height:44px}
   .pnav.prev{left:16px}.pnav.next{left:68px;right:auto}
 }
@@ -501,9 +502,9 @@ const SECTIONS = [
         details:{ about:"A cologne ad that tells Gravité's “Born in France” story. Every shot and the music are AI-generated.", tools:["Claude","Higgsfield Soul 2.0","Seedance","Suno","Premiere Pro"],
           views:[{label:"Video", mp4:"media/gravite-born.mp4", ar:.5625, poster:"media/gravite-born.jpg", sound:true}, {label:"Start frame", img:"media/ai/gravite/start-frame.webp", thumb:"media/ai/gravite/start-frame-thumb.webp"}],
           workflow:[["Start frame","The opening image: the woman with the bottle in a Paris kitchen."],["Script","A short script for what she says."],["Automated generation","Claude, connected to Higgsfield through MCP, turned the image and script into the video."],["Fixes & edit","The lip-sync fixed, and the video re-edited in Premiere Pro to a faster pace for social media."]] } },
-      { title:"Bold Moves Bundle Ad for Particle for Men", client:"Particle", year:2025, tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
+      { title:"Bold Moves Bundle Ad for Particle for Men", detailsJump:true, client:"Particle", year:2025, tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
         details:{ about:"A short Meta reel introducing the Bold Moves Bundle, with Gravité and the new Varros cologne, in moody, fully AI-generated product shots.", tools:["Nano Banana", "Google Veo 3", "Premiere Pro"], views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_aa47971890d74b139eb54d678a66a171/720p/mp4/file.mp4", ar:0.8, poster:"https://static.wixstatic.com/media/40dccc_aa47971890d74b139eb54d678a66a171f003.jpg", sound:true, end:13.1}] } },
-      { title:"Animated Hook Ad for Particle Shaving Gel", sites:["main","ai"], client:"Particle", year:2025, tags:["Mixed"], top:true,  thumb:"media/thumbs/shave.webp", result:{ value:"$22K", label:"in sales · 3.81 ROAS" },
+      { title:"Animated Hook Ad for Particle Shaving Gel", detailsJump:true, sites:["main","ai"], client:"Particle", year:2025, tags:["Mixed"], top:true,  thumb:"media/thumbs/shave.webp", result:{ value:"$22K", label:"in sales · 3.81 ROAS" },
         details:{ tools:["Midjourney", "Premiere Pro"], about:"A Meta ad for Particle's anti-aging shaving gel, built around a timed shave test, product close-ups and a testimonial. It mixes Midjourney visuals with real footage.",
           metrics:[["$21.96K","Purchase value"],["3.81","ROAS"],["258","Purchases"],["$22.36","Cost per purchase"],["$5.77K","Ad spend"]],
           metricsNote:"Meta ads data via Upspring", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bc/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg", sound:true, end:30.35}, {label:"Results", img:"media/shaving-results.webp", thumb:"media/shaving-results-thumb.webp"}] } },
@@ -731,6 +732,24 @@ $("#education").innerHTML = tl(EDUCATION);
 const overlay=$("#overlay"), panel=$("#panel"); let lastFocus=null;
 const closeBtn=document.createElement("button"); closeBtn.className="close"; closeBtn.type="button"; closeBtn.setAttribute("aria-label","Close"); closeBtn.textContent="×";
 overlay.appendChild(closeBtn); closeBtn.addEventListener("click",e=>{ e.stopPropagation(); closePanel(); });
+/* phones: a floating "See the process / details" button at the bottom of the pop-up, hidden once that part is on screen */
+const jumpBtn=document.createElement("button"); jumpBtn.type="button"; jumpBtn.className="jump jump-float";
+jumpBtn.innerHTML=`<span></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15"/><path d="m5 12 7 7 7-7"/></svg>`;
+overlay.appendChild(jumpBtn); let jumpTarget=null;
+jumpBtn.addEventListener("click",e=>{ e.stopPropagation(); if(jumpTarget) jumpTarget.scrollIntoView({behavior:reduce?"auto":"smooth", block:"start"}); });
+function setupJump(p, d){
+  jumpBtn.classList.remove("show"); jumpTarget=null;
+  const id = d && d.workflow ? "pProcess" : d && d.specs && p.techJump ? "pSpecs" : p.detailsJump ? "pInfo" : null;
+  if(!id) return; jumpTarget=document.getElementById(id); if(!jumpTarget) return;
+  jumpBtn.querySelector("span").textContent = id==="pProcess" ? "See the process" : id==="pSpecs" ? "See the technical details" : "See the details";
+  requestAnimationFrame(updateJump); setTimeout(updateJump, 400);
+}
+/* shown until that part reaches the upper 60% of the screen, or the pop-up is scrolled to the end */
+function updateJump(){ if(!jumpTarget || overlay.hidden){ jumpBtn.classList.remove("show"); return; }
+  const r=jumpTarget.getBoundingClientRect(), pr=panel.getBoundingClientRect();
+  const reached = r.top < pr.top + pr.height*0.6 || panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 8;
+  jumpBtn.classList.toggle("show", !reached); }
+panel.addEventListener("scroll", updateJump, {passive:true}); addEventListener("resize", updateJump);
 function ytId(url){ const m=String(url||"").match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/); return m?m[1]:null; }
 function videoLink(url){ return url && url!=="#" ? `<a class="yt" href="${esc(url)}" target="_blank" rel="noopener">Watch on YouTube ↗</a>` : `<span class="meta">Video link goes here</span>`; }
 /* order of works inside a section, as shown on the page */
@@ -753,10 +772,9 @@ function openProject(sec, idx, fromHistory){
   if(views && views.length>1) media += `<div class="vstrip" role="group" aria-label="Views">${views.map((v,k)=>`<button type="button" class="vthumb" aria-pressed="${k===0}" data-k="${k}"><i>${viewThumb(v)}</i><span>${esc(v.label)}</span></button>`).join("")}</div>`;
   media += `</div>`;
 
-  let info = `<div class="p-info"><div><div class="label">${esc(sec.title)}${o.length>1?` · ${pos} / ${o.length}`:""}</div><h2 id="pTitle" style="margin-top:8px">${esc(p.title)}</h2>
+  let info = `<div class="p-info" id="pInfo"><div><div class="label">${esc(sec.title)}${o.length>1?` · ${pos} / ${o.length}`:""}</div><h2 id="pTitle" style="margin-top:8px">${esc(p.title)}</h2>
     <div class="meta" style="margin-top:6px">${[p.client,p.year].filter(Boolean).join(" · ")}</div></div>`;
   if(p.tags) info += `<div class="chips">${p.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>`;
-  if(d && (d.workflow||(d.specs && p.techJump))) info += `<div class="jump-wrap"><button type="button" class="jump" data-to="${d.workflow?"pProcess":"pSpecs"}"><span>${d.workflow?"See the process":"See the technical details"}</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15"/><path d="m5 12 7 7 7-7"/></svg></button></div>`;
   if(d){
     if(d.about) info += `<p>${esc(d.about)}</p>`;
     if(d.metrics) info += `<div><div class="label" style="margin-bottom:8px">Results</div>${d.highlight?`<p class="m-high">${esc(d.highlight)}</p>`:""}<div class="metrics">${d.metrics.map(([v,l])=>`<div class="metric"><b>${esc(v)}</b><small>${esc(l)}</small></div>`).join("")}</div>${d.metricsNote?`<p class="m-note">${esc(d.metricsNote)}</p>`:""}</div>`;
@@ -776,7 +794,7 @@ function openProject(sec, idx, fromHistory){
     b.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
   }));
   if(views && views[0].ar) fitStage(views[0].ar);
-  setupMedia();
+  setupMedia(); setupJump(p, d);
   const slugUrl = location.pathname + "#" + projectSlug(p.title);
   if(wasOpen){ panel.scrollTop=0; if(history.state && history.state.modal) history.replaceState({modal:1}, "", slugUrl); return; }
   if(!fromHistory) history.pushState({modal:1}, "", slugUrl);   /* the phone/browser Back button closes the pop-up */
@@ -910,6 +928,7 @@ function closePanel(){
 addEventListener("popstate",()=>{ if(!overlay.hidden && !(history.state && history.state.modal)) hidePanel(); });
 function hidePanel(){
   if(overlay.hidden) return;
+  jumpBtn.classList.remove("show"); jumpTarget=null;
   overlay.classList.remove("open"); document.body.style.overflow="";
   panel.querySelectorAll("video").forEach(v=>{ try{ v.pause(); }catch(_){} });
   const st=$("#pScreen"); if(st) st.innerHTML="";   /* removes every player, so nothing keeps playing */
