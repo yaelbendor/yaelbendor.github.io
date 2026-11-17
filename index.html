@@ -271,6 +271,8 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 .p-info p{margin:0}
 .close{position:fixed;top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));z-index:20;touch-action:manipulation;-webkit-tap-highlight-color:transparent;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.85);color:var(--mint);cursor:pointer;font-size:18px;line-height:1}
 .close:hover{border-color:var(--mint)}
+.jump{display:none;margin-top:12px;padding:7px 14px;border-radius:999px;border:1px solid var(--mint);background:rgba(0,255,205,.08);color:var(--mint);font:inherit;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation}
+#pProcess,#pSpecs{scroll-margin-top:16px}
 .pnav{position:fixed;top:50%;z-index:3;width:50px;height:50px;margin-top:-25px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.8);color:var(--mint);cursor:pointer;display:grid;place-items:center;transition:border-color .2s,background .2s,transform .2s}
 .pnav:hover{border-color:var(--mint);background:rgba(0,255,205,.1)}
 .pnav.prev{left:max(18px,env(safe-area-inset-left,0px))}.pnav.prev:hover{transform:translateX(-2px)}
@@ -305,6 +307,7 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
   .p-screen{width:min(100%,calc((100dvh - 150px) * 16 / 9))!important}
   .p-screen.vert{width:min(100%,calc((100dvh - 150px) * 9 / 16))!important}
   .p-info{padding:20px 20px 40px}
+  .jump{display:inline-flex}
   .pnav{top:max(14px,env(safe-area-inset-top,0px));margin-top:0;width:44px;height:44px}
   .pnav.prev{left:16px}.pnav.next{left:68px;right:auto}
 }
@@ -477,7 +480,7 @@ if(IS3D){
 }
 
 const SECTIONS = [
-  { id:"ai", format:"vertical", title:"AI Ads", text:"Meta performance ads made with generative AI.",
+  { id:"ai", format:"vertical", title:"AI Ads", text:"Meta performance ads made with generative AI. Open an ad for details and process breakdowns.",
     /* from her old Wix AI page (+ the shaving gel ad from the Wix video editing page). Videos play from Wix / Vimeo */
     projects:[
       { title:"Gym Ad for Particle Face Cream", client:"Particle", year:2026, tags:["AI-generated"], thumb:"https://static.wixstatic.com/media/40dccc_d24bc0b7600e44b4a15890b1beb43ed5~mv2.jpg/v1/fill/w_720,h_1280,al_c,q_85,enc_auto/thumb.jpg",
@@ -498,7 +501,7 @@ const SECTIONS = [
           metrics:[["$21.96K","Purchase value"],["3.81","ROAS"],["258","Purchases"],["$22.36","Cost per purchase"],["$5.77K","Ad spend"]],
           metricsNote:"Meta ads data via Upspring", views:[{label:"Video", mp4:"https://video.wixstatic.com/video/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bc/1080p/mp4/file.mp4", ar:0.5625, poster:"https://static.wixstatic.com/media/40dccc_6334ab72dd2b4a0fbbe8cf9a21b515bcf003.jpg", sound:true, end:30.35}, {label:"Results", img:"media/shaving-results.webp", thumb:"media/shaving-results-thumb.webp"}] } },
     ]},
-  { id:"three-d", title:"3D Art", text:"Game-ready props, characters and renders. Open a piece for renders, wireframes, turntables and polycounts.", kind:"3d",
+  { id:"three-d", title:"3D Art", text:"Game-ready props, characters and renders. Open a piece for renders, wireframes, turntables, texture maps and polycounts.", kind:"3d",
     /* from artstation.com/yaelbendor. views = the pictures/videos you can flip through in the pop-up:
        {label, img} picture · {label, mp4, poster} turntable video · {label, embed, thumb} interactive 3D viewer · {label, yt} YouTube · {label, vimeo, thumb} Vimeo */
     projects:[
@@ -744,13 +747,13 @@ function openProject(sec, idx, fromHistory){
   media += `</div>`;
 
   let info = `<div class="p-info"><div><div class="label">${esc(sec.title)}${o.length>1?` · ${pos} / ${o.length}`:""}</div><h2 id="pTitle" style="margin-top:8px">${esc(p.title)}</h2>
-    <div class="meta" style="margin-top:6px">${[p.client,p.year].filter(Boolean).join(" · ")}</div></div>`;
+    <div class="meta" style="margin-top:6px">${[p.client,p.year].filter(Boolean).join(" · ")}</div>${d && (d.workflow||d.specs) ? `<button type="button" class="jump" data-to="${d.workflow?"pProcess":"pSpecs"}">${d.workflow?"See the process":"See the technical details"} ↓</button>` : ""}</div>`;
   if(p.tags) info += `<div class="chips">${p.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>`;
   if(d){
     if(d.about) info += `<p>${esc(d.about)}</p>`;
     if(d.metrics) info += `<div><div class="label" style="margin-bottom:8px">Results</div>${d.highlight?`<p class="m-high">${esc(d.highlight)}</p>`:""}<div class="metrics">${d.metrics.map(([v,l])=>`<div class="metric"><b>${esc(v)}</b><small>${esc(l)}</small></div>`).join("")}</div>${d.metricsNote?`<p class="m-note">${esc(d.metricsNote)}</p>`:""}</div>`;
-    if(d.workflow) info += `<div><div class="label" style="margin-bottom:10px">Process</div><ol class="steps">${d.workflow.map(([a,b])=>`<li><div><b>${esc(a)}</b> — ${esc(b)}</div></li>`).join("")}</ol></div>`;
-    if(d.specs) info += `<div><div class="label" style="margin-bottom:4px">Technical</div><table class="specs">${d.specs.map(([a,b])=>`<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join("")}</table></div>`;
+    if(d.workflow) info += `<div id="pProcess"><div class="label" style="margin-bottom:10px">Process</div><ol class="steps">${d.workflow.map(([a,b])=>`<li><div><b>${esc(a)}</b> — ${esc(b)}</div></li>`).join("")}</ol></div>`;
+    if(d.specs) info += `<div id="pSpecs"><div class="label" style="margin-bottom:4px">Technical</div><table class="specs">${d.specs.map(([a,b])=>`<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join("")}</table></div>`;
     if(d.tools) info += `<div><div class="label" style="margin-bottom:8px">Tools</div><div class="chips">${d.tools.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div></div>`;
   }
   info += `</div>`;
@@ -758,6 +761,7 @@ function openProject(sec, idx, fromHistory){
   panel.className = "panel" + (d ? "" : " simple") + (vert ? " vert" : "");
   panel.innerHTML = `${o.length>1?`<button class="pnav prev" type="button" aria-label="Previous work">${CHEV("m15 18-6-6 6-6")}</button><button class="pnav next" type="button" aria-label="Next work">${CHEV("m9 18 6-6-6-6")}</button>`:""}${media}${info}`;
   panel.querySelectorAll(".pnav").forEach(b=>b.addEventListener("click",()=>step(b.classList.contains("next")?1:-1)));
+  panel.querySelectorAll(".jump").forEach(b=>b.addEventListener("click",()=>{ const t=document.getElementById(b.dataset.to); if(t) t.scrollIntoView({behavior:reduce?"auto":"smooth", block:"start"}); }));
   panel.querySelectorAll(".vthumb").forEach(b=>b.addEventListener("click",()=>{
     panel.querySelectorAll(".vthumb").forEach(x=>x.setAttribute("aria-pressed",x===b));
     const v=views[+b.dataset.k]; if(v.ar || (!v.img && !v.mp4)) fitStage(v.ar||16/9); $("#pScreen").innerHTML=viewHtml(v, p.title); setupMedia();
