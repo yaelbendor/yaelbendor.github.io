@@ -271,7 +271,12 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 .p-info p{margin:0}
 .close{position:fixed;top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));z-index:20;touch-action:manipulation;-webkit-tap-highlight-color:transparent;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.85);color:var(--mint);cursor:pointer;font-size:18px;line-height:1}
 .close:hover{border-color:var(--mint)}
-.jump{display:none;margin-top:12px;padding:7px 14px;border-radius:999px;border:1px solid var(--mint);background:rgba(0,255,205,.08);color:var(--mint);font:inherit;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation}
+.jump{display:none;align-items:center;gap:8px;position:relative;overflow:hidden;padding:9px 16px 9px 18px;border-radius:999px;border:1px solid var(--mint);background:rgba(0,255,205,.1);color:var(--mint);font:inherit;font-size:14px;font-weight:600;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;box-shadow:0 0 0 0 rgba(0,255,205,.35)}
+.jump svg{flex:none;animation:jumpBob 1.6s ease-in-out infinite}
+.jump::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:jumpShine 3.2s ease-in-out infinite;pointer-events:none}
+@keyframes jumpShine{0%,55%{left:-60%}85%,100%{left:130%}}
+@keyframes jumpBob{0%,100%{transform:translateY(-1px)}50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.jump svg,.jump::after{animation:none}}
 #pProcess,#pSpecs{scroll-margin-top:16px}
 .pnav{position:fixed;top:50%;z-index:3;width:50px;height:50px;margin-top:-25px;border-radius:50%;border:1px solid var(--line);background:rgba(10,31,42,.8);color:var(--mint);cursor:pointer;display:grid;place-items:center;transition:border-color .2s,background .2s,transform .2s}
 .pnav:hover{border-color:var(--mint);background:rgba(0,255,205,.1)}
@@ -747,8 +752,9 @@ function openProject(sec, idx, fromHistory){
   media += `</div>`;
 
   let info = `<div class="p-info"><div><div class="label">${esc(sec.title)}${o.length>1?` · ${pos} / ${o.length}`:""}</div><h2 id="pTitle" style="margin-top:8px">${esc(p.title)}</h2>
-    <div class="meta" style="margin-top:6px">${[p.client,p.year].filter(Boolean).join(" · ")}</div>${d && (d.workflow||d.specs) ? `<button type="button" class="jump" data-to="${d.workflow?"pProcess":"pSpecs"}">${d.workflow?"See the process":"See the technical details"} ↓</button>` : ""}</div>`;
+    <div class="meta" style="margin-top:6px">${[p.client,p.year].filter(Boolean).join(" · ")}</div></div>`;
   if(p.tags) info += `<div class="chips">${p.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join("")}</div>`;
+  if(d && (d.workflow||d.specs)) info += `<div><button type="button" class="jump" data-to="${d.workflow?"pProcess":"pSpecs"}"><span>${d.workflow?"See the process":"See the technical details"}</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15"/><path d="m5 12 7 7 7-7"/></svg></button></div>`;
   if(d){
     if(d.about) info += `<p>${esc(d.about)}</p>`;
     if(d.metrics) info += `<div><div class="label" style="margin-bottom:8px">Results</div>${d.highlight?`<p class="m-high">${esc(d.highlight)}</p>`:""}<div class="metrics">${d.metrics.map(([v,l])=>`<div class="metric"><b>${esc(v)}</b><small>${esc(l)}</small></div>`).join("")}</div>${d.metricsNote?`<p class="m-note">${esc(d.metricsNote)}</p>`:""}</div>`;
