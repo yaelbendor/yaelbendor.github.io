@@ -232,7 +232,12 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
 .p-screen{position:relative;aspect-ratio:16/9;width:min(100%,calc((100dvh - 48px) * 16 / 9))!important;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#000;flex:none}
 .p-screen.stage{aspect-ratio:var(--ar,1.7778);width:min(100%,calc((100dvh - 170px) * var(--ar,1.7778)))!important;background:#06161e}
 .stage-media{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-.vstrip{display:flex;gap:10px;justify-content:safe center;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:thin}
+.vstrip{display:flex;gap:10px;justify-content:safe center;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.vstrip::-webkit-scrollbar{display:none}
+/* always-visible scroll bar under the view thumbnails when they don't all fit */
+.vtrack{position:relative;height:4px;border-radius:2px;background:rgba(255,255,255,.12);margin:4px 2px 0;cursor:pointer}
+.vtrack[hidden]{display:none}
+.vtrack i{position:absolute;top:0;bottom:0;left:0;border-radius:2px;background:rgba(255,255,255,.5)}
 .vthumb{flex:none;width:72px;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:0;cursor:pointer;color:var(--mint-mute);font:500 11px/1.2 var(--body)}
 .vthumb i{display:block;width:72px;height:72px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--surface-2);opacity:.65;transition:opacity .2s,border-color .2s,box-shadow .2s}
 .vthumb img{width:100%;height:100%;object-fit:cover;display:block}
@@ -801,7 +806,7 @@ function openProject(sec, idx, fromHistory){
     b.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
   }));
   if(views && views[0].ar) fitStage(views[0].ar);
-  setupMedia(); setupJump(p, d);
+  setupMedia(); setupJump(p, d); setupStrip();
   const slugUrl = location.pathname + "#" + projectSlug(p.title);
   if(wasOpen){ panel.scrollTop=0; if(history.state && history.state.modal) history.replaceState({modal:1}, "", slugUrl); return; }
   if(!fromHistory) history.pushState({modal:1}, "", slugUrl);   /* the phone/browser Back button closes the pop-up */
@@ -854,6 +859,17 @@ function toggleFs(){ const st=$("#pScreen"); if(!st) return;
 document.addEventListener("fullscreenchange",fsIcon); document.addEventListener("webkitfullscreenchange",fsIcon);
 function addFs(st){ if(st.querySelector(".fs-btn")) return; const b=document.createElement("button"); b.type="button"; b.className="fs-btn";
   b.addEventListener("click",e=>{ e.stopPropagation(); toggleFs(); }); st.appendChild(b); fsIcon(); }
+function setupStrip(){
+  const vs=panel.querySelector(".vstrip"); if(!vs) return;
+  const tr=document.createElement("div"); tr.className="vtrack"; tr.innerHTML="<i></i>"; vs.after(tr); const th=tr.firstChild;
+  const upd=()=>{ if(!tr.isConnected){ removeEventListener("resize",upd); return; }
+    const over=vs.scrollWidth>vs.clientWidth+2; tr.hidden=!over; if(!over) return;
+    const w=vs.clientWidth/vs.scrollWidth*100, max=vs.scrollWidth-vs.clientWidth;
+    th.style.width=w+"%"; th.style.left=(max>0? vs.scrollLeft/max*(100-w) : 0)+"%"; };
+  vs.addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd);
+  tr.addEventListener("click",e=>{ const r=tr.getBoundingClientRect(); vs.scrollTo({left:(e.clientX-r.left)/r.width*(vs.scrollWidth)-vs.clientWidth/2, behavior:"smooth"}); });
+  upd(); requestAnimationFrame(upd);
+}
 function setupMedia(){
   const st=$("#pScreen"); if(!st) return;
   addFs(st);
