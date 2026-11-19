@@ -708,7 +708,7 @@ function groupsOf(sec){
 /* section order: video work first; add ?3d to the link to put 3D Art first */
 const SECTION_ORDER = IS3D ? ["three-d","illustration","ai","motion"]
                     : IS_AI ? ["ai","editing","motion"]
-                    : ["ai","three-d","motion"];   // main site: no Video Editing, no Illustration
+                    : ["ai","motion","three-d"];   // main site: no Video Editing, no Illustration
 for(let i=SECTIONS.length-1;i>=0;i--) if(!SECTION_ORDER.includes(SECTIONS[i].id)) SECTIONS.splice(i,1);
 const SITE = IS3D ? "3d" : IS_AI ? "ai" : "main";
 SECTIONS.forEach(sec=>{ sec.projects=sec.projects.filter(p=>(!p.sites || p.sites.includes(SITE)) && !(p.hideOn==="ai" && IS_AI)); });  // sites:[...] = only on those sites; hideOn:"ai" = not on /ai
