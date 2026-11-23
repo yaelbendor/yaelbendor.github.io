@@ -411,8 +411,8 @@ footer{position:relative;z-index:1;margin-top:0;background:var(--sky-deep);borde
     <div class="orbit" aria-hidden="true"></div>
     <div class="orbit small" aria-hidden="true"></div>
     <div class="hero-content">
-      <div class="label">AI Video · Motion Design · 3D Art</div>
-      <h1>Yael Ben-Dor<em>AI video specialist &amp; 3D artist</em></h1>
+      <div class="label">AI Video · Video Editing · Motion Design · 3D Art</div>
+      <h1>Yael Ben-Dor<em>AI video specialist, video editor &amp; 3D artist</em></h1>
       <p>I make social video ads that people stop scrolling for, built with generative AI, Premiere Pro and After Effects. I'm also a 3D artist: I model, sculpt, texture and render, from stylized game-ready props to product renders.</p>
       <div class="btns">
         <a class="btn solid" href="#ai">See the work</a>
@@ -721,7 +721,7 @@ function groupsOf(sec){
 /* section order: video work first; add ?3d to the link to put 3D Art first */
 const SECTION_ORDER = IS3D ? ["three-d","illustration","ai","motion"]
                     : IS_AI ? ["ai","editing","motion"]
-                    : ["ai","motion","three-d"];   // main site: no Video Editing, no Illustration
+                    : ["ai","editing","motion","three-d"];   // main site: no Illustration
 for(let i=SECTIONS.length-1;i>=0;i--) if(!SECTION_ORDER.includes(SECTIONS[i].id)) SECTIONS.splice(i,1);
 const SITE = IS3D ? "3d" : IS_AI ? "ai" : "main";
 SECTIONS.forEach(sec=>{ sec.projects=sec.projects.filter(p=>(!p.sites || p.sites.includes(SITE)) && !(p.hideOn==="ai" && IS_AI)); });  // sites:[...] = only on those sites; hideOn:"ai" = not on /ai
