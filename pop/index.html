@@ -437,7 +437,20 @@ function genLevel(n) {
     for (const t of taken) if (dist(x, y, t.x, t.y) < t.r + rad + minGap) return false;
     return true;
   };
-  for (let i = 0; i < np; i++) {
+  // ingrown hairs: a pimple with a curled hair trapped under it
+  const ni = n >= 2 ? (n >= 5 ? 2 : 1) : 0;
+  for (let i = 0; i < ni; i++) {
+    for (let tries = 0; tries < 400; tries++) {
+      const x = rand(-.62, .62), y = rand(-.2, .62);
+      if (okSpot(x, y, .2, .06)) {
+        taken.push({ x, y, r: .2 });
+        const p = newPimple(x, y, .12, 'ingrown'); pimples.push(p);
+        hairs.push({ nx: x, ny: y, ang: rand(0, TAU), len: .25, curl: pick([-1, 1]), ph: rand(0, TAU), wx: 0, wv: 0, tension: 0, pulled: false, grip: null, tough: false, ingrown: true, hidden: true, freed: false, stuckT: 0, pimple: p });
+        break;
+      }
+    }
+  }
+  for (let i = ni; i < np; i++) {
     let kind = 'small';
     if (n >= 2 && (i === 0 || Math.random() < .22)) kind = 'big';
     if (n >= 3 && i === 1 && Math.random() < .6) kind = 'gold';
@@ -467,13 +480,21 @@ function genLevel(n) {
 function newPimple(nx, ny, size, kind) {
   return { nx, ny, size, kind, pressure: 0, hold: 0, popped: false, mark: 0, axis: 0, w: 0, wv: 0, ph: rand(0, TAU), tick: 0 };
 }
-const holdNeed = p => p.kind === 'big' ? .55 : p.kind === 'gold' ? .3 : .06;
+const holdNeed = p => p.kind === 'big' ? .55 : p.kind === 'ingrown' ? .5 : p.kind === 'gold' ? .3 : .06;
 
 /* ---------- positions ---------- */
 function pimplePos(p) { return { x: hx(p.nx), y: hy(p.ny) }; }
 function hairFoll(h) { return { x: hx(h.nx), y: hy(h.ny) }; }
 function hairPts(h, n = 10) {
   const F = hairFoll(h), L = h.len * head.r;
+  if (h.ingrown) {
+    const R0 = L * .34, a0 = h.ang + h.wx * .4, cx = F.x + Math.cos(a0) * R0, cy = F.y + Math.sin(a0) * R0, pts = [];
+    for (let i = 0; i <= n; i++) {
+      const s = i / n, th = a0 + Math.PI + s * TAU * 1.08 * h.curl, rr = R0 * (1 + s * s * .9);
+      pts.push({ x: cx + Math.cos(th) * rr, y: cy + Math.sin(th) * rr });
+    }
+    return pts;
+  }
   const a = h.ang + Math.sin(time * 1.7 + h.ph) * .05 + h.wx * .5;
   const dx = Math.cos(a), dy = Math.sin(a), px = -dy, py = dx, pts = [];
   for (let i = 0; i <= n; i++) {
@@ -541,7 +562,7 @@ function boop(x, y, touch) {
     }
   }
   for (const h of hairs) {
-    if (h.pulled) continue;
+    if (h.pulled || h.hidden) continue;
     if (distToHair(h, x, y) < 24) { h.wv += 9; SFX.boing(.18); buzz(6); if (touch) addText('pinch & pull!', x, y - 30, '#a07858', 20); return; }
   }
   if (inHead(x, y)) {
@@ -556,7 +577,7 @@ function mouseStart(x, y) {
   for (const p of pimples) { if (p.popped) continue; const P = pimplePos(p), d = dist(x, y, P.x, P.y); if (d < Math.max(30, p.size * head.r * 2.2) && d < bd) { bd = d; best = p; } }
   const mp = [...pointers.values()].find(p => p.type === 'mouse');
   if (best) { startSqueeze(best, [mp.id], 0, 0, 'mouse'); mp.used = true; return; }
-  for (const h of hairs) { if (h.pulled) continue; if (distToHair(h, x, y) < 26) { startHair(h, [mp.id], x, y, 0, 'mouse'); mp.used = true; return; } }
+  for (const h of hairs) { if (h.pulled || h.hidden) continue; if (distToHair(h, x, y) < 26) { startHair(h, [mp.id], x, y, 0, 'mouse'); mp.used = true; return; } }
   boop(x, y, false);
 }
 
@@ -612,7 +633,7 @@ function updateAction(dt) {
       if (dd < reach && dd < bpd) { bpd = dd; bp = p; }
     }
     for (const h of hairs) {
-      if (h.pulled) continue; const dd = distToHair(h, mx, my);
+      if (h.pulled || h.hidden) continue; const dd = distToHair(h, mx, my);
       if (dd < 46 && dd < bhd) { bhd = dd; bh = h; }
     }
     if (bh && d < 110 && (!bp || bhd < bpd || d < 60)) startHair(bh, [a.id, b.id], mx, my, d, 'touch');
@@ -653,11 +674,31 @@ function updateAction(dt) {
     if (action.src === 'touch' && d > Math.max(action.d0 * 1.9, action.d0 + 80)) { endAction(false); return; }
     const vx = (mx - action.px) / Math.max(dt, .001), vy = (my - action.py) / Math.max(dt, .001);
     action.vx = lerp(action.vx, vx, .3); action.vy = lerp(action.vy, vy, .3); action.px = mx; action.py = my;
-    const pullLen = Math.max(80, head.r * (h.tough ? .62 : .48));
-    const target = clamp((dist(mx, my, F.x, F.y) - action.startDist) / pullLen, 0, 1);
+    const pullLen = Math.max(80, head.r * (h.ingrown ? .72 : h.tough ? .62 : .48));
+    let target = clamp((dist(mx, my, F.x, F.y) - action.startDist) / pullLen, 0, 1);
+    let stuckK = 0;
+    if (h.ingrown && !h.freed) {
+      const CAP = .5;
+      if (target >= CAP) {
+        if (h.stuckT === 0) { const G = h.grip || F; addText('stuck! keep pulling!', G.x, G.y - 40 * S, '#e0992a', 20); SFX.eep(); buzz(20); }
+        h.stuckT += dt;
+        stuckK = clamp(h.stuckT / .9, 0, 1);
+        if (Math.random() < dt * 25) burst(F.x, F.y, 1, ['sparkle', 'dot'], ['#fff', '#ffe17a'], 120);
+        if (Math.random() < dt * 14) buzz(6 + stuckK * 14);
+        shake = Math.max(shake, 1.5 + stuckK * 3);
+        if (h.stuckT >= .9) {
+          h.freed = true; stuckK = 0;
+          ring(F.x, F.y, 60 * S, '#ffe17a'); burst(F.x, F.y, 10, ['star', 'sparkle'], ['#ffe17a', '#fff'], 300);
+          addText('Unhooked!', F.x, F.y - 30 * S, '#e0992a', 26);
+          SFX.pop(.7, 'small'); buzz([25, 20, 35]); hitstop = .05; wob.v += 4;
+        }
+      } else h.stuckT = Math.max(0, h.stuckT - dt * .5);
+      if (!h.freed) target = Math.min(target, CAP + stuckK * .08);
+    }
     h.tension = lerp(h.tension, target, Math.min(1, dt * 25));
-    h.grip = { x: mx, y: my };
-    action.loop.set(h.tension);
+    const jit = stuckK * 3.5 * S;
+    h.grip = { x: mx + rand(-jit, jit), y: my + rand(-jit, jit) };
+    action.loop.set(Math.min(1, h.tension + stuckK * .5));
     const tn = Math.floor(h.tension * 6);
     if (tn > action.tickN) { buzz(5 + tn * 2); SFX.tick(h.tension * .6); }
     action.tickN = tn;
@@ -678,7 +719,7 @@ function popPimple(p) {
   endAction(true);
   p.popped = true; p.mark = 1; p.pressure = 0;
   const mult = bumpCombo();
-  const base = p.kind === 'big' ? 25 : p.kind === 'gold' ? 60 : 10;
+  const base = p.kind === 'big' ? 25 : p.kind === 'ingrown' ? 30 : p.kind === 'gold' ? 60 : 10;
   const pts = base * mult;
   const big = p.kind !== 'small';
   hitstop = big ? .1 : .055; shake = big ? 13 : 7; flash = big ? .22 : .1;
@@ -691,7 +732,14 @@ function popPimple(p) {
   burst(P.x, P.y, big ? 10 : 6, ['foam'], ['#fffaf0'], 220);
   const nStars = big ? 6 : 3;
   for (let i = 0; i < nStars; i++) flyers.push({ kind: 'star', x: P.x, y: P.y, vx: rand(-260, 260), vy: rand(-520, -220), t: 0, home: .45 + i * .05, val: pts / nStars, rot: rand(0, TAU), col: p.kind === 'gold' ? '#ffd65c' : pick(['#ffd65c', '#ff9fb8', '#9fdcc0']) });
-  const word = combo >= 3 ? `Combo x${combo}!` : p.kind === 'gold' ? 'Golden!' : big ? 'BIG POP!' : pick(WORD_POP);
+  const word = combo >= 3 ? `Combo x${combo}!` : p.kind === 'gold' ? 'Golden!' : p.kind === 'ingrown' ? 'Pop!' : big ? 'BIG POP!' : pick(WORD_POP);
+  if (p.kind === 'ingrown') {
+    const ih = hairs.find(h => h.pimple === p);
+    if (ih) {
+      ih.hidden = false; ih.wv += 12;
+      setTimeout(() => { addText('a hidden hair!', P.x, P.y + R * 3.2, '#a07858', 22); SFX.boing(.2); }, 380);
+    }
+  }
   addText(word, P.x, P.y - R * 2, p.kind === 'gold' ? '#f0a92a' : '#ff7f9e', big || combo >= 3 ? 34 : 28);
   // sound + haptic
   SFX.pop(1 + Math.min(combo - 1, 6) * .06, p.kind);
@@ -708,13 +756,13 @@ function pluckHair(h, vx, vy) {
   endAction(true);
   h.pulled = true; h.tension = 0;
   const mult = bumpCombo();
-  const pts = (h.tough ? 40 : 20) * mult;
+  const pts = (h.ingrown ? 50 : h.tough ? 40 : 20) * mult;
   hitstop = .11; shake = 10; flash = .15; wob.v += 7;
   ring(F.x, F.y, 70 * S, '#fff');
   burst(F.x, F.y, 14, ['sparkle', 'star', 'dot', 'heart'], ['#fff', '#ffe17a', '#ffc2d1', '#b8e8d0'], 420);
   const ang = Math.atan2(G.y - F.y, G.x - F.x);
   flyers.push({ kind: 'hair', x: G.x, y: G.y, vx: clamp(vx * .35, -700, 700) + Math.cos(ang) * 250, vy: Math.min(clamp(vy * .35, -900, 500), 0) - 420, t: 0, home: .85, val: pts, rot: ang + Math.PI / 2, vr: rand(-9, 9), h: { len: h.len, curl: h.curl, col: client.hair } });
-  addText(combo >= 3 ? `Combo x${combo}!` : h.tough ? 'Mighty pluck!' : 'Pluck!', F.x, F.y - 40 * S, '#6fcfa6', 30);
+  addText(combo >= 3 ? `Combo x${combo}!` : h.ingrown ? 'Ingrown out!' : h.tough ? 'Mighty pluck!' : 'Pluck!', F.x, F.y - 40 * S, '#6fcfa6', 30);
   SFX.pluck(); setTimeout(() => SFX.sparkle(combo), 60);
   buzz([15, 25, 45]);
   setExpr('ouch', .35); setTimeout(() => { if (expr === 'ouch') setExpr('happy', 1); }, 350);
@@ -967,7 +1015,7 @@ function drawCharacter() {
     ctx.fillStyle = `rgba(255,255,255,${p.mark})`; sparklePath(ctx, P.x, P.y, R * .9 * Math.sin(p.mark * Math.PI)); ctx.fill();
   }
   // --- hairs (idle ones under pimples)
-  for (const h of hairs) if (!h.pulled) drawHair(h);
+  for (const h of hairs) if (!h.pulled && !h.hidden) drawHair(h);
   for (const p of pimples) if (!p.popped) drawPimple(p);
 
   // --- towel
@@ -1135,8 +1183,15 @@ function drawPimple(p) {
   else { dg.addColorStop(0, '#ffc9d4'); dg.addColorStop(.65, lerpCol('#ff9db2', '#ff7f9e', pr)); dg.addColorStop(1, '#f77799'); }
   ell(0, 0, R, R); ctx.fillStyle = dg; ctx.fill();
   ctx.strokeStyle = gold ? '#e0992a' : '#e8668a'; ctx.lineWidth = Math.max(1.6, 2.4 * S); ctx.stroke();
+  if (p.kind === 'ingrown') {
+    // curled hair trapped inside, with a tiny tail poking out past the edge
+    ctx.strokeStyle = hexA(client.hair, .85); ctx.lineWidth = Math.max(2.4, 3 * S); ctx.beginPath();
+    for (let i = 0; i <= 30; i++) { const s = i / 30, th = p.ph + s * TAU * 1.25, rr = R * (.3 + s * .95); i ? ctx.lineTo(Math.cos(th) * rr, Math.sin(th) * rr) : ctx.moveTo(Math.cos(th) * rr, Math.sin(th) * rr); }
+    ctx.stroke();
+    ctx.save(); ell(0, 0, R, R); ctx.clip(); ctx.fillStyle = 'rgba(255,190,205,.35)'; ctx.fillRect(-R, -R, R * 2, R * 2); ctx.restore();
+  }
   // head
-  const hr = R * (.42 + pr * .18 + hf * .1);
+  const hr = R * ((p.kind === 'ingrown' ? .36 : .42) + pr * .18 + hf * .1);
   ell(0, -R * .08, hr, hr); ctx.fillStyle = gold ? '#fffbe8' : '#fffaf0'; ctx.fill();
   ctx.strokeStyle = gold ? '#f1cf80' : '#f4cbb6'; ctx.lineWidth = Math.max(1, 1.4 * S); ctx.stroke();
   if (gold) { ctx.fillStyle = '#ffcf4a'; starPath(ctx, 0, -R * .08, hr * .7); ctx.fill(); }
@@ -1205,6 +1260,16 @@ function drawHair(h) {
     }
     return;
   }
+  if (h.ingrown) {
+    const pts = hairPts(h, 16), k = 11;
+    ctx.fillStyle = 'rgba(255,170,190,.35)'; ell(F.x, F.y, r * .1, r * .1); ctx.fill();
+    ctx.fillStyle = hexA(client.line, .3); ell(F.x, F.y, rootR * .9, rootR * .9); ctx.fill();
+    ctx.strokeStyle = hexA(client.hair, .4); ctx.lineWidth = hl; ctx.setLineDash([hl * 1.4, hl * 1.2]); strokePts(pts.slice(0, k + 1)); ctx.setLineDash([]);
+    ctx.strokeStyle = client.hair; ctx.lineWidth = hl * 1.1; strokePts(pts.slice(k));
+    const tip = pts[16];
+    ctx.fillStyle = '#ffe17a'; sparklePath(ctx, tip.x, tip.y, 6 * S * (1 + Math.sin(time * 6) * .35)); ctx.fill();
+    return;
+  }
   // follicle + faint root under skin
   ctx.fillStyle = hexA(client.line, .25); ell(F.x, F.y, rootR * .9, rootR * .9); ctx.fill();
   ctx.fillStyle = hexA(client.hair, .7); ell(F.x, F.y, hl * .7, hl * .7); ctx.fill();
@@ -1239,9 +1304,9 @@ function drawHint() {
   if (state !== 'play' || action || idleT < (save.tutPop && save.tutPull ? 7 : 1.2)) return;
   const alpha = clamp((idleT - 1.2) * 2, 0, 1) * .9;
   let target = null, mode = null;
-  const pp = pimples.find(p => !p.popped), hh = hairs.find(h => !h.pulled);
+  const pp = pimples.find(p => !p.popped), hh = hairs.find(h => !h.pulled && !h.hidden);
   if (pp && (!save.tutPop || !hh || save.tutPull)) { target = pimplePos(pp); mode = 'pop'; }
-  else if (hh) { const pts = hairPts(hh); target = pts[6]; mode = 'pull'; target.h = hh; }
+  else if (hh) { const pts = hairPts(hh); target = hh.ingrown ? pts[pts.length - 1] : pts[6]; mode = 'pull'; target.h = hh; }
   if (!target) return;
   const ph = (time * .9) % 1, e = ph < .6 ? Math.sin(ph / .6 * Math.PI / 2) : 1;
   ctx.globalAlpha = alpha * (ph > .85 ? (1 - ph) / .15 : 1);
